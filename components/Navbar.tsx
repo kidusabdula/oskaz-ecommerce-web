@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Search, ShoppingBag, Bell, User } from "lucide-react";
@@ -9,9 +9,24 @@ import { ThemeDropdown } from "./theme-dropdown";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  // Helper functions for better hover handling
+  const handleMouseEnter = (item: string) => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setHoveredItem(item);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setHoveredItem(null);
+    }, 150); // 150ms delay before closing
   };
 
   // Dropdown content for each navigation item
@@ -95,6 +110,11 @@ const Navbar = () => {
 
   return (
     <>
+      {/* Background Overlay */}
+      {hoveredItem && (
+        <div className="fixed inset-0 bg-gray-900/40 dark:bg-gray-900/60 z-30 transition-opacity duration-300" />
+      )}
+      
       {/* Gradient overlay at the top */}
       <div className="fixed top-0 left-0 right-0 h-12 z-40 pointer-events-none">
         <div className="h-full bg-gradient-to-b from-gray-900/80 via-gray-600/50 to-gray-200/20"></div>
@@ -125,8 +145,8 @@ const Navbar = () => {
             {/* Services Dropdown */}
             <div 
               className="relative"
-              onMouseEnter={() => setHoveredItem('services')}
-              onMouseLeave={() => setHoveredItem(null)}
+              onMouseEnter={() => handleMouseEnter('services')}
+              onMouseLeave={handleMouseLeave}
             >
               <Link
                 href="/services"
@@ -136,34 +156,46 @@ const Navbar = () => {
               </Link>
               
               {hoveredItem === 'services' && (
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[800px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-6 z-50">
-                  <div className="grid grid-cols-4 gap-4">
+                  <>
+                    {/* Invisible bridge area */}
+                    <div 
+                      className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[1000px] h-12 z-40"
+                      onMouseEnter={() => handleMouseEnter('services')}
+                      onMouseLeave={handleMouseLeave}
+                    />
+                    <div 
+                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[1000px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-200 ease-in-out"
+                      onMouseEnter={() => handleMouseEnter('services')}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                  <div className="grid grid-cols-4 gap-6">
                     {dropdownContent.services.items.map((item, index) => (
                       <div key={index} className="group cursor-pointer">
-                        <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-32 mb-3 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-colors">
-                          <div className="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">{item.title.split(' ')[0]}</span>
+                        <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-colors">
+                          <div className="w-20 h-20 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <span className="text-white text-sm font-bold">{item.title.split(' ')[0]}</span>
                           </div>
                         </div>
-                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{item.title}</h3>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{item.description}</p>
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{item.title}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{item.description}</p>
                         <div className="space-y-1">
                           {item.categories.map((category, idx) => (
-                            <div key={idx} className="text-xs text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">{category}</div>
+                            <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">{category}</div>
                           ))}
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
+                  </>
               )}
             </div>
 
             {/* Solutions Dropdown */}
             <div 
               className="relative"
-              onMouseEnter={() => setHoveredItem('solutions')}
-              onMouseLeave={() => setHoveredItem(null)}
+              onMouseEnter={() => handleMouseEnter('solutions')}
+              onMouseLeave={handleMouseLeave}
             >
               <Link
                 href="/solutions"
@@ -173,34 +205,46 @@ const Navbar = () => {
               </Link>
               
               {hoveredItem === 'solutions' && (
-                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[600px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-6 z-50">
-                  <div className="grid grid-cols-3 gap-4">
-                    {dropdownContent.solutions.items.map((item, index) => (
-                      <div key={index} className="group cursor-pointer">
-                         <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-32 mb-3 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-colors">
-                          <div className="w-16 h-16 bg-green-500 rounded-lg flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">{item.title.split(' ')[0]}</span>
-                          </div>
-                        </div>
-                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">{item.title}</h3>
-                         <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{item.description}</p>
-                        <div className="space-y-1">
-                          {item.categories.map((category, idx) => (
-                            <div key={idx} className="text-xs text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer">{category}</div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                  <>
+                    {/* Invisible bridge area */}
+                    <div 
+                      className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[800px] h-12 z-40"
+                      onMouseEnter={() => handleMouseEnter('solutions')}
+                      onMouseLeave={handleMouseLeave}
+                    />
+                    <div 
+                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-200 ease-in-out"
+                      onMouseEnter={() => handleMouseEnter('solutions')}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                   <div className="grid grid-cols-3 gap-6">
+                     {dropdownContent.solutions.items.map((item, index) => (
+                       <div key={index} className="group cursor-pointer">
+                          <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-colors">
+                           <div className="w-20 h-20 bg-green-500 rounded-lg flex items-center justify-center">
+                             <span className="text-white text-sm font-bold">{item.title.split(' ')[0]}</span>
+                           </div>
+                         </div>
+                         <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">{item.title}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{item.description}</p>
+                         <div className="space-y-1">
+                           {item.categories.map((category, idx) => (
+                             <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer">{category}</div>
+                           ))}
+                         </div>
+                       </div>
+                     ))}
+                   </div>
+                 </div>
+                   </>
+               )}
             </div>
 
             {/* Industries Dropdown */}
             <div 
               className="relative"
-              onMouseEnter={() => setHoveredItem('industries')}
-              onMouseLeave={() => setHoveredItem(null)}
+              onMouseEnter={() => handleMouseEnter('industries')}
+              onMouseLeave={handleMouseLeave}
             >
               <Link
                 href="/industries"
@@ -210,27 +254,39 @@ const Navbar = () => {
               </Link>
               
               {hoveredItem === 'industries' && (
-                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[600px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-6 z-50">
-                  <div className="grid grid-cols-3 gap-4">
-                    {dropdownContent.industries.items.map((item, index) => (
-                      <div key={index} className="group cursor-pointer">
-                         <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-32 mb-3 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-colors">
-                          <div className="w-16 h-16 bg-purple-500 rounded-lg flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">{item.title.split(' ')[0]}</span>
-                          </div>
-                        </div>
-                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{item.title}</h3>
-                         <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{item.description}</p>
-                        <div className="space-y-1">
-                          {item.categories.map((category, idx) => (
-                            <div key={idx} className="text-xs text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors cursor-pointer">{category}</div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                  <>
+                    {/* Invisible bridge area */}
+                    <div 
+                      className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[800px] h-12 z-40"
+                      onMouseEnter={() => handleMouseEnter('industries')}
+                      onMouseLeave={handleMouseLeave}
+                    />
+                    <div 
+                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-200 ease-in-out"
+                      onMouseEnter={() => handleMouseEnter('industries')}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                   <div className="grid grid-cols-3 gap-6">
+                     {dropdownContent.industries.items.map((item, index) => (
+                       <div key={index} className="group cursor-pointer">
+                          <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-colors">
+                           <div className="w-20 h-20 bg-purple-500 rounded-lg flex items-center justify-center">
+                             <span className="text-white text-sm font-bold">{item.title.split(' ')[0]}</span>
+                           </div>
+                         </div>
+                         <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{item.title}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{item.description}</p>
+                         <div className="space-y-1">
+                           {item.categories.map((category, idx) => (
+                             <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors cursor-pointer">{category}</div>
+                           ))}
+                         </div>
+                       </div>
+                     ))}
+                   </div>
+                 </div>
+                   </>
+               )}
             </div>
 
             <Link
