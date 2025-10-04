@@ -140,7 +140,7 @@ const Navbar = () => {
           {/* Navigation Links */}
           <div className="hidden lg:flex items-center flex-1 justify-evenly px-4">
             <Link
-              href="/best-sellers"
+              href="/home"
               className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
             >
               <span className="relative z-10 transition-all duration-300">BEST SELLERS</span>
@@ -366,7 +366,7 @@ const Navbar = () => {
             <div className="lg:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 rounded-b-2xl mx-4 shadow-xl dark:shadow-2xl dark:shadow-gray-900/50 dark:ring-1 dark:ring-gray-600/20 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0">
               <div className="px-4 pt-4 pb-6 space-y-4">
              <Link
-               href="/best-sellers"
+               href="/home"
                className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
                onClick={() => setIsMenuOpen(false)}
              >

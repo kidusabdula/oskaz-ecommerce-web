@@ -15,11 +15,11 @@ export const translations = {
       // Hero Section
       hero: {
         title: "Oskaz Import",
-        subtitle: "Empower Your Organization with Cutting-Edge Imports and Reliable Solutions",
+        subtitle: "Empower Your Organization with Cutting Edge Imports and Reliable Solutions",
         description: "Transform your operations with our comprehensive range of interactive displays, power solutions, and automation systems.",
         cta: "Discover Our Innovations",
         competitivePricing: "Competitive Pricing",
-        afterSalesSupport: "After-Sales Support",
+        afterSalesSupport: "After Sales Support",
         qualityAssurance: "Quality Assurance"
       },
       
@@ -50,9 +50,9 @@ export const translations = {
             cta: "Explore Now"
           },
           kiosks: {
-            name: "Self-Service & Automation Kiosks",
+            name: "Self Service & Automation Kiosks",
             shortName: "Kiosk Systems",
-            subtitle: "Self-Service Solutions", 
+            subtitle: "Self Service Solutions", 
             description: "Smart kiosks and terminals for enhanced customer experience.",
             cta: "Explore Now"
           }
@@ -62,8 +62,8 @@ export const translations = {
       // Top Picks Section
       topPicks: {
         title: "Top Picks for Smart Boards",
-        productName: "Dahua 86-inch Smart Board",
-        description: "Interactive 4K display with multi-touch capabilities, perfect for classrooms and meeting rooms.",
+        productName: "Dahua 86 inch Smart Board",
+        description: "Interactive 4K display with multi touch capabilities, perfect for classrooms and meeting rooms.",
         price: "From $2,499",
         originalPrice: "$3,299",
         cta: "Shop Smart Boards"
@@ -72,8 +72,8 @@ export const translations = {
       // Power Solutions Section
       powerSolutions: {
         title: "Unrivaled Power Protection for Your Tech",
-        subtitle: "Guaranteed Uptime with Competitive Pricing and After-Sales Support",
-        description: "Protect your critical systems with our enterprise-grade UPS solutions and power management systems.",
+        subtitle: "Guaranteed Uptime with Competitive Pricing and After Sales Support",
+        description: "Protect your critical systems with our enterprise grade UPS solutions and power management systems.",
         productName: "Enterprise UPS Systems",
         cta: "Explore Power Essentials"
       },
@@ -81,7 +81,7 @@ export const translations = {
       // Tracking Section
       tracking: {
         title: "Advanced Tracking Solutions",
-        subtitle: "Real-time Monitoring and Analytics",
+        subtitle: "Real time Monitoring and Analytics",
         cta: "Learn More"
       },
       
@@ -96,7 +96,7 @@ export const translations = {
       qualityCommitment: {
         title: "Uncompromising Quality Standards",
         subtitle: "Rigorous Testing & Certification Process",
-        description: "Every product undergoes comprehensive quality testing and certification to ensure reliable performance and long-term durability for your business operations.",
+        description: "Every product undergoes comprehensive quality testing and certification to ensure reliable performance and long term durability for your business operations.",
         cta: "Our Quality Promise"
       },
       
@@ -131,7 +131,7 @@ export const translations = {
       // Hero Section
       hero: {
         title: "Technology Solutions",
-        subtitle: "Empowering businesses with cutting-edge technology imports",
+        subtitle: "Empowering businesses with cutting edge technology imports",
         featuredProduct: "Smart Interactive Boards",
         productDescription: "Transform your classroom or meeting room with interactive 4K displays",
         price: "From $2,499",
@@ -144,25 +144,25 @@ export const translations = {
         "Interactive Learning & Collaboration Tools",
         "Digital Display & Signage Solutions", 
         "Power & Infrastructure Essentials",
-        "Self-Service & Automation Kiosks",
+        "Self Service & Automation Kiosks",
         "Accessories & Components"
       ],
       
       // Products
       products: {
         smartBoard: {
-          name: "Dahua 86-inch Smart Interactive Board",
+          name: "Dahua 86 inch Smart Interactive Board",
           category: "Interactive Tools",
           price: "$2,499",
           originalPrice: "$2,999",
-          description: "Professional interactive display with 4K resolution, multi-touch capabilities, and built-in collaboration software. Perfect for modern classrooms and meeting rooms."
+          description: "Professional interactive display with 4K resolution, multi touch capabilities, and built in collaboration software. Perfect for modern classrooms and meeting rooms."
         },
         digitalSignage: {
           name: "Professional Digital Signage Display 55\"",
           category: "Digital Displays", 
           price: "$899",
           originalPrice: "$1,199",
-          description: "High-brightness commercial display with 24/7 operation capability, remote management, and stunning visual clarity for impactful digital signage."
+          description: "High brightness commercial display with 24/7 operation capability, remote management, and stunning visual clarity for impactful digital signage."
         },
         upsSystem: {
           name: "Enterprise UPS Backup System 3000VA",
@@ -171,7 +171,7 @@ export const translations = {
           description: "Reliable uninterruptible power supply with advanced battery management, surge protection, and remote monitoring for critical business operations."
         },
         kiosk: {
-          name: "Self-Service Information Kiosk",
+          name: "Self Service Information Kiosk",
           category: "Kiosk Systems",
           price: "$1,899",
           description: "Interactive touchscreen kiosk with durable construction, customizable interface, and integrated payment processing for enhanced customer service."
@@ -180,7 +180,7 @@ export const translations = {
           name: "Industrial Power Distribution Unit",
           category: "Power Solutions", 
           price: "$599",
-          description: "Professional-grade power distribution with multiple outlets, surge protection, and monitoring capabilities for data centers and industrial applications."
+          description: "Professional grade power distribution with multiple outlets, surge protection, and monitoring capabilities for data centers and industrial applications."
         },
         presentationSystem: {
           name: "Wireless Presentation System",
@@ -223,12 +223,12 @@ export const translations = {
     mainPage: {
       // Hero Section
       hero: {
-        title: "ኦስካዝ ኢምፖርት - ኢትዮጵያን ከወደፊት ቴክኖሎጂ ጋር ማገናኘት",
+        title: "ኦስካዝ ኢምፖርት",
         subtitle: "ድርጅትዎን በዘመናዊ ማስመጣት እና አስተማማኝ መፍትሄዎች ያብቁ",
-        description: "በእኛ ሰፊ የኢንተራክቲቭ ማሳያዎች፣ የኃይል መፍትሄዎች እና የአውቶሜሽን ሲስተሞች ስራዎን ይለውጡ።",
+        description: "በእኛ ሰፊ የኢንተራክቲቭ ማሳያዎች፣ የኃይል መፍትሄዎች እና የአውቶሜሽን ሲስተሞች ስራዎን ይለውጡ",
         cta: "ፈጠራዎቻችንን ያግኙ",
         competitivePricing: "ተወዳዳሪ ዋጋ",
-        afterSalesSupport: "የድህረ-ሽያጭ ድጋፍ", 
+        afterSalesSupport: "የድህረ ሽያጭ ድጋፍ", 
         qualityAssurance: "የጥራት ዋስትና"
       },
       
@@ -241,28 +241,28 @@ export const translations = {
             name: "የኢንተራክቲቭ ትምህርት እና ትብብር መሳሪያዎች",
             shortName: "ኢንተራክቲቭ መሳሪያዎች",
             subtitle: "ስማርት የትምህርት መፍትሄዎች",
-            description: "ለዘመናዊ ትምህርት እና ስብሰባዎች ኢንተራክቲቭ ማሳያዎች እና ስማርት ቦርዶች።",
+            description: "ለዘመናዊ ትምህርት እና ስብሰባዎች ኢንተራክቲቭ ማሳያዎች እና ስማርት ቦርዶች",
             cta: "አሁን ይመልከቱ"
           },
           displays: {
             name: "የዲጂታል ማሳያ እና ምልክት መፍትሄዎች",
             shortName: "ዲጂታል ማሳያዎች", 
             subtitle: "የእይታ ግንኙነት",
-            description: "ለተጽዕኖ ፈጣሪ መልእክቶች ሙያዊ LED ማሳያዎች እና ዲጂታል ምልክቶች።",
+            description: "ለተጽዕኖ ፈጣሪ መልእክቶች ሙያዊ LED ማሳያዎች እና ዲጂታል ምልክቶች",
             cta: "አሁን ይመልከቱ"
           },
           power: {
             name: "የኃይል እና የመሠረተ ልማት አስፈላጊዎች",
             shortName: "የኃይል መፍትሄዎች",
             subtitle: "አስተማማኝ ኃይል", 
-            description: "ለያለማቋረጥ ስራዎች UPS ሲስተሞች እና የመጠባበቂያ መፍትሄዎች።",
+            description: "ለያለማቋረጥ ስራዎች UPS ሲስተሞች እና የመጠባበቂያ መፍትሄዎች",
             cta: "አሁን ይመልከቱ"
           },
           kiosks: {
-            name: "የራስ-አገልግሎት እና የአውቶሜሽን ኪዮስኮች",
+            name: "የራስ አገልግሎት እና የአውቶሜሽን ኪዮስኮች",
             shortName: "ኪዮስክ ሲስተሞች",
-            subtitle: "የራስ-አገልግሎት መፍትሄዎች",
-            description: "ለተሻሻለ የደንበኛ ተሞክሮ ስማርት ኪዮስኮች እና ተርሚናሎች።",
+            subtitle: "የራስ አገልግሎት መፍትሄዎች",
+            description: "ለተሻሻለ የደንበኛ ተሞክሮ ስማርት ኪዮስኮች እና ተርሚናሎች",
             cta: "አሁን ይመልከቱ"
           }
         }
@@ -271,8 +271,8 @@ export const translations = {
       // Top Picks Section
       topPicks: {
         title: "ለስማርት ቦርዶች ምርጥ ምርጫዎች",
-        productName: "ዳሁዋ 86-ኢንች ስማርት ቦርድ",
-        description: "ለክፍሎች እና ለስብሰባ ክፍሎች ፍጹም የሆነ ኢንተራክቲቭ 4K ማሳያ ከብዙ-ንክኪ ችሎታዎች ጋር።",
+        productName: "ዳሁዋ 86 ኢንች ስማርት ቦርድ",
+        description: "ለክፍሎች እና ለስብሰባ ክፍሎች ፍጹም የሆነ ኢንተራክቲቭ 4K ማሳያ ከብዙ ንክኪ ችሎታዎች ጋር",
         price: "ከ $2,499 ጀምሮ",
         originalPrice: "$3,299",
         cta: "ስማርት ቦርዶችን ይግዙ"
@@ -281,8 +281,8 @@ export const translations = {
       // Power Solutions Section
       powerSolutions: {
         title: "ለቴክኖሎጂዎ ያልተወዳዳሪ የኃይል ጥበቃ",
-        subtitle: "ከተወዳዳሪ ዋጋ እና የድህረ-ሽያጭ ድጋፍ ጋር የተረጋገጠ ስራ ጊዜ",
-        description: "ወሳኝ ሲስተሞችዎን በእኛ የኢንተርፕራይዝ-ደረጃ UPS መፍትሄዎች እና የኃይል አስተዳደር ሲስተሞች ይጠብቁ።",
+        subtitle: "ከተወዳዳሪ ዋጋ እና የድህረ ሽያጭ ድጋፍ ጋር የተረጋገጠ ስራ ጊዜ",
+        description: "ወሳኝ ሲስተሞችዎን በእኛ የኢንተርፕራይዝ ደረጃ UPS መፍትሄዎች እና የኃይል አስተዳደር ሲስተሞች ይጠብቁ",
         cta: "የኃይል አስፈላጊዎችን ይመልከቱ",
         productName: "የኢንተርፕራይዝ UPS ሲስተሞች"
       },
@@ -296,7 +296,7 @@ export const translations = {
       
       // CEO Quote
       ceoQuote: {
-        quote: "በኦስካዝ ኢምፖርት፣ እኛ ቴክኖሎጂ ብቻ አንሸጥም - ንግዶች ስራዎቻቸውን እንዲለውጡ እና ያልተለመደ ቅልጥፍናን እንዲያገኙ እናብቃቸዋለን።",
+        quote: "በኦስካዝ ኢምፖርት፣ እኛ ቴክኖሎጂ ብቻ አንሸጥም   ንግዶች ስራዎቻቸውን እንዲለውጡ እና ያልተለመደ ቅልጥፍናን እንዲያገኙ እናብቃቸዋለን",
         author: "ካሌብ ኦካፎር",
         title: "ዋና ሥራ አስፈፃሚ እና መስራች፣ ኦስካዝ ኢምፖርት"
       },
@@ -305,7 +305,7 @@ export const translations = {
       qualityCommitment: {
         title: "ያልተደራደረ የጥራት ደረጃዎች",
         subtitle: "ጥብቅ የሙከራ እና የምስክር ወረቀት ሂደት",
-        description: "እያንዳንዱ ምርት ለንግድ ስራዎ አስተማማኝ አፈጻጸም እና የረጅም ጊዜ ዘላቂነትን ለማረጋገጥ ሰፊ የጥራት ሙከራ እና ምስክር ወረቀት ያልፋል።",
+        description: "እያንዳንዱ ምርት ለንግድ ስራዎ አስተማማኝ አፈጻጸም እና የረጅም ጊዜ ዘላቂነትን ለማረጋገጥ ሰፊ የጥራት ሙከራ እና ምስክር ወረቀት ያልፋል",
         cta: "የእኛ የጥራት ቃል ኪዳን"
       },
       
@@ -330,7 +330,7 @@ export const translations = {
       // Footer CTA
       footerCta: {
         title: "ንግድዎን ለመለወጥ ዝግጁ ነዎት?",
-        description: "ለቴክኖሎጂ ፍላጎታቸው ኦስካዝ ኢምፖርትን የሚያምኑ በሺዎች የሚቆጠሩ ረክተኛ ደንበኞች ይቀላቀሉ። ተወዳዳሪ ዋጋ እና ሰፊ ድጋፍ ያግኙ።",
+        description: "ለቴክኖሎጂ ፍላጎታቸው ኦስካዝ ኢምፖርትን የሚያምኑ በሺዎች የሚቆጠሩ ረክተኛ ደንበኞች ይቀላቀሉ ተወዳዳሪ ዋጋ እና ሰፊ ድጋፍ ያግኙ",
         cta: "ዛሬ ይጀምሩ"
       }
     },
@@ -353,49 +353,49 @@ export const translations = {
         "የኢንተራክቲቭ ትምህርት እና ትብብር መሳሪያዎች",
         "የዲጂታል ማሳያ እና ምልክት መፍትሄዎች",
         "የኃይል እና የመሠረተ ልማት አስፈላጊዎች", 
-        "የራስ-አገልግሎት እና የአውቶሜሽን ኪዮስኮች",
+        "የራስ አገልግሎት እና የአውቶሜሽን ኪዮስኮች",
         "ተጨማሪዎች እና ክፍሎች"
       ],
       
       // Products
       products: {
         smartBoard: {
-          name: "ዳሁዋ 86-ኢንች ስማርት ኢንተራክቲቭ ቦርድ",
+          name: "ዳሁዋ 86 ኢንች ስማርት ኢንተራክቲቭ ቦርድ",
           category: "ኢንተራክቲቭ መሳሪያዎች",
           price: "$2,499",
           originalPrice: "$2,999",
-          description: "ከ4K ጥራት፣ ብዙ-ንክኪ ችሎታዎች እና የተገነባ የትብብር ሶፍትዌር ጋር ሙያዊ ኢንተራክቲቭ ማሳያ። ለዘመናዊ ክፍሎች እና ስብሰባ ክፍሎች ፍጹም።"
+          description: "ከ4K ጥራት፣ ብዙ ንክኪ ችሎታዎች እና የተገነባ የትብብር ሶፍትዌር ጋር ሙያዊ ኢንተራክቲቭ ማሳያ ለዘመናዊ ክፍሎች እና ስብሰባ ክፍሎች ፍጹም"
         },
         digitalSignage: {
           name: "ሙያዊ ዲጂታል ምልክት ማሳያ 55\"",
           category: "ዪጂታል ማሳያዎች",
           price: "$899",
           originalPrice: "$1,199",
-          description: "ከ24/7 የስራ ችሎታ፣ የርቀት አስተዳደር እና ለተጽዕኖ ፈጣሪ ዲጂታል ምልክቶች አስደናቂ የእይታ ግልጽነት ጋር ከፍተኛ-ብሩህነት የንግድ ማሳያ።"
+          description: "ከ24/7 የስራ ችሎታ፣ የርቀት አስተዳደር እና ለተጽዕኖ ፈጣሪ ዲጂታል ምልክቶች አስደናቂ የእይታ ግልጽነት ጋር ከፍተኛ ብሩህነት የንግድ ማሳያ"
         },
         upsSystem: {
           name: "የኢንተርፕራይዝ UPS መጠባበቂያ ሲስተም 3000VA",
           category: "የኃይል መፍትሄዎች",
           price: "$1,299",
-          description: "ለወሳኝ የንግድ ስራዎች የላቀ የባትሪ አስተዳደር፣ የመውጫ ጥበቃ እና የርቀት ክትትል ጋር አስተማማኝ ያልተቋረጠ የኃይል አቅርቦት።"
+          description: "ለወሳኝ የንግድ ስራዎች የላቀ የባትሪ አስተዳደር፣ የመውጫ ጥበቃ እና የርቀት ክትትል ጋር አስተማማኝ ያልተቋረጠ የኃይል አቅርቦት"
         },
         kiosk: {
-          name: "የራስ-አገልግሎት መረጃ ኪዮስክ",
+          name: "የራስ አገልግሎት መረጃ ኪዮስክ",
           category: "ኪዮስክ ሲስተሞች", 
           price: "$1,899",
-          description: "ለተሻሻለ የደንበኛ አገልግሎት ዘላቂ ግንባታ፣ ሊበጅ የሚችል በይነገጽ እና የተዋሃደ የክፍያ ሂደት ጋር ኢንተራክቲቭ ንክኪ ማሳያ ኪዮስክ።"
+          description: "ለተሻሻለ የደንበኛ አገልግሎት ዘላቂ ግንባታ፣ ሊበጅ የሚችል በይነገጽ እና የተዋሃደ የክፍያ ሂደት ጋር ኢንተራክቲቭ ንክኪ ማሳያ ኪዮስክ"
         },
         powerDistribution: {
           name: "የኢንዱስትሪ የኃይል ማከፋፈያ ክፍል",
           category: "የኃይል መፍትሄዎች",
           price: "$599",
-          description: "ለዳታ ማዕከላት እና ኢንዱስትሪያል አፕሊኬሽኖች ብዙ መውጫዎች፣ የመውጫ ጥበቃ እና የክትትል ችሎታዎች ጋር ሙያዊ-ደረጃ የኃይል ማከፋፈያ።"
+          description: "ለዳታ ማዕከላት እና ኢንዱስትሪያል አፕሊኬሽኖች ብዙ መውጫዎች፣ የመውጫ ጥበቃ እና የክትትል ችሎታዎች ጋር ሙያዊ ደረጃ የኃይል ማከፋፈያ"
         },
         presentationSystem: {
           name: "ሽቦ አልባ አቀራረብ ሲስተም",
           category: "ኢንተራክቲቭ መሳሪያዎች",
           price: "$399", 
-          description: "ለዘመናዊ ስብሰባ ክፍሎች እና ክፍሎች ብዙ መሳሪያዎችን፣ 4K ጥራትን እና ቀላል ማዋቀርን የሚደግፍ ቀላል ሽቦ አልባ ማሳያ መጋራት መፍትሄ።"
+          description: "ለዘመናዊ ስብሰባ ክፍሎች እና ክፍሎች ብዙ መሳሪያዎችን፣ 4K ጥራትን እና ቀላል ማዋቀርን የሚደግፍ ቀላል ሽቦ አልባ ማሳያ መጋራት መፍትሄ"
         }
       },
       
@@ -403,7 +403,7 @@ export const translations = {
       qualityAssurance: {
         title: "ያልተደራደረ የጥራት ደረጃዎች",
         subtitle: "የጊዜ ሙከራን የሚቋቋም ቴክኖሎጂ",
-        description: "እያንዳንዱ ምርት ለእርስዎ የአእምሮ ሰላም አስተማማኝ አፈጻጸም፣ ዘላቂነት እና ከአለም አቀፍ ደረጃዎች ጋር መጣጣምን ለማረጋገጥ ጥብቅ የጥራት ሙከራ እና የምስክር ወረቀት ሂደቶችን ያልፋል።"
+        description: "እያንዳንዱ ምርት ለእርስዎ የአእምሮ ሰላም አስተማማኝ አፈጻጸም፣ ዘላቂነት እና ከአለም አቀፍ ደረጃዎች ጋር መጣጣምን ለማረጋገጥ ጥብቅ የጥራት ሙከራ እና የምስክር ወረቀት ሂደቶችን ያልፋል"
       },
       
       // Client Sectors
