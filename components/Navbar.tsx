@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Search, ShoppingBag, Bell, User } from "lucide-react";
 import { ThemeDropdown } from "./theme-dropdown";
+import { LanguageToggle } from "./language-toggle";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -123,15 +124,15 @@ const Navbar = () => {
         <div className="hidden dark:block h-full bg-gradient-to-r from-gray-900/95 via-gray-800/85 to-gray-900/95"></div>
       </div>
       
-      <nav className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md fixed top-12 left-4 right-0 z-50 shadow-xl dark:shadow-2xl dark:shadow-gray-900/50 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 dark:ring-1 dark:ring-gray-600/20">
+      <nav className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md fixed top-12 left-4 right-0 z-50 shadow-xl dark:shadow-2xl dark:shadow-gray-900/50 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 dark:ring-1 dark:ring-gray-600/20 transition-all duration-500 ease-out hover:shadow-2xl dark:hover:shadow-gray-900/70 hover:scale-[1.002] hover:border-gray-300/70 dark:hover:border-gray-600/70">
       <div className="max-w-7xl mx-auto pl-6 pr-0">
         <div className="flex items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 mr-8">
-            <Link href="/" className="flex items-center">
-              <div className="text-3xl font-semibold text-gray-900 dark:text-white tracking-wide flex items-center">
-                <span className="text-5xl font-black mr-1 leading-none">ኦ</span>
-                <span className="font-bold tracking-wider">SKAZ</span>
+            <Link href="/" className="flex items-center group">
+              <div className="text-3xl font-semibold text-gray-900 dark:text-white tracking-wide flex items-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                <span className="text-5xl font-black mr-1 leading-none transform transition-all duration-700 ease-out group-hover:rotate-12 group-hover:scale-125">ኦ</span>
+                <span className="font-bold tracking-wider transform transition-all duration-500 ease-out group-hover:tracking-widest">SKAZ</span>
               </div>
             </Link>
           </div>
@@ -140,9 +141,10 @@ const Navbar = () => {
           <div className="hidden lg:flex items-center flex-1 justify-evenly px-4">
             <Link
               href="/best-sellers"
-              className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-300 tracking-wide hover:scale-105"
+              className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
             >
-              BEST SELLERS
+              <span className="relative z-10 transition-all duration-300">BEST SELLERS</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
             </Link>
             
             {/* Services Dropdown */}
@@ -153,9 +155,10 @@ const Navbar = () => {
             >
               <Link
                 href="/services"
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-300 tracking-wide hover:scale-105"
+                className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
               >
-                SERVICES
+                <span className="relative z-10 transition-all duration-300">SERVICES</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-blue-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
               </Link>
               
               {hoveredItem === 'services' && (
@@ -167,23 +170,24 @@ const Navbar = () => {
                       onMouseLeave={handleMouseLeave}
                     />
                     <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[1000px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-200 ease-in-out"
+                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[1000px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
                       onMouseEnter={() => handleMouseEnter('services')}
                       onMouseLeave={handleMouseLeave}
                     >
                   <div className="grid grid-cols-4 gap-6">
                     {dropdownContent.services.items.map((item, index) => (
-                      <div key={index} className="group cursor-pointer">
-                        <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-colors">
-                          <div className="w-20 h-20 bg-blue-500 rounded-lg flex items-center justify-center">
-                            <span className="text-white text-sm font-bold">{item.title.split(' ')[0]}</span>
+                      <div key={index} className="group cursor-pointer transform transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-2">
+                        <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:scale-105 overflow-hidden relative">
+                          <div className="w-20 h-20 bg-blue-500 rounded-lg flex items-center justify-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:bg-blue-600">
+                            <span className="text-white text-sm font-bold transition-all duration-300 group-hover:scale-110">{item.title.split(' ')[0]}</span>
                           </div>
+                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         </div>
-                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{item.title}</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{item.description}</p>
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all duration-500 ease-out group-hover:scale-105">{item.title}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-all duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-300">{item.description}</p>
                         <div className="space-y-1">
                           {item.categories.map((category, idx) => (
-                            <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">{category}</div>
+                            <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 cursor-pointer hover:scale-105 hover:translate-x-1">{category}</div>
                           ))}
                         </div>
                       </div>
@@ -202,9 +206,10 @@ const Navbar = () => {
             >
               <Link
                 href="/solutions"
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-300 tracking-wide hover:scale-105"
+                className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
               >
-                SOLUTIONS
+                <span className="relative z-10 transition-all duration-300">SOLUTIONS</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
               </Link>
               
               {hoveredItem === 'solutions' && (
@@ -216,23 +221,24 @@ const Navbar = () => {
                       onMouseLeave={handleMouseLeave}
                     />
                     <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-200 ease-in-out"
+                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
                       onMouseEnter={() => handleMouseEnter('solutions')}
                       onMouseLeave={handleMouseLeave}
                     >
                    <div className="grid grid-cols-3 gap-6">
                      {dropdownContent.solutions.items.map((item, index) => (
-                       <div key={index} className="group cursor-pointer">
-                          <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-colors">
-                           <div className="w-20 h-20 bg-green-500 rounded-lg flex items-center justify-center">
-                             <span className="text-white text-sm font-bold">{item.title.split(' ')[0]}</span>
+                       <div key={index} className="group cursor-pointer transform transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-2">
+                          <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:scale-105 overflow-hidden relative">
+                           <div className="w-20 h-20 bg-green-500 rounded-lg flex items-center justify-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:bg-green-600">
+                             <span className="text-white text-sm font-bold transition-all duration-300 group-hover:scale-110">{item.title.split(' ')[0]}</span>
                            </div>
+                           <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                          </div>
-                         <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">{item.title}</h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{item.description}</p>
+                         <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-all duration-500 ease-out group-hover:scale-105">{item.title}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-all duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-300">{item.description}</p>
                          <div className="space-y-1">
                            {item.categories.map((category, idx) => (
-                             <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer">{category}</div>
+                             <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-all duration-300 cursor-pointer hover:scale-105 hover:translate-x-1">{category}</div>
                            ))}
                          </div>
                        </div>
@@ -240,164 +246,176 @@ const Navbar = () => {
                    </div>
                  </div>
                    </>
-               )}
-            </div>
+                )}
+             </div>
 
-            {/* Industries Dropdown */}
-            <div 
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('industries')}
-              onMouseLeave={handleMouseLeave}
-            >
-              <Link
-                href="/industries"
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-300 tracking-wide hover:scale-105"
-              >
-                INDUSTRIES
-              </Link>
-              
-              {hoveredItem === 'industries' && (
-                  <>
-                    {/* Invisible bridge area */}
-                    <div 
-                      className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[800px] h-12 z-40"
-                      onMouseEnter={() => handleMouseEnter('industries')}
-                      onMouseLeave={handleMouseLeave}
-                    />
-                    <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-200 ease-in-out"
-                      onMouseEnter={() => handleMouseEnter('industries')}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                   <div className="grid grid-cols-3 gap-6">
-                     {dropdownContent.industries.items.map((item, index) => (
-                       <div key={index} className="group cursor-pointer">
-                          <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-colors">
-                           <div className="w-20 h-20 bg-purple-500 rounded-lg flex items-center justify-center">
-                             <span className="text-white text-sm font-bold">{item.title.split(' ')[0]}</span>
-                           </div>
-                         </div>
-                         <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{item.title}</h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{item.description}</p>
-                         <div className="space-y-1">
-                           {item.categories.map((category, idx) => (
-                             <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors cursor-pointer">{category}</div>
-                           ))}
-                         </div>
-                       </div>
-                     ))}
-                   </div>
-                 </div>
-                   </>
-               )}
-            </div>
+             {/* Industries Dropdown */}
+             <div 
+               className="relative"
+               onMouseEnter={() => handleMouseEnter('industries')}
+               onMouseLeave={handleMouseLeave}
+             >
+               <Link
+                 href="/industries"
+                 className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
+               >
+                 <span className="relative z-10 transition-all duration-300">INDUSTRIES</span>
+                 <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
+               </Link>
+               
+               {hoveredItem === 'industries' && (
+                   <>
+                     {/* Invisible bridge area */}
+                     <div 
+                       className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[800px] h-12 z-40"
+                       onMouseEnter={() => handleMouseEnter('industries')}
+                       onMouseLeave={handleMouseLeave}
+                     />
+                     <div 
+                       className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
+                       onMouseEnter={() => handleMouseEnter('industries')}
+                       onMouseLeave={handleMouseLeave}
+                     >
+                    <div className="grid grid-cols-3 gap-6">
+                      {dropdownContent.industries.items.map((item, index) => (
+                        <div key={index} className="group cursor-pointer transform transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-2">
+                           <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:scale-105 overflow-hidden relative">
+                            <div className="w-20 h-20 bg-purple-500 rounded-lg flex items-center justify-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:bg-purple-600">
+                              <span className="text-white text-sm font-bold transition-all duration-300 group-hover:scale-110">{item.title.split(' ')[0]}</span>
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                          </div>
+                          <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-all duration-500 ease-out group-hover:scale-105">{item.title}</h3>
+                           <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-all duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-300">{item.description}</p>
+                          <div className="space-y-1">
+                            {item.categories.map((category, idx) => (
+                              <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-300 cursor-pointer hover:scale-105 hover:translate-x-1">{category}</div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                    </>
+                )}
+             </div>
 
-            <Link
-              href="/tracking"
-              className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-300 tracking-wide hover:scale-105"
-            >
-              TRACKING & REPORTS
-            </Link>
-            
-            <Link
-              href="/more"
-              className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-300 tracking-wide hover:scale-105"
-            >
-              MORE
-            </Link>
-            
-            <Link
-              href="/sale"
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-semibold hover:font-bold transition-all duration-300 tracking-wide hover:scale-110 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30"
-            >
-              SALE
-            </Link>
-          </div>
+             <Link
+               href="/tracking"
+               className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
+             >
+               <span className="relative z-10 transition-all duration-300">TRACKING & REPORTS</span>
+               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
+             </Link>
+             
+             <Link
+               href="/more"
+               className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
+             >
+               <span className="relative z-10 transition-all duration-300">MORE</span>
+               <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
+             </Link>
+             
+             <Link
+               href="/sale"
+               className="relative text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-semibold hover:font-bold transition-all duration-500 ease-out tracking-wide hover:scale-125 hover:tracking-wider bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 group overflow-hidden hover:shadow-lg hover:-translate-y-0.5"
+             >
+               <span className="relative z-10 transition-all duration-300">SALE</span>
+               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
+             </Link>
+           </div>
 
-          {/* Right side icons */}
-          <div className="flex items-center space-x-4 flex-shrink-0 ml-auto">
-            <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-              <Bell className="h-5 w-5" />
-            </button>
-            
-            <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-              <User className="h-5 w-5" />
-            </button>
-            
-            <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-              <Search className="h-5 w-5" />
-            </button>
-            
-            <Link href="/inquiry" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors relative">
-              <ShoppingBag className="h-5 w-5" />
-            </Link>
+           {/* Right side icons */}
+           <div className="flex items-center space-x-4 flex-shrink-0 ml-auto">
+             <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg">
+               <Bell className="h-5 w-5" />
+             </button>
+             
+             <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg">
+               <User className="h-5 w-5" />
+             </button>
+             
+             <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg">
+               <Search className="h-5 w-5" />
+             </button>
+             
+             <Link href="/inquiry" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg relative">
+               <ShoppingBag className="h-5 w-5" />
+             </Link>
 
-            {/* Theme Controls - Hidden on mobile */}
-            <div className="hidden md:flex items-center space-x-2">
-              <ThemeDropdown />
-            </div>
+             {/* Theme & Language Controls - Hidden on mobile */}
+             <div className="hidden md:flex items-center space-x-2">
+               <LanguageToggle />
+               <ThemeDropdown />
+             </div>
 
-            {/* Mobile menu button */}
-            <button
-              onClick={toggleMenu}
-              className="lg:hidden text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-      </div>
+             {/* Mobile menu button */}
+             <button
+               onClick={toggleMenu}
+               className="lg:hidden text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-500 ease-out hover:scale-125 hover:rotate-180 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg"
+               aria-label="Toggle menu"
+             >
+               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+             </button>
+           </div>
+         </div>
+       </div>
 
-      {/* Mobile menu */}
-         {isMenuOpen && (
-           <div className="lg:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 rounded-b-2xl mx-4 shadow-xl dark:shadow-2xl dark:shadow-gray-900/50 dark:ring-1 dark:ring-gray-600/20">
-             <div className="px-4 pt-4 pb-6 space-y-4">
-            <Link
-              href="/best-sellers"
-              className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Best Sellers
-            </Link>
-            <Link
-              href="/services"
-              className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Services
-            </Link>
-            <Link
-              href="/solutions"
-              className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Solutions
-            </Link>
-            <Link
-              href="/industries"
-              className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Industries
-            </Link>
-            <Link
-              href="/tracking"
-              className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Tracking & Reports
-            </Link>
-            
-            {/* Theme controls in mobile menu */}
-            <div className="flex items-center space-x-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Theme:</span>
-              <ThemeDropdown />
-            </div>
-          </div>
-        </div>
-      )}
-    </nav>
+       {/* Mobile menu */}
+          {isMenuOpen && (
+            <div className="lg:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 rounded-b-2xl mx-4 shadow-xl dark:shadow-2xl dark:shadow-gray-900/50 dark:ring-1 dark:ring-gray-600/20 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0">
+              <div className="px-4 pt-4 pb-6 space-y-4">
+             <Link
+               href="/best-sellers"
+               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
+               onClick={() => setIsMenuOpen(false)}
+             >
+               Best Sellers
+             </Link>
+             <Link
+               href="/services"
+               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
+               onClick={() => setIsMenuOpen(false)}
+             >
+               Services
+             </Link>
+             <Link
+               href="/solutions"
+               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
+               onClick={() => setIsMenuOpen(false)}
+             >
+               Solutions
+             </Link>
+             <Link
+               href="/industries"
+               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
+               onClick={() => setIsMenuOpen(false)}
+             >
+               Industries
+             </Link>
+             <Link
+               href="/tracking"
+               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
+               onClick={() => setIsMenuOpen(false)}
+             >
+               Tracking & Reports
+             </Link>
+             
+             {/* Theme & Language controls in mobile menu */}
+             <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
+               <div className="flex items-center space-x-2">
+                 <span className="text-sm text-gray-600 dark:text-gray-400">Language:</span>
+                 <LanguageToggle />
+               </div>
+               <div className="flex items-center space-x-2">
+                 <span className="text-sm text-gray-600 dark:text-gray-400">Theme:</span>
+                 <ThemeDropdown />
+               </div>
+             </div>
+           </div>
+         </div>
+       )}
+     </nav>
     </>
   );
 };

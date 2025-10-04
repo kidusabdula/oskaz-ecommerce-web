@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { LanguageProvider } from "@/components/language-provider";
+import ClientOnly from "@/components/client-only";
 import Navbar from "@/components/Navbar";
 import FlashlightEffect from "@/components/FlashlightEffect";
 
@@ -33,11 +35,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <FlashlightEffect />
-          <Navbar />
-          <div className="pt-12">
-            {children}
-          </div>
+          <ClientOnly>
+            <LanguageProvider defaultLanguage="en" storageKey="oskaz-language">
+              <FlashlightEffect />
+              <Navbar />
+              <div className="pt-12">
+                {children}
+              </div>
+            </LanguageProvider>
+          </ClientOnly>
         </ThemeProvider>
       </body>
     </html>

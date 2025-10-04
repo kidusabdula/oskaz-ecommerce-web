@@ -3,118 +3,116 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useLanguage } from "@/components/language-provider";
+import { useTranslations } from "@/lib/translations";
 
 export default function HomePage() {
+  const { language } = useLanguage();
+  const t = useTranslations(language);
+  
   const categories = [
-    "All",
-    "iPhone Cases", 
-    "Apple Watch Bands",
-    "iPhone Folios",
-    "Wallets",
-    "Power",
-    "Accessories"
+    "All Products",
+    ...t.homePage.categories
   ];
 
   const products = [
     {
       id: 1,
-      name: "iPhone Air Case",
-      category: "iPhone Cases",
-      price: "$49.95",
-      originalPrice: "$59.95",
-      image: "/placeholder-iphone-case.jpg",
+      name: t.homePage.products.smartBoard.name,
+      category: t.homePage.products.smartBoard.category,
+      price: t.homePage.products.smartBoard.price,
+      originalPrice: t.homePage.products.smartBoard.originalPrice,
+      image: "/api/placeholder/300/300",
       badge: "NEW",
-      description: "Traditional Case - Begs to Be Seen"
+      description: t.homePage.products.smartBoard.description
     },
     {
       id: 2,
-      name: "Titanium Band",
-      category: "Apple Watch Bands", 
-      price: "$199.95",
-      image: "/placeholder-watch-band.jpg",
+      name: t.homePage.products.digitalSignage.name,
+      category: t.homePage.products.digitalSignage.category,
+      price: t.homePage.products.digitalSignage.price,
+      originalPrice: t.homePage.products.digitalSignage.originalPrice,
+      image: "/api/placeholder/300/300",
       badge: "BEST SELLER",
-      description: "Elevate Your New Ultra 3"
+      description: t.homePage.products.digitalSignage.description
     },
     {
       id: 3,
-      name: "Leather Wallet",
-      category: "Wallets",
-      price: "$79.95",
-      image: "/placeholder-wallet.jpg",
-      description: "Horween® Leather - Gets Better with Age"
+      name: t.homePage.products.upsSystem.name,
+      category: t.homePage.products.upsSystem.category,
+      price: t.homePage.products.upsSystem.price,
+      image: "/api/placeholder/300/300",
+      description: t.homePage.products.upsSystem.description
     },
     {
       id: 4,
-      name: "Tracking Card",
-      category: "Accessories",
-      price: "$29.95",
-      image: "/placeholder-tracking-card.jpg",
+      name: t.homePage.products.kiosk.name,
+      category: t.homePage.products.kiosk.category,
+      price: t.homePage.products.kiosk.price,
+      image: "/api/placeholder/300/300",
       badge: "POPULAR",
-      description: "Lost Wallet? Never Again."
+      description: t.homePage.products.kiosk.description
     },
     {
       id: 5,
-      name: "Power Adapter",
-      category: "Power",
-      price: "$39.95",
-      image: "/placeholder-adapter.jpg",
-      description: "Power Your Essentials"
+      name: t.homePage.products.powerDistribution.name,
+      category: t.homePage.products.powerDistribution.category,
+      price: t.homePage.products.powerDistribution.price,
+      image: "/api/placeholder/300/300",
+      description: t.homePage.products.powerDistribution.description
     },
     {
       id: 6,
-      name: "iPhone Folio",
-      category: "iPhone Folios",
-      price: "$89.95",
-      image: "/placeholder-folio.jpg",
-      description: "Premium Leather Protection"
+      name: t.homePage.products.presentationSystem.name,
+      category: t.homePage.products.presentationSystem.category,
+      price: t.homePage.products.presentationSystem.price,
+      image: "/api/placeholder/300/300",
+      description: t.homePage.products.presentationSystem.description
     }
   ];
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 py-16 px-4">
+      <section className="py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              Best Sellers
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              "We create products to keep the modern nomad charged, protected, and organized on the go. 
-              Purposeful design and the requisite materials are at the core of everything we do."
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-4 italic">
-              - Noah Dentzel, Co-founder & CEO
-            </p>
-          </div>
-
-          {/* Featured Product Showcase */}
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="inline-block bg-black text-white px-4 py-2 rounded-full text-sm font-medium">
-                ALL NEW
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white">
+                  {t.homePage.hero.title}
+                </h1>
+                <p className="text-xl text-gray-600 dark:text-gray-400">
+                  {t.homePage.hero.subtitle}
+                </p>
               </div>
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white">
-                iPhone Air
-              </h2>
-              <h3 className="text-2xl text-gray-700 dark:text-gray-300">
-                Begs to Be Seen
-              </h3>
-              <p className="text-lg text-gray-600 dark:text-gray-400">
-                Traditional Case
-              </p>
-              <Link 
-                href="/products/iphone-air"
-                className="inline-block bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
-              >
-                Shop Now
-              </Link>
+              
+              <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t.homePage.hero.featuredProduct}</h2>
+                    <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-3 py-1 rounded-full text-sm font-medium">
+                      FEATURED
+                    </span>
+                  </div>
+                  <p className="text-lg text-gray-600 dark:text-gray-400">
+                    {t.homePage.hero.productDescription}
+                  </p>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-2xl font-bold text-gray-900 dark:text-white">{t.homePage.hero.price}</span>
+                    <span className="text-sm text-green-600 dark:text-green-400 font-medium">{t.homePage.hero.tag}</span>
+                  </div>
+                  <button className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-3 rounded-lg font-medium hover:from-green-700 hover:to-green-800 transition-all duration-300">
+                    {t.homePage.hero.cta}
+                  </button>
+                </div>
+              </div>
             </div>
+            
             <div className="relative">
-              <div className="bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 rounded-2xl aspect-square flex items-center justify-center">
-                <div className="text-gray-500 dark:text-gray-400 text-center">
-                  <div className="w-32 h-32 bg-gray-300 dark:bg-gray-600 rounded-lg mx-auto mb-4"></div>
-                  <p>iPhone Air Case</p>
+              <div className="bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 rounded-3xl aspect-square flex items-center justify-center">
+                <div className="w-64 h-64 bg-green-200 dark:bg-green-700 rounded-2xl flex items-center justify-center">
+                  <div className="text-6xl">📊</div>
                 </div>
               </div>
             </div>
@@ -185,28 +183,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Material Highlight Section */}
+      {/* Quality Assurance Section */}
       <section className="py-16 px-4 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h2 className="text-4xl font-bold text-gray-900 dark:text-white">
-                Horween® Leather
+                {t.homePage.qualityAssurance.title}
               </h2>
               <h3 className="text-2xl text-gray-700 dark:text-gray-300">
-                Leather That Gets Better with Age
+                {t.homePage.qualityAssurance.subtitle}
               </h3>
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                With everyday use, your leather will absorb marks and oils, creating a rich finish 
-                that's 100% unique to you. Whether it's Horween or Nomad leather, each piece tells 
-                a story shaped by where you've been and what you've done.
+                {t.homePage.qualityAssurance.description}
               </p>
             </div>
             <div className="relative">
-              <div className="bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900 dark:to-amber-800 rounded-2xl aspect-square flex items-center justify-center">
-                <div className="text-amber-700 dark:text-amber-300 text-center">
-                  <div className="w-32 h-32 bg-amber-200 dark:bg-amber-700 rounded-lg mx-auto mb-4"></div>
-                  <p>Premium Leather</p>
+              <div className="bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 rounded-2xl aspect-square flex items-center justify-center">
+                <div className="text-blue-700 dark:text-blue-300 text-center">
+                  <div className="w-32 h-32 bg-blue-200 dark:bg-blue-700 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                    <div className="text-4xl">✓</div>
+                  </div>
+                  <p>Certified Excellence</p>
                 </div>
               </div>
             </div>
@@ -214,18 +212,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Community Section */}
+      {/* Client Sectors Section */}
       <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-12">
-            From the Nomad Community
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12 transform transition-all duration-500 hover:scale-105">
+            {t.homePage.clientSectors.title}
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {['@stanitech', '@trasaputra', '@ulresch', '@macmike1000'].map((handle) => (
-              <div key={handle} className="bg-gray-100 dark:bg-gray-800 rounded-lg aspect-square flex items-center justify-center">
-                <div className="text-center text-gray-500 dark:text-gray-400">
-                  <div className="w-16 h-16 bg-gray-300 dark:bg-gray-600 rounded-lg mx-auto mb-2"></div>
-                  <p className="text-sm">{handle}</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { name: t.homePage.clientSectors.education, icon: '🎓' },
+              { name: t.homePage.clientSectors.healthcare, icon: '🏥' },
+              { name: t.homePage.clientSectors.corporate, icon: '🏢' },
+              { name: t.homePage.clientSectors.government, icon: '🏛️' }
+            ].map((sector, index) => (
+              <div key={sector.name} className="bg-gray-100 dark:bg-gray-800 rounded-lg aspect-square flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                <div className="text-center text-gray-700 dark:text-gray-300">
+                  <div className="text-4xl mb-2">{sector.icon}</div>
+                  <p className="text-sm font-medium">{sector.name}</p>
                 </div>
               </div>
             ))}
