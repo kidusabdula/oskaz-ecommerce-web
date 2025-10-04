@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
+import FlashlightEffect from "@/components/FlashlightEffect";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,8 +33,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <FlashlightEffect />
           <Navbar />
-          <div className="pt-20">
+          <div className="pt-12">
             {children}
           </div>
         </ThemeProvider>

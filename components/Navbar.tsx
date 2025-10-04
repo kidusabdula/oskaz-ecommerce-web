@@ -117,7 +117,10 @@ const Navbar = () => {
       
       {/* Gradient overlay at the top */}
       <div className="fixed top-0 left-0 right-0 h-12 z-40 pointer-events-none">
-        <div className="h-full bg-gradient-to-b from-gray-900/80 via-gray-600/50 to-gray-200/20"></div>
+        {/* Light mode gradient */}
+        <div className="h-full bg-gradient-to-b from-gray-900/80 via-gray-600/50 to-gray-200/20 dark:hidden"></div>
+        {/* Dark mode gradient - Modern & Aesthetic */}
+        <div className="hidden dark:block h-full bg-gradient-to-r from-gray-900/95 via-gray-800/85 to-gray-900/95"></div>
       </div>
       
       <nav className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md fixed top-12 left-4 right-0 z-50 shadow-xl dark:shadow-2xl dark:shadow-gray-900/50 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 dark:ring-1 dark:ring-gray-600/20">
