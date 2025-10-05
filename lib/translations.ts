@@ -14,10 +14,12 @@ export const translations = {
     mainPage: {
       // Hero Section
       hero: {
-        title: "Oskaz Import",
+        title: "Oskaz Import ®",
         subtitle: "Empower Your Organization with Cutting Edge Imports and Reliable Solutions",
         description: "Transform your operations with our comprehensive range of interactive displays, power solutions, and automation systems.",
         cta: "Discover Our Innovations",
+        primaryCta: "Explore Products",
+        secondaryCta: "Learn More",
         competitivePricing: "Competitive Pricing",
         afterSalesSupport: "After Sales Support",
         qualityAssurance: "Quality Assurance"
@@ -62,11 +64,44 @@ export const translations = {
       // Top Picks Section
       topPicks: {
         title: "Top Picks for Smart Boards",
+        subtitle: "Premium Interactive Solutions",
         productName: "Dahua 86 inch Smart Board",
         description: "Interactive 4K display with multi touch capabilities, perfect for classrooms and meeting rooms.",
         price: "From $2,499",
         originalPrice: "$3,299",
         cta: "Shop Smart Boards"
+      },
+      
+      // Why Choose Us Section
+      whyChooseUs: {
+        title: "Why Choose Oskaz Import",
+        subtitle: "Your trusted partner for technology solutions",
+        features: [
+          {
+            title: "Quality Assurance",
+            description: "Every product undergoes rigorous testing and certification to ensure reliable performance and durability."
+          },
+          {
+            title: "Competitive Pricing",
+            description: "Get the best value for your investment with our competitive pricing and flexible payment options."
+          },
+          {
+            title: "Expert Support",
+            description: "Our technical experts provide comprehensive support from installation to maintenance and beyond."
+          },
+          {
+            title: "Fast Delivery",
+            description: "Quick and reliable delivery across Ethiopia with real-time tracking and secure packaging."
+          },
+          {
+            title: "Warranty Coverage",
+            description: "Comprehensive warranty coverage and after-sales service to protect your technology investments."
+          },
+          {
+            title: "Custom Solutions",
+            description: "Tailored technology solutions designed to meet your specific business requirements and objectives."
+          }
+        ]
       },
       
       // Power Solutions Section
@@ -88,7 +123,7 @@ export const translations = {
       // CEO Quote
       ceoQuote: {
         quote: "At Oskaz Import, we're not just selling technology – we're empowering businesses to transform their operations and achieve unprecedented efficiency.",
-        author: "Mr. Osman D.",
+        author: "Mr. Hussen Yesuf",
         title: "CEO & Founder, Oskaz Import"
       },
       
@@ -227,6 +262,8 @@ export const translations = {
         subtitle: "ድርጅትዎን በዘመናዊ ማስመጣት እና አስተማማኝ መፍትሄዎች ያብቁ",
         description: "በእኛ ሰፊ የኢንተራክቲቭ ማሳያዎች፣ የኃይል መፍትሄዎች እና የአውቶሜሽን ሲስተሞች ስራዎን ይለውጡ",
         cta: "ፈጠራዎቻችንን ያግኙ",
+        primaryCta: "ምርቶችን ይመልከቱ",
+        secondaryCta: "የበለጠ ይወቁ",
         competitivePricing: "ተወዳዳሪ ዋጋ",
         afterSalesSupport: "የድህረ ሽያጭ ድጋፍ", 
         qualityAssurance: "የጥራት ዋስትና"
@@ -271,11 +308,44 @@ export const translations = {
       // Top Picks Section
       topPicks: {
         title: "ለስማርት ቦርዶች ምርጥ ምርጫዎች",
+        subtitle: "ፕሪሚየም ኢንተራክቲቭ መፍትሄዎች",
         productName: "ዳሁዋ 86 ኢንች ስማርት ቦርድ",
         description: "ለክፍሎች እና ለስብሰባ ክፍሎች ፍጹም የሆነ ኢንተራክቲቭ 4K ማሳያ ከብዙ ንክኪ ችሎታዎች ጋር",
         price: "ከ $2,499 ጀምሮ",
         originalPrice: "$3,299",
         cta: "ስማርት ቦርዶችን ይግዙ"
+      },
+      
+      // Why Choose Us Section
+      whyChooseUs: {
+        title: "ኦስካዝ ኢምፖርትን ለምን ይምረጡ",
+        subtitle: "ለቴክኖሎጂ መፍትሄዎች የሚታመን አጋርዎ",
+        features: [
+          {
+            title: "የጥራት ዋስትና",
+            description: "እያንዳንዱ ምርት አስተማማኝ አፈጻጸም እና ዘላቂነትን ለማረጋገጥ ጥብቅ ሙከራ እና ምስክር ወረቀት ያልፋል።"
+          },
+          {
+            title: "ተወዳዳሪ ዋጋ",
+            description: "በተወዳዳሪ ዋጋ እና ተለዋዋጭ የክፍያ አማራጮች ለኢንቨስትመንትዎ ምርጡን ዋጋ ያግኙ።"
+          },
+          {
+            title: "የባለሙያ ድጋፍ",
+            description: "የእኛ ቴክኒካል ባለሙያዎች ከመጫን እስከ ጥገና እና ከዚያ በላይ ሰፊ ድጋፍ ይሰጣሉ።"
+          },
+          {
+            title: "ፈጣን ማድረስ",
+            description: "በኢትዮጵያ ውስጥ ከእውነተኛ ጊዜ ክትትል እና ደህንነቱ የተጠበቀ ማሸጊያ ጋር ፈጣን እና አስተማማኝ ማድረስ።"
+          },
+          {
+            title: "የዋስትና ሽፋን",
+            description: "የቴክኖሎጂ ኢንቨስትመንቶችዎን ለመጠበቅ ሰፊ የዋስትና ሽፋን እና የድህረ ሽያጭ አገልግሎት።"
+          },
+          {
+            title: "ብጁ መፍትሄዎች",
+            description: "የእርስዎን ልዩ የንግድ መስፈርቶች እና ዓላማዎች ለማሟላት የተነደፉ ብጁ የቴክኖሎጂ መፍትሄዎች።"
+          }
+        ]
       },
       
       // Power Solutions Section

@@ -113,18 +113,18 @@ const Navbar = () => {
     <>
       {/* Background Overlay */}
       {hoveredItem && (
-        <div className="fixed inset-0 bg-gray-900/40 dark:bg-gray-900/60 z-30 transition-opacity duration-300" />
+        <div className="fixed inset-0 bg-gray-900/40 dark:bg-black/60 z-30 transition-opacity duration-300" />
       )}
       
       {/* Gradient overlay at the top */}
-      <div className="fixed top-0 left-0 right-0 h-12 z-40 pointer-events-none">
+      <div className="fixed top-0 left-0 right-0 h-28 z-40 pointer-events-none">
         {/* Light mode gradient */}
         <div className="h-full bg-gradient-to-b from-gray-900/80 via-gray-600/50 to-gray-200/20 dark:hidden"></div>
-        {/* Dark mode gradient - Modern & Aesthetic */}
-        <div className="hidden dark:block h-full bg-gradient-to-r from-gray-900/95 via-gray-800/85 to-gray-900/95"></div>
+        {/* Dark mode - subtle blur effect */}
+        <div className="hidden dark:block h-full backdrop-blur-sm bg-black/5"></div>
       </div>
       
-      <nav className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md fixed top-12 left-4 right-0 z-50 shadow-xl dark:shadow-2xl dark:shadow-gray-900/50 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 dark:ring-1 dark:ring-gray-600/20 transition-all duration-500 ease-out hover:shadow-2xl dark:hover:shadow-gray-900/70 hover:scale-[1.002] hover:border-gray-300/70 dark:hover:border-gray-600/70">
+      <nav className="bg-gradient-to-b from-white/98 via-white/95 to-white/90 dark:bg-gradient-to-b dark:from-gray-900/98 dark:via-gray-900/95 dark:to-gray-900/90 backdrop-blur-md fixed top-12 left-4 right-0 z-50 rounded-2xl border border-gray-200/60 dark:border-gray-600/40 transition-all duration-500 ease-out transform-gpu perspective-1000 shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.05)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.6),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(255,255,255,0.02)] hover:shadow-[0_16px_64px_rgba(0,0,0,0.15),0_4px_16px_rgba(0,0,0,0.1),inset_0_2px_0_rgba(255,255,255,0.25),inset_0_-2px_0_rgba(0,0,0,0.08)] dark:hover:shadow-[0_16px_64px_rgba(0,0,0,0.8),0_4px_16px_rgba(0,0,0,0.6),inset_0_2px_0_rgba(255,255,255,0.15),inset_0_-2px_0_rgba(255,255,255,0.05)] hover:scale-[1.005] hover:translate-y-[-3px] hover:border-gray-300/80 dark:hover:border-gray-500/60 active:translate-y-[1px] active:scale-[0.998] active:shadow-[0_4px_16px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_rgba(0,0,0,0.1)] dark:active:shadow-[0_4px_16px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(255,255,255,0.03)]">
       <div className="max-w-7xl mx-auto pl-6 pr-0">
         <div className="flex items-center h-16">
           {/* Logo */}
@@ -133,6 +133,7 @@ const Navbar = () => {
               <div className="text-3xl font-semibold text-gray-900 dark:text-white tracking-wide flex items-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                 <span className="text-5xl font-black mr-1 leading-none transform transition-all duration-700 ease-out group-hover:rotate-12 group-hover:scale-125">ኦ</span>
                 <span className="font-bold tracking-wider transform transition-all duration-500 ease-out group-hover:tracking-widest">SKAZ</span>
+                <span className="text-sm font-normal ml-1 transform transition-all duration-500 ease-out">®</span>
               </div>
             </Link>
           </div>
@@ -170,7 +171,7 @@ const Navbar = () => {
                       onMouseLeave={handleMouseLeave}
                     />
                     <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[1000px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
+                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[1000px] bg-white/95 dark:bg-black/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-black/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
                       onMouseEnter={() => handleMouseEnter('services')}
                       onMouseLeave={handleMouseLeave}
                     >
@@ -221,7 +222,7 @@ const Navbar = () => {
                       onMouseLeave={handleMouseLeave}
                     />
                     <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
+                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-black/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-black/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
                       onMouseEnter={() => handleMouseEnter('solutions')}
                       onMouseLeave={handleMouseLeave}
                     >
@@ -272,7 +273,7 @@ const Navbar = () => {
                        onMouseLeave={handleMouseLeave}
                      />
                      <div 
-                       className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-gray-900/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
+                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-black/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-black/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
                        onMouseEnter={() => handleMouseEnter('industries')}
                        onMouseLeave={handleMouseLeave}
                      >
@@ -363,7 +364,7 @@ const Navbar = () => {
 
        {/* Mobile menu */}
           {isMenuOpen && (
-            <div className="lg:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 rounded-b-2xl mx-4 shadow-xl dark:shadow-2xl dark:shadow-gray-900/50 dark:ring-1 dark:ring-gray-600/20 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0">
+            <div className="lg:hidden bg-white/95 dark:bg-black/95 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 rounded-b-2xl mx-4 shadow-xl dark:shadow-2xl dark:shadow-black/50 dark:ring-1 dark:ring-gray-600/20 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0">
               <div className="px-4 pt-4 pb-6 space-y-4">
              <Link
                href="/home"
