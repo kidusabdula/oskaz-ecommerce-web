@@ -3,6 +3,9 @@
   "style": "new-york",
   "rsc": true,
   "tsx": true,
+  "ui":{
+    "toast": "@/components/ui/toast"
+  },
   "tailwind": {
     "config": "",
     "css": "app/globals.css",
