@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { frappeClient } from '@/lib/frappe-client';
 import { handleApiRequest, withEndpointLogging } from '@/lib/api-template';
-import { SalesOrder, SalesOrderCreateRequest } from '@/types/order';
+import { SalesOrder } from '@/types/order';
 
 // GET - Fetch all orders
 export async function GET(request: NextRequest) {
@@ -23,26 +23,17 @@ export async function GET(request: NextRequest) {
 
 // POST - Create new order
 export async function POST(request: NextRequest) {
-  return handleApiRequest<{ order: SalesOrder }>(
+  return handleApiRequest<{ order: SalesOrder[] }>(
     withEndpointLogging('/api/orders - POST')(async () => {
-      const data: SalesOrderCreateRequest = await request.json();
+      const data = await request.json();
 
+      // Validate required fields
       if (!data.customer || !data.items || data.items.length === 0) {
         throw new Error('Missing required fields: customer and items');
       }
 
-      // Calculate amount for each item
-      const items = data.items.map(item => ({
-        ...item,
-        amount: item.qty * item.rate
-      }));
-
-      const orderData = {
-        ...data,
-        items
-      };
-
-      const order = await frappeClient.db.createDoc('Sales Order', orderData);
+      // Create the order with the correct payload structure
+      const order = await frappeClient.db.createDoc('Sales Order', data);
       return { order };
     })
   );

@@ -37,7 +37,7 @@ export default function RootLayout({
         >
           <ClientOnly>
             <LanguageProvider defaultLanguage="en" storageKey="oskaz-language">
-              <FlashlightEffect />
+              {/* <FlashlightEffect /> */}
               <Navbar />
               <div className="pt-12">
                 {children}
