@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/components/language-provider";
-import ClientOnly from "@/components/client-only";
+//import ClientOnly from "@/components/client-only";
 import Navbar from "@/components/Navbar";
 //import FlashlightEffect from "@/components/FlashlightEffect";
 
@@ -26,24 +26,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} antialiased font-sans`}
-      >
+      <body className={`${inter.variable} antialiased font-sans`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <ClientOnly>
-            <LanguageProvider defaultLanguage="en" storageKey="oskaz-language">
-              {/* <FlashlightEffect /> */}
+          <LanguageProvider defaultLanguage="en" storageKey="oskaz-language">
+            {/* <FlashlightEffect /> */}
+            {/* <ClientOnly> */}
               <Navbar />
-              <div className="pt-12">
-                {children}
-              </div>
-            </LanguageProvider>
-          </ClientOnly>
+            {/* </ClientOnly> */}
+            <div className="pt-28">{children}</div>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
