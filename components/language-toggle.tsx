@@ -1,7 +1,8 @@
+// components/language-toggle.tsx
 "use client"
 
 import * as React from "react"
-import { Globe, Languages } from "lucide-react"
+import { Globe } from "lucide-react"
 import { useLanguage } from "./language-provider"
 
 import { Button } from "@/components/ui/button"

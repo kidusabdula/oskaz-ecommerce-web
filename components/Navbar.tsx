@@ -1,422 +1,406 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { Menu, X, Search, ShoppingBag, Bell, User } from "lucide-react";
+import {
+  Menu,
+  Search as SearchIcon,
+  ShoppingBag,
+  User,
+  ChevronDown,
+  X,
+} from "lucide-react";
 import { ThemeDropdown } from "./theme-dropdown";
-import { LanguageToggle } from "./language-toggle";
+import { LanguageDropdown } from "./language-dropdown";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [currency, setCurrency] = useState<"usd" | "etb">("usd");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  //const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  React.useEffect(() => {
+    const saved = localStorage?.getItem("oskaz-currency") as "usd" | "etb";
+    if (saved) setCurrency(saved);
+    const root = document.documentElement;
+    root.classList.remove("currency-usd", "currency-etb");
+    root.classList.add(`currency-${currency}`);
+  }, [currency]);
+
+  const handleCurrencyChange = (newCurrency: "usd" | "etb") => {
+    setCurrency(newCurrency);
+    localStorage?.setItem("oskaz-currency", newCurrency);
   };
 
-  // Helper functions for better hover handling
-  const handleMouseEnter = (item: string) => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    setHoveredItem(item);
-  };
-
-  const handleMouseLeave = () => {
-    hoverTimeoutRef.current = setTimeout(() => {
-      setHoveredItem(null);
-    }, 150); // 150ms delay before closing
-  };
-
-  // Dropdown content for each navigation item
   const dropdownContent = {
     services: {
       title: "Our Services",
       items: [
-        {
-          title: "Import Services",
-          description: "Global sourcing and import solutions",
-          image: "/placeholder-import.jpg",
-          categories: ["Air Freight", "Sea Freight", "Express Delivery", "Customs Clearance"]
-        },
-        {
-          title: "Export Services", 
-          description: "International export and logistics",
-          image: "/placeholder-export.jpg",
-          categories: ["Documentation", "Packaging", "Shipping", "Insurance"]
-        },
-        {
-          title: "Logistics Solutions",
-          description: "End-to-end supply chain management",
-          image: "/placeholder-logistics.jpg", 
-          categories: ["Warehousing", "Distribution", "Tracking", "Consulting"]
-        },
-        {
-          title: "Trade Consulting",
-          description: "Expert guidance for international trade",
-          image: "/placeholder-consulting.jpg",
-          categories: ["Market Analysis", "Compliance", "Risk Assessment", "Strategy"]
-        }
-      ]
+        { title: "Import Services" },
+        { title: "Export Services" },
+        { title: "Logistics Solutions" },
+        { title: "Trade Consulting" },
+      ],
     },
     solutions: {
       title: "Trade Solutions",
       items: [
-        {
-          title: "Supply Chain",
-          description: "Optimize your global supply chain",
-          image: "/placeholder-supply.jpg",
-          categories: ["Planning", "Optimization", "Visibility", "Analytics"]
-        },
-        {
-          title: "Compliance",
-          description: "Navigate international regulations",
-          image: "/placeholder-compliance.jpg",
-          categories: ["Documentation", "Certifications", "Audits", "Training"]
-        },
-        {
-          title: "Technology",
-          description: "Digital trade solutions",
-          image: "/placeholder-tech.jpg",
-          categories: ["Tracking Systems", "API Integration", "Automation", "Reporting"]
-        }
-      ]
+        { title: "Supply Chain" },
+        { title: "Compliance" },
+        { title: "Technology" },
+      ],
     },
     industries: {
       title: "Industries We Serve",
       items: [
-        {
-          title: "Manufacturing",
-          description: "Industrial equipment and machinery",
-          image: "/placeholder-manufacturing.jpg",
-          categories: ["Heavy Machinery", "Components", "Raw Materials", "Tools"]
-        },
-        {
-          title: "Electronics",
-          description: "Consumer and industrial electronics",
-          image: "/placeholder-electronics.jpg",
-          categories: ["Consumer Goods", "Components", "Semiconductors", "Accessories"]
-        },
-        {
-          title: "Textiles",
-          description: "Fashion and textile imports",
-          image: "/placeholder-textiles.jpg",
-          categories: ["Apparel", "Fabrics", "Accessories", "Home Textiles"]
-        }
-      ]
-    }
+        { title: "Manufacturing" },
+        { title: "Electronics" },
+        { title: "Textiles" },
+      ],
+    },
   };
 
   return (
     <>
-      {/* Background Overlay */}
-      {hoveredItem && (
-        <div className="fixed inset-0 bg-gray-900/40 dark:bg-black/60 z-30 transition-opacity duration-300" />
-      )}
-      
-      {/* Gradient overlay at the top */}
-      <div className="fixed top-0 left-0 right-0 h-28 z-40 pointer-events-none">
-        {/* Light mode gradient */}
-        <div className="h-full bg-gradient-to-b from-gray-900/80 via-gray-600/50 to-gray-200/20 dark:hidden"></div>
-        {/* Dark mode - subtle blur effect */}
-        <div className="hidden dark:block h-full backdrop-blur-sm bg-black/5"></div>
+      {/* Top Utility Bar */}
+      <div
+        className={`fixed top-0 left-0 right-0 h-12 z-40 ${
+          isDarkMode ? "dark:bg-background" : "bg-muted/80"
+        } flex items-center justify-between px-4 text-xs font-medium transition-all duration-300`}
+      >
+        <div className="flex items-center space-x-2">
+          <LanguageDropdown />
+          <div className="h-4 w-px bg-border mx-2" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="h-8 px-2 text-xs">
+                {currency.toUpperCase()}{" "}
+                <ChevronDown className="h-3 w-3 ml-1" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-20">
+              <DropdownMenuItem onClick={() => handleCurrencyChange("usd")}>
+                USD
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleCurrencyChange("etb")}>
+                ETB
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <div className="text-muted-foreground hidden sm:block">
+          Free Shipping On Orders Over ETB 10000
+        </div>
+
+        <div className="flex items-center space-x-4 text-sm">
+          <Link
+            href="/flash-sale"
+            className="hover:text-primary transition-colors"
+          >
+            Flash Sale
+          </Link>
+          <Link
+            href="/track-order"
+            className="hover:text-primary transition-colors"
+          >
+            Track Order
+          </Link>
+          <Link href="/about" className="hover:text-primary transition-colors">
+            About
+          </Link>
+          <Link
+            href="/contact"
+            className="hover:text-primary transition-colors"
+          >
+            Contact
+          </Link>
+          <Link href="/blog" className="hover:text-primary transition-colors">
+            Blog
+          </Link>
+          <ThemeDropdown className="h-8 w-8" />
+        </div>
       </div>
-      
-      <nav className="bg-gradient-to-b from-white/98 via-white/95 to-white/90 dark:bg-gradient-to-b dark:from-gray-900/98 dark:via-gray-900/95 dark:to-gray-900/90 backdrop-blur-md fixed top-12 left-4 right-0 z-50 rounded-2xl border border-gray-200/60 dark:border-gray-600/40 transition-all duration-500 ease-out transform-gpu perspective-1000 shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.05)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.6),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(255,255,255,0.02)] hover:shadow-[0_16px_64px_rgba(0,0,0,0.15),0_4px_16px_rgba(0,0,0,0.1),inset_0_2px_0_rgba(255,255,255,0.25),inset_0_-2px_0_rgba(0,0,0,0.08)] dark:hover:shadow-[0_16px_64px_rgba(0,0,0,0.8),0_4px_16px_rgba(0,0,0,0.6),inset_0_2px_0_rgba(255,255,255,0.15),inset_0_-2px_0_rgba(255,255,255,0.05)] hover:scale-[1.005] hover:translate-y-[-3px] hover:border-gray-300/80 dark:hover:border-gray-500/60 active:translate-y-[1px] active:scale-[0.998] active:shadow-[0_4px_16px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_rgba(0,0,0,0.1)] dark:active:shadow-[0_4px_16px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(255,255,255,0.03)]">
-      <div className="max-w-7xl mx-auto pl-6 pr-0">
-        <div className="flex items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 mr-8">
-            <Link href="/" className="flex items-center group">
-              <div className="text-3xl font-semibold text-gray-900 dark:text-white tracking-wide flex items-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                <span className="text-5xl font-black mr-1 leading-none transform transition-all duration-700 ease-out group-hover:rotate-12 group-hover:scale-125">ኦ</span>
-                <span className="font-bold tracking-wider transform transition-all duration-500 ease-out group-hover:tracking-widest">SKAZ</span>
-                <span className="text-sm font-normal ml-1 transform transition-all duration-500 ease-out">®</span>
-              </div>
-            </Link>
-          </div>
 
-          {/* Navigation Links */}
-          <div className="hidden lg:flex items-center flex-1 justify-evenly px-4">
-            <Link
-              href="/home"
-              className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
-            >
-              <span className="relative z-10 transition-all duration-300">BEST SELLERS</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-            </Link>
-            
-            {/* Services Dropdown */}
-            <div 
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('services')}
-              onMouseLeave={handleMouseLeave}
-            >
-              <Link
-                href="/services"
-                className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
-              >
-                <span className="relative z-10 transition-all duration-300">SERVICES</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-blue-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-              </Link>
-              
-              {hoveredItem === 'services' && (
-                  <>
-                    {/* Invisible bridge area */}
-                    <div 
-                      className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[1000px] h-12 z-40"
-                      onMouseEnter={() => handleMouseEnter('services')}
-                      onMouseLeave={handleMouseLeave}
-                    />
-                    <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[1000px] bg-white/95 dark:bg-black/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-black/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
-                      onMouseEnter={() => handleMouseEnter('services')}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                  <div className="grid grid-cols-4 gap-6">
-                    {dropdownContent.services.items.map((item, index) => (
-                      <div key={index} className="group cursor-pointer transform transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-2">
-                        <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:scale-105 overflow-hidden relative">
-                          <div className="w-20 h-20 bg-blue-500 rounded-lg flex items-center justify-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:bg-blue-600">
-                            <span className="text-white text-sm font-bold transition-all duration-300 group-hover:scale-110">{item.title.split(' ')[0]}</span>
-                          </div>
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        </div>
-                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all duration-500 ease-out group-hover:scale-105">{item.title}</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-all duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-300">{item.description}</p>
-                        <div className="space-y-1">
-                          {item.categories.map((category, idx) => (
-                            <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 cursor-pointer hover:scale-105 hover:translate-x-1">{category}</div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                  </>
-              )}
+      {/* Main Navbar */}
+      <nav
+        className={`fixed top-12 left-0 right-0 h-16 z-50 ${
+          isDarkMode ? "dark:bg-card" : "bg-card"
+        } backdrop-blur-md shadow-sm transition-all duration-500 flex items-center justify-between px-6`}
+      >
+        {/* Left: Logo */}
+        <div className="flex-shrink-0">
+          <Link href="/" className="flex items-center group">
+            <div className="text-3xl font-semibold text-foreground tracking-wide flex items-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:text-primary">
+              <span className="text-5xl font-black mr-1 leading-none transform transition-all duration-700 ease-out group-hover:rotate-12 group-hover:scale-125">
+                ኦ
+              </span>
+              <span className="font-bold tracking-wider transform transition-all duration-500 ease-out group-hover:tracking-widest">
+                SKAZ
+              </span>
+              <span className="text-sm font-normal ml-1 transform transition-all duration-500 ease-out">
+                ®
+              </span>
             </div>
+          </Link>
+        </div>
 
-            {/* Solutions Dropdown */}
-            <div 
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('solutions')}
-              onMouseLeave={handleMouseLeave}
-            >
-              <Link
-                href="/solutions"
-                className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
+        {/* Center: Nav Links */}
+        <div className="hidden lg:flex items-center space-x-6">
+          <Link
+            href="/home"
+            className="text-muted-foreground hover:text-foreground text-sm font-medium transition-all duration-300 hover:scale-105"
+          >
+            Best Sellers
+          </Link>
+
+          {/* SERVICES */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="text-muted-foreground hover:text-foreground text-sm font-medium transition-all duration-300 hover:scale-105"
               >
-                <span className="relative z-10 transition-all duration-300">SOLUTIONS</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-              </Link>
-              
-              {hoveredItem === 'solutions' && (
-                  <>
-                    {/* Invisible bridge area */}
-                    <div 
-                      className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[800px] h-12 z-40"
-                      onMouseEnter={() => handleMouseEnter('solutions')}
-                      onMouseLeave={handleMouseLeave}
-                    />
-                    <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-black/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-black/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
-                      onMouseEnter={() => handleMouseEnter('solutions')}
-                      onMouseLeave={handleMouseLeave}
+                Services <ChevronDown className="h-3 w-3 ml-1" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              {dropdownContent.services.items.map((item, i) => (
+                <DropdownMenuItem key={i} asChild>
+                  <Link
+                    href={`/services/${item.title
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                  >
+                    {item.title}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* SOLUTIONS */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="text-muted-foreground hover:text-foreground text-sm font-medium transition-all duration-300 hover:scale-105"
+              >
+                Solutions <ChevronDown className="h-3 w-3 ml-1" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              {dropdownContent.solutions.items.map((item, i) => (
+                <DropdownMenuItem key={i} asChild>
+                  <Link
+                    href={`/solutions/${item.title
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                  >
+                    {item.title}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* INDUSTRIES */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="text-muted-foreground hover:text-foreground text-sm font-medium transition-all duration-300 hover:scale-105"
+              >
+                Industries <ChevronDown className="h-3 w-3 ml-1" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              {dropdownContent.industries.items.map((item, i) => (
+                <DropdownMenuItem key={i} asChild>
+                  <Link
+                    href={`/industries/${item.title
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                  >
+                    {item.title}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <Link
+            href="/tracking"
+            className="text-muted-foreground hover:text-foreground text-sm font-medium transition-all duration-300 hover:scale-105"
+          >
+            Tracking & Reports
+          </Link>
+          <Link
+            href="/more"
+            className="text-muted-foreground hover:text-foreground text-sm font-medium transition-all duration-300 hover:scale-105"
+          >
+            More
+          </Link>
+          <Link
+            href="/sale"
+            className={`text-primary hover:text-primary-foreground text-sm font-semibold px-4 py-2 rounded-lg transition-all duration-300 ${
+              isDarkMode
+                ? "bg-primary/20 hover:bg-primary/30"
+                : "bg-primary/10 hover:bg-primary/20"
+            }`}
+          >
+            SALE
+          </Link>
+        </div>
+
+        {/* Center Right: Search Bar */}
+        <div className="flex-1 max-w-md mx-6">
+          <div
+            className={`relative w-full transition-all duration-300 ${
+              isSearchFocused ? "scale-105" : ""
+            }`}
+          >
+            <Input
+              placeholder="Search Product"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => setIsSearchFocused(false)}
+              className={`h-11 pr-10 rounded-full border-none shadow-sm ${
+                isDarkMode ? "bg-muted/60" : "bg-muted"
+              } focus-visible:ring-primary/40 focus-visible:ring-2 transition-all ${
+                isSearchFocused
+                  ? "ring-2 ring-primary/30 shadow-md"
+                  : "shadow-sm"
+              }`}
+            />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-10 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full hover:bg-transparent"
+                onClick={() => setSearchQuery("")}
+              >
+                <X className="h-3 w-3" />
+              </Button>
+            )}
+            <SearchIcon
+              className={`absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 ${
+                isSearchFocused ? "text-primary" : "text-muted-foreground"
+              } transition-colors`}
+            />
+          </div>
+        </div>
+
+        {/* Right: Icons */}
+        <div className="flex items-center space-x-2 flex-shrink-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 hover:bg-muted transition-all duration-300 hover:scale-110"
+          >
+            <User className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 relative hover:bg-muted transition-all duration-300 hover:scale-110"
+          >
+            <ShoppingBag className="h-4 w-4" />
+            <span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive rounded-full text-xs text-destructive-foreground flex items-center justify-center">
+              0
+            </span>
+          </Button>
+
+          {/* Mobile Menu */}
+          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden h-8 w-8 hover:bg-muted transition-all duration-500 hover:scale-110 hover:rotate-180"
+              >
+                <Menu className="h-4 w-4" />
+              </Button>
+            </SheetTrigger>
+
+            <SheetContent
+              side="right"
+              className={`${isDarkMode ? "dark:bg-sidebar" : "bg-card"}`}
+            >
+              <div className="flex flex-col space-y-4 mt-8">
+                <Link
+                  href="/home"
+                  className="text-muted-foreground hover:text-foreground text-base font-medium transition-all duration-300 py-2 hover:scale-105 hover:translate-x-2 px-3 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Best Sellers
+                </Link>
+                <Link
+                  href="/tracking"
+                  className="text-muted-foreground hover:text-foreground text-base font-medium transition-all duration-300 py-2 hover:scale-105 hover:translate-x-2 px-3 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Tracking & Reports
+                </Link>
+                <Link
+                  href="/more"
+                  className="text-muted-foreground hover:text-foreground text-base font-medium transition-all duration-300 py-2 hover:scale-105 hover:translate-x-2 px-3 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  More
+                </Link>
+                <Link
+                  href="/sale"
+                  className="text-primary hover:text-primary-foreground hover:bg-primary/10 text-base font-semibold transition-all duration-300 py-2 hover:scale-105 hover:translate-x-2 px-3 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Sale
+                </Link>
+
+                {/* Mobile Search */}
+                <div className="relative mt-4">
+                  <Input
+                    placeholder="Search Product"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pr-10"
+                  />
+                  {searchQuery && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-10 top-1/2 -translate-y-1/2 h-6 w-6"
+                      onClick={() => setSearchQuery("")}
                     >
-                   <div className="grid grid-cols-3 gap-6">
-                     {dropdownContent.solutions.items.map((item, index) => (
-                       <div key={index} className="group cursor-pointer transform transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-2">
-                          <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:scale-105 overflow-hidden relative">
-                           <div className="w-20 h-20 bg-green-500 rounded-lg flex items-center justify-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:bg-green-600">
-                             <span className="text-white text-sm font-bold transition-all duration-300 group-hover:scale-110">{item.title.split(' ')[0]}</span>
-                           </div>
-                           <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                         </div>
-                         <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-all duration-500 ease-out group-hover:scale-105">{item.title}</h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-all duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-300">{item.description}</p>
-                         <div className="space-y-1">
-                           {item.categories.map((category, idx) => (
-                             <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-all duration-300 cursor-pointer hover:scale-105 hover:translate-x-1">{category}</div>
-                           ))}
-                         </div>
-                       </div>
-                     ))}
-                   </div>
-                 </div>
-                   </>
-                )}
-             </div>
+                      <X className="h-3 w-3" />
+                    </Button>
+                  )}
+                  <SearchIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                </div>
 
-             {/* Industries Dropdown */}
-             <div 
-               className="relative"
-               onMouseEnter={() => handleMouseEnter('industries')}
-               onMouseLeave={handleMouseLeave}
-             >
-               <Link
-                 href="/industries"
-                 className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
-               >
-                 <span className="relative z-10 transition-all duration-300">INDUSTRIES</span>
-                 <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-               </Link>
-               
-               {hoveredItem === 'industries' && (
-                   <>
-                     {/* Invisible bridge area */}
-                     <div 
-                       className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[800px] h-12 z-40"
-                       onMouseEnter={() => handleMouseEnter('industries')}
-                       onMouseLeave={handleMouseLeave}
-                     />
-                     <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-black/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-black/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
-                       onMouseEnter={() => handleMouseEnter('industries')}
-                       onMouseLeave={handleMouseLeave}
-                     >
-                    <div className="grid grid-cols-3 gap-6">
-                      {dropdownContent.industries.items.map((item, index) => (
-                        <div key={index} className="group cursor-pointer transform transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-2">
-                           <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:scale-105 overflow-hidden relative">
-                            <div className="w-20 h-20 bg-purple-500 rounded-lg flex items-center justify-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:bg-purple-600">
-                              <span className="text-white text-sm font-bold transition-all duration-300 group-hover:scale-110">{item.title.split(' ')[0]}</span>
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                          </div>
-                          <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-all duration-500 ease-out group-hover:scale-105">{item.title}</h3>
-                           <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-all duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-300">{item.description}</p>
-                          <div className="space-y-1">
-                            {item.categories.map((category, idx) => (
-                              <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-300 cursor-pointer hover:scale-105 hover:translate-x-1">{category}</div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                    </>
-                )}
-             </div>
-
-             <Link
-               href="/tracking"
-               className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
-             >
-               <span className="relative z-10 transition-all duration-300">TRACKING & REPORTS</span>
-               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-             </Link>
-             
-             <Link
-               href="/more"
-               className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
-             >
-               <span className="relative z-10 transition-all duration-300">MORE</span>
-               <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-             </Link>
-             
-             <Link
-               href="/sale"
-               className="relative text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-semibold hover:font-bold transition-all duration-500 ease-out tracking-wide hover:scale-125 hover:tracking-wider bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 group overflow-hidden hover:shadow-lg hover:-translate-y-0.5"
-             >
-               <span className="relative z-10 transition-all duration-300">SALE</span>
-               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-             </Link>
-           </div>
-
-           {/* Right side icons */}
-           <div className="flex items-center space-x-4 flex-shrink-0 ml-auto">
-             <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg">
-               <Bell className="h-5 w-5" />
-             </button>
-             
-             <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg">
-               <User className="h-5 w-5" />
-             </button>
-             
-             <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg">
-               <Search className="h-5 w-5" />
-             </button>
-             
-             <Link href="/inquiry" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg relative">
-               <ShoppingBag className="h-5 w-5" />
-             </Link>
-
-             {/* Theme & Language Controls - Hidden on mobile */}
-             <div className="hidden md:flex items-center space-x-2">
-               <LanguageToggle />
-               <ThemeDropdown />
-             </div>
-
-             {/* Mobile menu button */}
-             <button
-               onClick={toggleMenu}
-               className="lg:hidden text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-500 ease-out hover:scale-125 hover:rotate-180 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg"
-               aria-label="Toggle menu"
-             >
-               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-             </button>
-           </div>
-         </div>
-       </div>
-
-       {/* Mobile menu */}
-          {isMenuOpen && (
-            <div className="lg:hidden bg-white/95 dark:bg-black/95 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 rounded-b-2xl mx-4 shadow-xl dark:shadow-2xl dark:shadow-black/50 dark:ring-1 dark:ring-gray-600/20 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0">
-              <div className="px-4 pt-4 pb-6 space-y-4">
-             <Link
-               href="/home"
-               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
-               onClick={() => setIsMenuOpen(false)}
-             >
-               Best Sellers
-             </Link>
-             <Link
-               href="/services"
-               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
-               onClick={() => setIsMenuOpen(false)}
-             >
-               Services
-             </Link>
-             <Link
-               href="/solutions"
-               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
-               onClick={() => setIsMenuOpen(false)}
-             >
-               Solutions
-             </Link>
-             <Link
-               href="/industries"
-               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
-               onClick={() => setIsMenuOpen(false)}
-             >
-               Industries
-             </Link>
-             <Link
-               href="/tracking"
-               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
-               onClick={() => setIsMenuOpen(false)}
-             >
-               Tracking & Reports
-             </Link>
-             
-             {/* Theme & Language controls in mobile menu */}
-             <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
-               <div className="flex items-center space-x-2">
-                 <span className="text-sm text-gray-600 dark:text-gray-400">Language:</span>
-                 <LanguageToggle />
-               </div>
-               <div className="flex items-center space-x-2">
-                 <span className="text-sm text-gray-600 dark:text-gray-400">Theme:</span>
-                 <ThemeDropdown />
-               </div>
-             </div>
-           </div>
-         </div>
-       )}
-     </nav>
+                <div className="flex items-center justify-end pt-4 space-x-2">
+                  <ThemeDropdown />
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </nav>
     </>
   );
 };
