@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -11,6 +11,7 @@ export default function Home() {
   const { language } = useLanguage();
   const t = useTranslations(language);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const [isHeaderHovered, setIsHeaderHovered] = useState(false);
 
   const topPicks = [
     {
@@ -77,17 +78,122 @@ export default function Home() {
       <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-[#444a57]/90 via-[#444a57]/60 to-transparent z-10 pointer-events-none block dark:hidden"></div>
 
       
-      {/* Hero Section - Text Only */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:bg-gradient-to-b dark:from-black dark:via-black dark:to-black overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      {/* Hero Section - Video Background with Text Overlay */}
+      <section className="relative w-full py-12 px-4 md:px-8 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+        <div className="max-w-8xl mx-auto">
+          <div className="relative h-[70vh] overflow-hidden bg-gray-100 dark:bg-black rounded-2xl shadow-2xl">
+            {/* Background Video */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover z-0 rounded-2xl"
+              style={{
+                clipPath: isHeaderHovered 
+                  ? 'circle(70% at 50% 50%)' 
+                  : 'circle(0% at 50% 50%)',
+                transition: 'clip-path 1200ms ease-in-out'
+              }}
+            >
+              <source src="/oskaz-hero-background.mp4" type="video/mp4" />
+            </video>
+            
+            {/* Dark Overlay for better text readability */}
+            <div 
+              className="absolute inset-0 bg-black/50 z-10 rounded-2xl"
+              style={{
+                clipPath: isHeaderHovered 
+                  ? 'circle(70% at 50% 50%)' 
+                  : 'circle(0% at 50% 50%)',
+                transition: 'clip-path 1200ms ease-in-out'
+              }}
+            ></div>
+            
+            {/* Cinematic Overlay with Vignette Effect */}
+            <div 
+              className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30 z-10 rounded-2xl"
+              style={{
+                clipPath: isHeaderHovered 
+                  ? 'circle(70% at 50% 50%)' 
+                  : 'circle(0% at 50% 50%)',
+                transition: 'clip-path 1200ms ease-in-out'
+              }}
+            ></div>
+            <div 
+              className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20 z-10 rounded-2xl"
+              style={{
+                clipPath: isHeaderHovered 
+                  ? 'circle(70% at 50% 50%)' 
+                  : 'circle(0% at 50% 50%)',
+                transition: 'clip-path 1200ms ease-in-out'
+              }}
+            ></div>
+            
+            {/* Tunnel Vision Effect - Left Side Curved Overlay */}
+            <div 
+              className="absolute inset-0 z-15 rounded-2xl"
+              style={{
+                clipPath: isHeaderHovered 
+                  ? 'circle(70% at 50% 50%)' 
+                  : 'circle(0% at 50% 50%)',
+                transition: 'clip-path 1200ms ease-in-out'
+              }}
+            >
+              <div 
+                className="absolute left-0 top-0 w-1/2 h-full"
+                style={{
+                  background: `radial-gradient(ellipse 200% 150% at -30% 50%, 
+                    rgba(0,0,0,0.9) 0%, 
+                    rgba(0,0,0,0.8) 20%, 
+                    rgba(0,0,0,0.6) 35%, 
+                    rgba(0,0,0,0.4) 50%, 
+                    rgba(0,0,0,0.2) 65%, 
+                    rgba(0,0,0,0.05) 80%, 
+                    transparent 90%)`
+                }}
+              ></div>
+            </div>
+            
+            {/* Tunnel Vision Effect - Right Side Curved Overlay */}
+            <div 
+              className="absolute inset-0 z-15 rounded-2xl"
+              style={{
+                clipPath: isHeaderHovered 
+                  ? 'circle(70% at 50% 50%)' 
+                  : 'circle(0% at 50% 50%)',
+                transition: 'clip-path 1200ms ease-in-out'
+              }}
+            >
+              <div 
+                className="absolute right-0 top-0 w-1/2 h-full"
+                style={{
+                  background: `radial-gradient(ellipse 200% 150% at 130% 50%, 
+                    rgba(0,0,0,0.9) 0%, 
+                    rgba(0,0,0,0.8) 20%, 
+                    rgba(0,0,0,0.6) 35%, 
+                    rgba(0,0,0,0.4) 50%, 
+                    rgba(0,0,0,0.2) 65%, 
+                    rgba(0,0,0,0.05) 80%, 
+                    transparent 90%)`
+                }}
+              ></div>
+            </div>
+            
+            {/* Content Overlay - Centered */}
+            <div className="absolute inset-0 flex items-center justify-center z-20">
         <motion.div 
-          className="relative z-10 max-w-6xl mx-auto text-center"
+          className="relative z-20 max-w-6xl mx-auto text-center"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
+          onMouseEnter={() => setIsHeaderHovered(true)}
+          onMouseLeave={() => setIsHeaderHovered(false)}
         >
           <motion.h1 
-            className="text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight tracking-tight"
+            className={`text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight transition-colors duration-500 ease-in-out ${
+              isHeaderHovered ? 'text-white drop-shadow-2xl' : 'text-black dark:text-white drop-shadow-2xl'
+            }`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.0, delay: 0.3, ease: "easeOut" }}
@@ -96,7 +202,9 @@ export default function Home() {
             {t.mainPage.hero.title}
           </motion.h1>
           <motion.p 
-            className="text-xl md:text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed font-light"
+            className={`text-xl md:text-2xl lg:text-3xl mb-8 max-w-4xl mx-auto leading-relaxed font-light transition-colors duration-500 ease-in-out ${
+              isHeaderHovered ? 'text-white/90 drop-shadow-lg' : 'text-black/90 dark:text-white/90 drop-shadow-lg'
+            }`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.0, delay: 0.6, ease: "easeOut" }}
@@ -148,126 +256,36 @@ export default function Home() {
             </motion.div>
           </motion.div>
         </motion.div>
-        
-        {/* Scroll Indicator */}
-        <motion.div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 1.5, ease: "easeOut" }}
-        >
-          <motion.div 
-            className="w-6 h-10 border-2 border-gray-400 dark:border-white/60 rounded-full flex justify-center"
-            animate={{ y: [0, -10, 0] }}
-            transition={{ 
-              duration: 3, 
-              repeat: Infinity, 
-              ease: "easeInOut"
-            }}
-          >
+            
+            {/* Scroll Indicator */}
             <motion.div 
-              className="w-1 h-3 bg-gray-400 dark:bg-white/60 rounded-full mt-2"
-              animate={{ opacity: [0.4, 1, 0.4] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Cinematic Video Section */}
-      <section className="relative w-full py-12 px-4 md:px-8 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-        <div className="max-w-8xl mx-auto">
-          <div className="relative h-[70vh] overflow-hidden bg-black rounded-2xl shadow-2xl">
-            {/* Background Video */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover z-0 scale-105 transition-transform duration-[20s] ease-linear hover:scale-110 rounded-2xl"
+              className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 1.5, ease: "easeOut" }}
             >
-              <source src="/oskaz-hero-background.mp4" type="video/mp4" />
-            </video>
-            
-            {/* Dark Overlay */}
-            <div className="absolute inset-0 bg-black/50 z-10 rounded-2xl"></div>
-            
-            {/* Cinematic Overlay with Vignette Effect */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/30 z-10 rounded-2xl"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20 z-10 rounded-2xl"></div>
-            
-            {/* Content Overlay - Centered */}
-            <div className="absolute inset-0 flex items-center justify-center z-20">
               <motion.div 
-                className="text-center px-4 max-w-4xl mx-auto"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 1.2, ease: "easeOut" }}
+                className="w-6 h-10 border-2 border-white/60 rounded-full flex justify-center"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ 
+                  duration: 3, 
+                  repeat: Infinity, 
+                  ease: "easeInOut"
+                }}
               >
-                <motion.h2 
-                  className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight tracking-tight"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.0, delay: 0.3, ease: "easeOut" }}
-                  whileHover={{ scale: 1.05, transition: { type: "spring", stiffness: 300, damping: 20 } }}
-                >
-                  Innovation That Moves You
-                </motion.h2>
-                <motion.p 
-                  className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed font-light max-w-3xl mx-auto"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.0, delay: 0.6, ease: "easeOut" }}
-                >
-                  Experience the future of technology with our cutting-edge solutions that adapt and evolve with your needs.
-                </motion.p>
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.0, delay: 0.9, ease: "easeOut" }}
-                >
-                  <motion.div
-                    whileHover={{ 
-                      scale: 1.05, 
-                      y: -8,
-                      transition: { type: "spring", stiffness: 400, damping: 25 }
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Link 
-                      href="/products" 
-                      className="inline-block bg-white/90 backdrop-blur-sm text-gray-900 px-8 py-4 rounded-2xl font-semibold text-lg group overflow-hidden relative border border-white/20"
-                    >
-                      <span className="relative z-10 group-hover:opacity-0 transition-opacity duration-500">Explore Our Technology</span>
-                      <motion.div 
-                        className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl"
-                        initial={{ scaleX: 0 }}
-                        whileHover={{ scaleX: 1 }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                        style={{ originX: 0 }}
-                      />
-                      <motion.span 
-                        className="absolute inset-0 flex items-center justify-center text-white z-20"
-                        initial={{ opacity: 0 }}
-                        whileHover={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        Explore Our Technology
-                      </motion.span>
-                    </Link>
-                  </motion.div>
-                </motion.div>
+                <motion.div 
+                  className="w-1 h-3 bg-white/60 rounded-full mt-2"
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
               </motion.div>
+            </motion.div>
             </div>
-            
-
           </div>
         </div>
       </section>
+
+
 
       {/* Video Background Section - Oskaz Quality */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">

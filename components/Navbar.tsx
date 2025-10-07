@@ -1,19 +1,60 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Search, ShoppingBag, Bell, User } from "lucide-react";
+import { useTheme } from "next-themes";
 import { ThemeDropdown } from "./theme-dropdown";
 import { LanguageToggle } from "./language-toggle";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { theme } = useTheme();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = Math.min(scrollTop / docHeight, 1);
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Helper function to calculate text color based on element position and fill progress
+  const getElementTextColor = (elementPosition: 'left' | 'center' | 'right') => {
+    // The fill overlay expands from left to right with width = scrollProgress * 100%
+    const fillWidthPercentage = scrollProgress * 100;
+    
+    // Define the start positions of elements (as percentages of navbar width)
+    // These represent where each element group begins
+    const elementStartPositions = {
+      left: 0,     // Logo starts immediately (0% from left)
+      center: 35,  // Navigation links start around 35% from left
+      right: 75    // Right-side buttons start around 75% from left
+    };
+    
+    const elementStartPos = elementStartPositions[elementPosition];
+    
+    // Element changes color when the fill overlay reaches its start position
+    const isElementTouched = fillWidthPercentage >= elementStartPos;
+    
+    if (isElementTouched && scrollProgress > 0.01) {
+      // Both modes: #4f4f4f fill overlay (medium gray), so text should be white for contrast
+      return 'rgb(255, 255, 255)';
+    }
+    
+    return undefined; // Use default color
   };
 
   // Helper functions for better hover handling
@@ -124,16 +165,50 @@ const Navbar = () => {
         <div className="hidden dark:block h-full backdrop-blur-sm bg-black/5"></div>
       </div>
       
-      <nav className="bg-gradient-to-b from-white/98 via-white/95 to-white/90 dark:bg-gradient-to-b dark:from-gray-900/98 dark:via-gray-900/95 dark:to-gray-900/90 backdrop-blur-md fixed top-12 left-4 right-0 z-50 rounded-2xl border border-gray-200/60 dark:border-gray-600/40 transition-all duration-500 ease-out transform-gpu perspective-1000 shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.05)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.6),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(255,255,255,0.02)] hover:shadow-[0_16px_64px_rgba(0,0,0,0.15),0_4px_16px_rgba(0,0,0,0.1),inset_0_2px_0_rgba(255,255,255,0.25),inset_0_-2px_0_rgba(0,0,0,0.08)] dark:hover:shadow-[0_16px_64px_rgba(0,0,0,0.8),0_4px_16px_rgba(0,0,0,0.6),inset_0_2px_0_rgba(255,255,255,0.15),inset_0_-2px_0_rgba(255,255,255,0.05)] hover:scale-[1.005] hover:translate-y-[-3px] hover:border-gray-300/80 dark:hover:border-gray-500/60 active:translate-y-[1px] active:scale-[0.998] active:shadow-[0_4px_16px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_rgba(0,0,0,0.1)] dark:active:shadow-[0_4px_16px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(255,255,255,0.03)]">
-      <div className="max-w-7xl mx-auto pl-6 pr-0">
+      <nav className="fixed top-12 left-4 right-4 z-50 bg-gradient-to-b from-white/98 via-white/95 to-white/90 dark:bg-gradient-to-b dark:from-black/95 dark:via-black/98 dark:to-gray-900/95 backdrop-blur-md rounded-2xl border border-gray-200/60 dark:border-gray-800/60 transition-all duration-500 ease-out shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.05)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.9),0_8px_16px_rgba(0,0,0,0.7),inset_0_2px_0_rgba(255,255,255,0.08),inset_0_-2px_0_rgba(0,0,0,0.3),inset_0_0_0_1px_rgba(255,255,255,0.05)] overflow-hidden">
+        {/* Fill overlays for both themes */}
+        {theme === 'dark' && (
+          <div 
+            className="absolute inset-0 rounded-2xl transition-all duration-300 ease-out"
+            style={{
+              backgroundColor: '#4f4f4f',
+              width: `${scrollProgress * 100}%`,
+              transformOrigin: 'left center'
+            }}
+          />
+        )}
+        {theme === 'light' && (
+          <div 
+            className="absolute inset-0 rounded-2xl transition-all duration-300 ease-out"
+            style={{
+              backgroundColor: '#4f4f4f',
+              width: `${scrollProgress * 100}%`,
+              transformOrigin: 'left center'
+            }}
+          />
+        )}
+        
+      <div className="relative max-w-7xl mx-auto pl-6 pr-6 z-10">
         <div className="flex items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 mr-8">
             <Link href="/" className="flex items-center group">
-              <div className="text-3xl font-semibold text-gray-900 dark:text-white tracking-wide flex items-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                <span className="text-5xl font-black mr-1 leading-none transform transition-all duration-700 ease-out group-hover:rotate-12 group-hover:scale-125">ኦ</span>
-                <span className="font-bold tracking-wider transform transition-all duration-500 ease-out group-hover:tracking-widest">SKAZ</span>
-                <span className="text-sm font-normal ml-1 transform transition-all duration-500 ease-out">®</span>
+              <div 
+                className="text-3xl font-semibold text-gray-900 dark:text-white tracking-wide flex items-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:text-blue-600 dark:group-hover:text-blue-400 animate-modern-rotate"
+                style={{ color: getElementTextColor('left') }}
+              >
+                <span 
+                  className="text-5xl font-black mr-1 leading-none transform transition-all duration-700 ease-out group-hover:rotate-12 group-hover:scale-125"
+                  style={{ color: getElementTextColor('left') }}
+                >ኦ</span>
+                <span 
+                  className="font-bold tracking-wider transform transition-all duration-500 ease-out group-hover:tracking-widest"
+                  style={{ color: getElementTextColor('left') }}
+                >SKAZ</span>
+                <span 
+                  className="text-sm font-normal ml-1 transform transition-all duration-500 ease-out"
+                  style={{ color: getElementTextColor('left') }}
+                >®</span>
               </div>
             </Link>
           </div>
@@ -144,7 +219,10 @@ const Navbar = () => {
               href="/home"
               className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
             >
-              <span className="relative z-10 transition-all duration-300">BEST SELLERS</span>
+              <span 
+                className="relative z-10 transition-all duration-300"
+                style={{ color: getElementTextColor('center') }}
+              >BEST SELLERS</span>
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
             </Link>
             
@@ -158,7 +236,10 @@ const Navbar = () => {
                 href="/services"
                 className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
               >
-                <span className="relative z-10 transition-all duration-300">SERVICES</span>
+                <span 
+                  className="relative z-10 transition-all duration-300"
+                  style={{ color: getElementTextColor('center') }}
+                >SERVICES</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-blue-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
               </Link>
               
@@ -209,7 +290,10 @@ const Navbar = () => {
                 href="/solutions"
                 className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
               >
-                <span className="relative z-10 transition-all duration-300">SOLUTIONS</span>
+                <span 
+                  className="relative z-10 transition-all duration-300"
+                  style={{ color: getElementTextColor('center') }}
+                >SOLUTIONS</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
               </Link>
               
@@ -260,7 +344,10 @@ const Navbar = () => {
                  href="/industries"
                  className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
                >
-                 <span className="relative z-10 transition-all duration-300">INDUSTRIES</span>
+                 <span 
+                    className="relative z-10 transition-all duration-300"
+                    style={{ color: getElementTextColor('center') }}
+                  >INDUSTRIES</span>
                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
                </Link>
                
@@ -336,11 +423,18 @@ const Navbar = () => {
                <User className="h-5 w-5" />
              </button>
              
-             <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg">
+             <button 
+               className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg"
+               style={{ color: getElementTextColor('right') }}
+             >
                <Search className="h-5 w-5" />
              </button>
              
-             <Link href="/inquiry" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg relative">
+             <Link 
+               href="/inquiry" 
+               className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg relative"
+               style={{ color: getElementTextColor('right') }}
+             >
                <ShoppingBag className="h-5 w-5" />
              </Link>
 
@@ -354,6 +448,7 @@ const Navbar = () => {
              <button
                onClick={toggleMenu}
                className="lg:hidden text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-500 ease-out hover:scale-125 hover:rotate-180 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg"
+               style={{ color: getElementTextColor('right') }}
                aria-label="Toggle menu"
              >
                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
