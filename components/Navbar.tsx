@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Search, ShoppingBag, Bell, User } from "lucide-react";
 import { useTheme } from "next-themes";
+import { motion, AnimatePresence } from "framer-motion";
 import { ThemeDropdown } from "./theme-dropdown";
 import { LanguageToggle } from "./language-toggle";
 
@@ -20,14 +21,22 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = Math.min(scrollTop / docHeight, 1);
-      setScrollProgress(progress);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = Math.min(scrollTop / docHeight, 1);
+          setScrollProgress(progress);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -50,25 +59,33 @@ const Navbar = () => {
     const isElementTouched = fillWidthPercentage >= elementStartPos;
     
     if (isElementTouched && scrollProgress > 0.01) {
-      // Both modes: #4f4f4f fill overlay (medium gray), so text should be white for contrast
-      return 'rgb(255, 255, 255)';
+      // Only change text color in dark mode when fill overlay touches
+      // In light mode, keep the default text color
+      if (theme === 'dark') {
+        return 'rgb(255, 255, 255)'; // White text for dark mode
+      }
+      // For light mode, return undefined to use default color
     }
     
     return undefined; // Use default color
   };
 
-  // Helper functions for better hover handling
+  // Enhanced hover handling with better timing
   const handleMouseEnter = (item: string) => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
     }
     setHoveredItem(item);
   };
 
   const handleMouseLeave = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
     hoverTimeoutRef.current = setTimeout(() => {
       setHoveredItem(null);
-    }, 150); // 150ms delay before closing
+    }, 300); // Increased delay for better stability
   };
 
   // Dropdown content for each navigation item
@@ -152,38 +169,46 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Background Overlay */}
-      {hoveredItem && (
-        <div className="fixed inset-0 bg-gray-900/40 dark:bg-black/60 z-30 transition-opacity duration-300" />
-      )}
+      {/* Enhanced Background Overlay with subtle blur and dark overlay */}
+      <AnimatePresence>
+        {hoveredItem && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm z-[9990]" 
+          />
+        )}
+      </AnimatePresence>
       
-      {/* Gradient overlay at the top */}
-      <div className="fixed top-0 left-0 right-0 h-28 z-40 pointer-events-none">
-        {/* Light mode gradient */}
-        <div className="h-full bg-gradient-to-b from-gray-900/80 via-gray-600/50 to-gray-200/20 dark:hidden"></div>
-        {/* Dark mode - subtle blur effect */}
-        <div className="hidden dark:block h-full backdrop-blur-sm bg-black/5"></div>
+      {/* Enhanced Gradient overlay at the top - Dark mode only */}
+      <div className="fixed top-0 left-0 right-0 h-32 z-[9991] pointer-events-none">
+        {/* Dark mode - enhanced blur effect */}
+        <div className="hidden dark:block h-full bg-black/10"></div>
       </div>
       
-      <nav className="fixed top-12 left-4 right-4 z-50 bg-gradient-to-b from-white/98 via-white/95 to-white/90 dark:bg-gradient-to-b dark:from-black/95 dark:via-black/98 dark:to-gray-900/95 backdrop-blur-md rounded-2xl border border-gray-200/60 dark:border-gray-800/60 transition-all duration-500 ease-out shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.05)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.9),0_8px_16px_rgba(0,0,0,0.7),inset_0_2px_0_rgba(255,255,255,0.08),inset_0_-2px_0_rgba(0,0,0,0.3),inset_0_0_0_1px_rgba(255,255,255,0.05)] overflow-hidden">
-        {/* Fill overlays for both themes */}
+      <nav className="fixed top-4 left-4 right-4 z-[9992] bg-gradient-to-b from-white/99 via-white/97 to-white/94 dark:bg-gradient-to-b dark:from-black/97 dark:via-black/99 dark:to-gray-900/97 rounded-2xl border border-gray-200/70 dark:border-gray-800/70 transition-all duration-700 ease-out shadow-[0_12px_40px_rgba(0,0,0,0.15),0_4px_12px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.3),inset_0_-1px_0_rgba(0,0,0,0.08)] dark:shadow-[0_24px_48px_rgba(0,0,0,0.95),0_12px_20px_rgba(0,0,0,0.8),inset_0_2px_0_rgba(255,255,255,0.1),inset_0_-2px_0_rgba(0,0,0,0.4),inset_0_0_0_1px_rgba(255,255,255,0.08)] overflow-visible">
+        {/* Enhanced Fill overlays with smoother animations */}
         {theme === 'dark' && (
           <div 
-            className="absolute inset-0 rounded-2xl transition-all duration-300 ease-out"
+            className="absolute inset-0 rounded-2xl transition-all duration-500 ease-out"
             style={{
-              backgroundColor: '#4f4f4f',
+              background: `linear-gradient(90deg, rgba(79, 79, 79, 0.8) 0%, rgba(79, 79, 79, 0.7) 70%, rgba(79, 79, 79, 0.5) 100%)`,
               width: `${scrollProgress * 100}%`,
-              transformOrigin: 'left center'
+              transformOrigin: 'left center',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.2)'
             }}
           />
         )}
         {theme === 'light' && (
           <div 
-            className="absolute inset-0 rounded-2xl transition-all duration-300 ease-out"
+            className="absolute inset-0 rounded-2xl transition-all duration-500 ease-out"
             style={{
-              backgroundColor: '#4f4f4f',
+              background: `linear-gradient(90deg, rgba(79, 79, 79, 0.7) 0%, rgba(79, 79, 79, 0.6) 70%, rgba(79, 79, 79, 0.4) 100%)`,
               width: `${scrollProgress * 100}%`,
-              transformOrigin: 'left center'
+              transformOrigin: 'left center',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1)'
             }}
           />
         )}
@@ -243,16 +268,21 @@ const Navbar = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-blue-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
               </Link>
               
-              {hoveredItem === 'services' && (
+              <AnimatePresence>
+                {hoveredItem === 'services' && (
                   <>
                     {/* Invisible bridge area */}
                     <div 
-                      className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[1000px] h-12 z-40"
+                      className="fixed top-20 left-1/2 -translate-x-1/2 w-[1000px] h-6 z-[9998]"
                       onMouseEnter={() => handleMouseEnter('services')}
                       onMouseLeave={handleMouseLeave}
                     />
-                    <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[1000px] bg-white/95 dark:bg-black/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-black/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
+                    <motion.div 
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="fixed top-[6.5rem] left-1/2 -translate-x-1/2 w-[1000px] bg-white/99 dark:bg-black/99 rounded-2xl shadow-2xl dark:shadow-black/80 border border-gray-200/60 dark:border-gray-700/60 p-8 z-[9999]"
                       onMouseEnter={() => handleMouseEnter('services')}
                       onMouseLeave={handleMouseLeave}
                     >
@@ -275,9 +305,10 @@ const Navbar = () => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
                   </>
-              )}
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Solutions Dropdown */}
@@ -297,16 +328,21 @@ const Navbar = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
               </Link>
               
-              {hoveredItem === 'solutions' && (
+              <AnimatePresence>
+                {hoveredItem === 'solutions' && (
                   <>
                     {/* Invisible bridge area */}
                     <div 
-                      className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[800px] h-12 z-40"
+                      className="fixed top-20 left-1/2 -translate-x-1/2 w-[800px] h-6 z-[9998]"
                       onMouseEnter={() => handleMouseEnter('solutions')}
                       onMouseLeave={handleMouseLeave}
                     />
-                    <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-black/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-black/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
+                    <motion.div 
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="fixed top-[6.5rem] left-1/2 -translate-x-1/2 w-[800px] bg-white/99 dark:bg-black/99 rounded-2xl shadow-2xl dark:shadow-black/80 border border-gray-200/60 dark:border-gray-700/60 p-8 z-[9999]"
                       onMouseEnter={() => handleMouseEnter('solutions')}
                       onMouseLeave={handleMouseLeave}
                     >
@@ -329,9 +365,10 @@ const Navbar = () => {
                        </div>
                      ))}
                    </div>
-                 </div>
+                 </motion.div>
                    </>
-                )}
+                 )}
+               </AnimatePresence>
              </div>
 
              {/* Industries Dropdown */}
@@ -351,16 +388,21 @@ const Navbar = () => {
                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
                </Link>
                
-               {hoveredItem === 'industries' && (
+               <AnimatePresence>
+                 {hoveredItem === 'industries' && (
                    <>
                      {/* Invisible bridge area */}
                      <div 
-                       className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[800px] h-12 z-40"
+                       className="fixed top-20 left-1/2 -translate-x-1/2 w-[800px] h-6 z-[9998]"
                        onMouseEnter={() => handleMouseEnter('industries')}
                        onMouseLeave={handleMouseLeave}
                      />
-                     <div 
-                      className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[800px] bg-white/95 dark:bg-black/95 backdrop-blur-md rounded-2xl shadow-2xl dark:shadow-black/60 border border-gray-200/50 dark:border-gray-700/50 p-8 z-50 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0 hover:shadow-3xl hover:scale-[1.01]"
+                     <motion.div 
+                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                       animate={{ opacity: 1, y: 0, scale: 1 }}
+                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                       transition={{ duration: 0.2, ease: "easeOut" }}
+                       className="fixed top-[6.5rem] left-1/2 -translate-x-1/2 w-[800px] bg-white/99 dark:bg-black/99 rounded-2xl shadow-2xl dark:shadow-black/80 border border-gray-200/60 dark:border-gray-700/60 p-8 z-[9999]"
                        onMouseEnter={() => handleMouseEnter('industries')}
                        onMouseLeave={handleMouseLeave}
                      >
@@ -383,9 +425,10 @@ const Navbar = () => {
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                     </>
-                )}
+                  )}
+                </AnimatePresence>
              </div>
 
              <Link
@@ -459,7 +502,7 @@ const Navbar = () => {
 
        {/* Mobile menu */}
           {isMenuOpen && (
-            <div className="lg:hidden bg-white/95 dark:bg-black/95 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 rounded-b-2xl mx-4 shadow-xl dark:shadow-2xl dark:shadow-black/50 dark:ring-1 dark:ring-gray-600/20 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0">
+            <div className="lg:hidden bg-white/95 dark:bg-black/95 border-t border-gray-200/50 dark:border-gray-700/50 rounded-b-2xl mx-4 shadow-xl dark:shadow-2xl dark:shadow-black/50 dark:ring-1 dark:ring-gray-600/20 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0">
               <div className="px-4 pt-4 pb-6 space-y-4">
              <Link
                href="/home"

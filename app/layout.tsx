@@ -39,7 +39,7 @@ export default function RootLayout({
             <LanguageProvider defaultLanguage="en" storageKey="oskaz-language">
               <FlashlightEffect />
               <Navbar />
-              <div className="pt-12">
+              <div className="pt-20">
                 {children}
               </div>
             </LanguageProvider>

@@ -23,7 +23,7 @@ export function LanguageToggle() {
           <span className="sr-only">Toggle language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="center" side="bottom" sideOffset={4} className="min-w-[120px]">
         <DropdownMenuItem onClick={() => setLanguage("en")} className={language === "en" ? "bg-accent" : ""}>
           <span className="mr-2 text-base">🇺🇸</span>
           <span>English</span>
