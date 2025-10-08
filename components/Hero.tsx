@@ -79,7 +79,7 @@ const Hero = () => {
             </div>
             
             <p className="text-lg text-muted-foreground max-w-lg">
-              Discover our comprehensive range of import solutions designed to elevate your business operations and drive growth in today's competitive market.
+              Discover our comprehensive range of import solutions designed to elevate your business operations and drive growth in today&apos;s competitive market.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
