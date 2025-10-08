@@ -1,6 +1,7 @@
 import Hero from '@/components/Hero'
 import InnovationSection from '@/components/Innovation-Section';
 import ProductsShowcase from '@/components/Products-Showcase';
+import TopPicks from '@/components/Top-Picks';
 import WhyChooseOskaz from '@/components/Why-Choose-Oskaz';
 import React from 'react'
 
@@ -11,6 +12,7 @@ const HomePage = () => {
       <InnovationSection/>
       <WhyChooseOskaz/>
       <ProductsShowcase/>
+      <TopPicks/>
     </main>
   );
 }
