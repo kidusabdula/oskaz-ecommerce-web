@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/components/language-provider";
 //import ClientOnly from "@/components/client-only";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 //import FlashlightEffect from "@/components/FlashlightEffect";
 
 const inter = Inter({
@@ -36,9 +37,10 @@ export default function RootLayout({
           <LanguageProvider defaultLanguage="en" storageKey="oskaz-language">
             {/* <FlashlightEffect /> */}
             {/* <ClientOnly> */}
-              <Navbar />
+            <Navbar />
             {/* </ClientOnly> */}
             <div className="pt-28">{children}</div>
+            <Footer />
           </LanguageProvider>
         </ThemeProvider>
       </body>
