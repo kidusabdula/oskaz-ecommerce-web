@@ -432,10 +432,10 @@ const Navbar = () => {
              </div>
 
              <Link
-               href="/tracking"
+               href="/about"
                className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
              >
-               <span className="relative z-10 transition-all duration-300">TRACKING & REPORTS</span>
+               <span className="relative z-10 transition-all duration-300">ABOUT</span>
                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
              </Link>
              
@@ -533,11 +533,11 @@ const Navbar = () => {
                Industries
              </Link>
              <Link
-               href="/tracking"
+               href="/about"
                className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
                onClick={() => setIsMenuOpen(false)}
              >
-               Tracking & Reports
+               About
              </Link>
              
              {/* Theme & Language controls in mobile menu */}
