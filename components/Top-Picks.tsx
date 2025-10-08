@@ -127,7 +127,7 @@ const TopPicks = () => {
     <section
       ref={sectionRef}
       className={cn(
-        "relative py-20 md:py-32 overflow-hidden transition-colors duration-500",
+        "relative py-20 md:py-28 overflow-hidden transition-colors duration-500",
         isDarkMode
           ? "bg-background"
           : "bg-gradient-to-br from-slate-50 to-blue-50/30"
