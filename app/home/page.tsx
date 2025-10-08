@@ -1,3 +1,4 @@
+import GetStarted from '@/components/Get-Started';
 import Hero from '@/components/Hero'
 import InnovationSection from '@/components/Innovation-Section';
 import ProductsShowcase from '@/components/Products-Showcase';
@@ -15,6 +16,7 @@ const HomePage = () => {
       <ProductsShowcase/>
       <TopPicks/>
       <Testimonials/>
+      <GetStarted/>
     </main>
   );
 }
