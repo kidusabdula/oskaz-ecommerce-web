@@ -141,7 +141,7 @@ const GetStarted = () => {
             Get Started Today
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Ready to transform your business with our innovative solutions? Get in touch with our team and let's discuss how we can help you achieve your goals.
+            Ready to transform your business with our innovative solutions? Get in touch with our team and let&apos;s discuss how we can help you achieve your goals.
           </p>
         </div>
 
@@ -165,7 +165,7 @@ const GetStarted = () => {
                     </div>
                     <h3 className="text-2xl font-bold mb-2">Thank You!</h3>
                     <p className="text-muted-foreground">
-                      We've received your message and will get back to you within 24 hours.
+                      We&apos;ve received your message and will get back to you within 24 hours.
                     </p>
                   </div>
                 ) : (
@@ -274,7 +274,7 @@ const GetStarted = () => {
             <div>
               <h2 className="text-2xl font-bold mb-6">Get in Touch</h2>
               <p className="text-muted-foreground mb-8">
-                Our team of experts is ready to help you find the perfect solution for your business. Whether you're looking for a specific product or need custom development, we're here to assist you.
+                Our team of experts is ready to help you find the perfect solution for your business. Whether you&apos;re looking for a specific product or need custom development, we&apos;re here to assist you.
               </p>
             </div>
             
