@@ -234,7 +234,7 @@ export default function Home() {
               whileTap={{ scale: 0.95 }}
             >
               <Link 
-                href="/products" 
+                href="/home" 
                 className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg group overflow-hidden relative block"
               >
                 <span className="relative z-10">{t.mainPage.hero.primaryCta}</span>
@@ -421,7 +421,7 @@ export default function Home() {
               >
                 <Link
                   href={`/${key}`}
-                  className="group text-center p-6 rounded-2xl bg-[#4f4f4f] dark:bg-black shadow-lg border border-gray-300 dark:border-gray-700 hover:border-cyan-400 dark:hover:border-cyan-500 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 ease-out block transform hover:scale-105 hover:-translate-y-2"
+                  className="group text-center p-6 rounded-2xl bg-[#858b91] dark:bg-black shadow-lg border border-gray-300 dark:border-gray-700 hover:border-cyan-400 dark:hover:border-cyan-500 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 ease-out block transform hover:scale-105 hover:-translate-y-2"
                 >
                   <motion.div 
                     className="w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:shadow-cyan-400/30"
@@ -446,115 +446,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Top Picks Section */}
-      <section className="py-16 px-4 bg-white dark:bg-black scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10 motion-slide-up animate-out opacity-0 translate-y-8 transition-all duration-800 ease-out">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {t.mainPage.topPicks.title}
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              {t.mainPage.topPicks.subtitle}
-            </p>
-          </div>
 
-          <div className="grid lg:grid-cols-2 gap-16 items-center mt-12 motion-fade-in animate-out opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-            <div className="relative transform transition-all duration-700 hover:scale-105 hover:-rotate-2">
-              <div className="bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 rounded-3xl aspect-square flex items-center justify-center shadow-2xl group hover:shadow-3xl transition-all duration-500">
-                <div className="text-blue-700 dark:text-blue-300 text-center transition-all duration-500 group-hover:scale-110">
-                  <div className="w-40 h-40 bg-blue-200 dark:bg-blue-700 rounded-2xl mx-auto mb-4 shadow-lg transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 flex items-center justify-center">
-                    <div className="w-20 h-12 bg-[#4f4f4f] dark:bg-black rounded opacity-90 flex items-center justify-center">
-                      <div className="w-12 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <p className="text-lg font-medium transition-all duration-300 group-hover:text-blue-800 dark:group-hover:text-blue-200">{t.mainPage.topPicks.productName}</p>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-6 transform transition-all duration-700 hover:translate-x-2">
-              <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white transition-all duration-500 hover:scale-105 hover:text-blue-600 dark:hover:text-blue-400">
-                {t.mainPage.topPicks.description}
-              </h3>
-              <h4 className="text-2xl font-light text-gray-700 dark:text-gray-300 transition-all duration-300 hover:text-gray-900 dark:hover:text-white">
-                {t.mainPage.topPicks.price}
-              </h4>
-              <Link 
-                href="/products/smart-boards"
-                className="inline-block bg-[#4f4f4f] text-white px-8 py-4 rounded-lg font-medium text-lg transition-all duration-500 ease-out hover:bg-[#5a5a5a] hover:scale-110 hover:shadow-2xl hover:shadow-purple-500/30 hover:-translate-y-1 group overflow-hidden relative border border-gray-500 hover:border-purple-400"
-              >
-                <span className="relative z-10 group-hover:text-purple-200 transition-colors duration-300">{t.mainPage.topPicks.cta}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left"></div>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Power Solutions Section */}
-      <section className="py-16 px-4 bg-white dark:bg-black scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6 transform transition-all duration-700 hover:translate-x-2">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white transition-all duration-500 hover:scale-105 hover:text-amber-600 dark:hover:text-amber-400">
-                {t.mainPage.powerSolutions.title}
-              </h2>
-              <h3 className="text-2xl font-light text-gray-700 dark:text-gray-300 transition-all duration-300 hover:text-gray-900 dark:hover:text-white">
-                {t.mainPage.powerSolutions.subtitle}
-              </h3>
-              <Link 
-                href="/products/power-solutions"
-                className="inline-block bg-[#4f4f4f] text-white px-6 py-3 rounded-lg font-medium text-base transition-all duration-500 ease-out hover:bg-[#5a5a5a] hover:scale-110 hover:shadow-2xl hover:shadow-orange-500/30 hover:-translate-y-1 group overflow-hidden relative border border-gray-500 hover:border-orange-400"
-              >
-                <span className="relative z-10 group-hover:text-orange-200 transition-colors duration-300">{t.mainPage.powerSolutions.cta}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left"></div>
-              </Link>
-            </div>
-            <div className="relative transform transition-all duration-700 hover:scale-105 hover:rotate-2">
-              <div className="bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900 dark:to-amber-800 rounded-3xl aspect-square flex items-center justify-center shadow-2xl group hover:shadow-3xl transition-all duration-500">
-                <div className="text-amber-700 dark:text-amber-300 text-center transition-all duration-500 group-hover:scale-110">
-                  <div className="w-40 h-40 bg-amber-200 dark:bg-amber-700 rounded-2xl mx-auto mb-4 shadow-lg transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 flex items-center justify-center">
-                    <div className="w-20 h-16 bg-[#4f4f4f] dark:bg-black rounded opacity-90 flex items-center justify-center">
-                      <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <p className="text-lg font-medium transition-all duration-300 group-hover:text-amber-800 dark:group-hover:text-amber-200">{t.mainPage.powerSolutions.productName}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Tracking Card Section */}
-      <section className="py-16 px-4 bg-gray-50 dark:bg-black scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative transform transition-all duration-700 hover:scale-105 hover:-rotate-2">
-              <div className="bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900 dark:to-purple-800 rounded-3xl aspect-square flex items-center justify-center shadow-2xl group hover:shadow-3xl transition-all duration-500">
-                <div className="text-purple-700 dark:text-purple-300 text-center transition-all duration-500 group-hover:scale-110">
-                  <div className="w-40 h-40 bg-purple-200 dark:bg-purple-700 rounded-2xl mx-auto mb-4 shadow-lg transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-6"></div>
-                  <p className="text-base font-medium transition-all duration-300 group-hover:text-purple-800 dark:group-hover:text-purple-200">Tracking Card</p>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-4 transform transition-all duration-700 hover:translate-x-2">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white transition-all duration-500 hover:scale-105 hover:text-purple-600 dark:hover:text-purple-400">
-                {t.mainPage.tracking.title}
-              </h2>
-              <h3 className="text-xl font-light text-gray-700 dark:text-gray-300 transition-all duration-300 hover:text-gray-900 dark:hover:text-white">
-                {t.mainPage.tracking.subtitle}
-              </h3>
-              <Link 
-                href="/products/tracking-card"
-                className="inline-block bg-[#4f4f4f] dark:bg-[#4f4f4f] text-white dark:text-white px-4 py-2 rounded-lg font-medium text-sm transition-all duration-500 ease-out hover:bg-[#5a5a5a] dark:hover:bg-[#5a5a5a] hover:scale-110 hover:shadow-2xl hover:shadow-pink-500/30 hover:-translate-y-1 group overflow-hidden relative border border-gray-500 hover:border-pink-400"
-              >
-                <span className="relative z-10 group-hover:text-pink-200 transition-colors duration-300">{t.mainPage.tracking.cta}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left"></div>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Why Choose Us */}
       <section className="py-16 px-4 bg-white dark:bg-black">
@@ -634,60 +528,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-16 px-4 bg-white dark:bg-black scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 motion-slide-up animate-out opacity-0 translate-y-8 transition-all duration-800 ease-out">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 stagger-item animate-out opacity-0 translate-y-4 transition-all duration-800 ease-out">
-              What Our Clients Say
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto stagger-item animate-out opacity-0 translate-y-4 transition-all duration-800 ease-out">
-              Trusted by organizations worldwide for reliable technology solutions
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 motion-scale-in animate-out opacity-0 scale-95 transition-all duration-1000 ease-out">
-            {[
-              {
-                name: "Sarah Johnson",
-                role: "IT Director, Education District",
-                content: "The smart boards have transformed our classrooms. Students are more engaged than ever."
-              },
-              {
-                name: "Michael Chen",
-                role: "Facilities Manager, Hospital",
-                content: "Reliable power solutions that keep our critical systems running 24/7."
-              },
-              {
-                name: "David Rodriguez",
-                role: "Operations Manager, Corporate",
-                content: "Outstanding digital signage that delivers our message with crystal clarity."
-              }
-            ].map((testimonial, index) => (
-              <div
-                key={index}
-                className="bg-[#4f4f4f] dark:bg-zinc-900 p-6 rounded-xl shadow-lg border border-gray-300/20 dark:border-gray-700/20 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-400/50 transform hover:scale-110 hover:-translate-y-3 hover:rotate-1 hover:bg-[#5a5a5a] group stagger-item animate-out opacity-0 translate-y-4 transition-all duration-800 ease-out"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mr-4 shadow-lg group-hover:scale-125 group-hover:rotate-12 group-hover:shadow-xl transition-all duration-500">
-                    <span className="text-white font-bold filter group-hover:drop-shadow-lg">{testimonial.name.charAt(0)}</span>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white transition-all duration-300 group-hover:text-blue-300 group-hover:scale-105">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-300 transition-all duration-300 group-hover:text-blue-200">{testimonial.role}</p>
-                  </div>
-                </div>
-                <p className="text-gray-200 italic transition-all duration-300 group-hover:text-white group-hover:scale-105">"{testimonial.content}"</p>
-                <div className="flex mt-4 transition-all duration-300 group-hover:scale-110">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-yellow-400 text-sm transition-all duration-300 group-hover:text-yellow-300 group-hover:drop-shadow-lg">★</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* CEO Quote Section */}
       <section className="py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-black dark:to-black scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
@@ -744,51 +585,9 @@ export default function Home() {
 
 
 
-      {/* Client Success Stories */}
-      <section className="py-10 px-4 bg-gray-50 dark:bg-black scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-xl md:text-2xl font-bold text-center text-gray-900 dark:text-white mb-6 transform transition-all duration-500 hover:scale-105">
-            {t.mainPage.clientStories.title}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[
-              { name: t.mainPage.clientStories.education, icon: '🎓' },
-              { name: t.mainPage.clientStories.healthcare, icon: '🏥' },
-              { name: t.mainPage.clientStories.corporate, icon: '🏢' },
-              { name: t.mainPage.clientStories.government, icon: '🏛️' }
-            ].map((client, index) => (
-              <div 
-                key={client.name} 
-                className="bg-[#4f4f4f] dark:bg-black rounded-2xl p-3 text-center shadow-lg transition-all duration-500 ease-out hover:shadow-2xl hover:scale-110 hover:-translate-y-2 group transform"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="text-2xl mb-2 transition-all duration-500 group-hover:scale-125 group-hover:rotate-12">
-                  {client.icon}
-                </div>
-                <p className="text-sm font-medium text-gray-900 dark:text-white transition-all duration-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:scale-105">{client.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Footer CTA */}
-      <section className="py-10 px-4 bg-white dark:bg-black scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-        <div className="max-w-4xl mx-auto text-center transform transition-all duration-700 hover:scale-105">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2 transition-all duration-500 hover:text-blue-600 dark:hover:text-blue-400">
-            {t.mainPage.footerCta.title}
-          </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 transition-all duration-300 hover:text-gray-800 dark:hover:text-gray-200">
-            {t.mainPage.footerCta.description}
-          </p>
-          <Link 
-            href="/contact"
-            className="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition-all duration-500 ease-out hover:from-blue-700 hover:to-indigo-700 hover:scale-110 hover:shadow-2xl hover:-translate-y-1"
-          >
-            {t.mainPage.footerCta.cta}
-          </Link>
-        </div>
-      </section>
+
+
     </div>
   );
 }
