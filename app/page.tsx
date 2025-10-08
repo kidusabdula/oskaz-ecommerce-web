@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/language-provider";
 import { useTranslations } from "@/lib/translations";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const { language } = useLanguage();
@@ -220,48 +221,49 @@ export default function Home() {
             {t.mainPage.hero.subtitle}
           </motion.p>
           <motion.div 
-            className="flex flex-col sm:flex-row gap-6 justify-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.0, delay: 0.9, ease: "easeOut" }}
           >
-            <motion.div
-              whileHover={{ 
-                scale: 1.05, 
-                y: -8,
-                transition: { type: "spring", stiffness: 400, damping: 25 }
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link 
-                href="/home" 
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg group overflow-hidden relative block"
+            <Link href="/home" passHref>
+              <Button 
+                variant="ghost" 
+                size="lg" 
+                aria-label="Explore Products"
+                className="group bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 hover:bg-transparent"
               >
-                <span className="relative z-10">{t.mainPage.hero.primaryCta}</span>
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  style={{ originX: 0 }}
-                />
-              </Link>
-            </motion.div>
-            <motion.div
-              whileHover={{ 
-                scale: 1.05, 
-                y: -8,
-                transition: { type: "spring", stiffness: 400, damping: 25 }
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link 
-                href="/about" 
-                className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-8 py-4 rounded-2xl font-semibold text-lg block hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
+                {t.mainPage.hero.primaryCta}
+                <svg 
+                  className="ml-2 h-5 w-5 inline-block transition-transform group-hover:translate-x-1" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  strokeWidth="2"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Button>
+            </Link>
+            <Link href="/about" passHref>
+              <Button 
+                variant="ghost" 
+                size="lg" 
+                aria-label="Learn More"
+                className="group border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
               >
                 {t.mainPage.hero.secondaryCta}
-              </Link>
-            </motion.div>
+                <svg 
+                  className="ml-2 h-5 w-5 inline-block transition-transform group-hover:translate-x-1" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  strokeWidth="2"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Button>
+            </Link>
           </motion.div>
         </motion.div>
             

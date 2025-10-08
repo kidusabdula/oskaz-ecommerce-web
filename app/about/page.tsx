@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/language-provider";
 import { useTranslations } from "@/lib/translations";
+import { Button } from "@/components/ui/button";
 import { Globe, Users, Award, TrendingUp, Shield, Heart, Code, X, FileText } from "lucide-react";
 
 export default function AboutPage() {
@@ -168,17 +169,43 @@ export default function AboutPage() {
               An Import, Retail and Consultancy firm, sister company of Orchid International General Importer. Empowering organizations with cutting-edge technologies and expert consultancy services since 2007.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contact"
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              >
-                Get In Touch
+              <Link href="/contact" passHref>
+                <Button 
+                  variant="ghost" 
+                  size="lg" 
+                  aria-label="Get In Touch"
+                  className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:bg-transparent"
+                >
+                  Get In Touch
+                  <svg 
+                    className="ml-2 h-5 w-5 inline-block transition-transform group-hover:translate-x-1" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24" 
+                    strokeWidth="2"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Button>
               </Link>
-              <Link
-                href="/services"
-                className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 transform hover:scale-105"
-              >
-                Our Services
+              <Link href="/services" passHref>
+                <Button 
+                  variant="ghost" 
+                  size="lg" 
+                  aria-label="Our Services"
+                  className="group border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400"
+                >
+                  Our Services
+                  <svg 
+                    className="ml-2 h-5 w-5 inline-block transition-transform group-hover:translate-x-1" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24" 
+                    strokeWidth="2"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Button>
               </Link>
             </div>
           </motion.div>
