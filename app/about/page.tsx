@@ -547,26 +547,7 @@ export default function AboutPage() {
           
 
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-700 dark:to-gray-600 rounded-2xl p-8 text-center"
-          >
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Trusted by Leading Organizations
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-3xl mx-auto">
-              From universities and government institutions to private enterprises, Oskaz Import has earned the trust of diverse organizations across Ethiopia through our unwavering commitment to quality, reliability, and customer satisfaction.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-              <span className="bg-white dark:bg-black px-4 py-2 rounded-full">Universities</span>
-                 <span className="bg-white dark:bg-black px-4 py-2 rounded-full">Government Institutions</span>
-                 <span className="bg-white dark:bg-black px-4 py-2 rounded-full">Private Enterprises</span>
-                 <span className="bg-white dark:bg-black px-4 py-2 rounded-full">NGOs</span>
-                 <span className="bg-white dark:bg-black px-4 py-2 rounded-full">Healthcare Centers</span>
-            </div>
-          </motion.div>
+
 
           {/* Certificates Section */}
           <motion.div
