@@ -122,7 +122,7 @@ export const translations = {
       
       // CEO Quote
       ceoQuote: {
-        quote: "At Oskaz Import, we're not just selling technology – we're empowering businesses to transform their operations and achieve unprecedented efficiency.",
+        quote: "At Oskaz Import, we're not just selling technology we're empowering businesses to transform their operations and achieve unprecedented efficiency.",
         author: "Mr. Hussen Yesuf",
         title: "CEO & Founder, Oskaz Import"
       },
