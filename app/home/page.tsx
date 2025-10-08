@@ -1,5 +1,6 @@
 import Hero from '@/components/Hero'
 import InnovationSection from '@/components/Innovation-Section';
+import WhyChooseOskaz from '@/components/Why-Choose-Oskaz';
 import React from 'react'
 
 const HomePage = () => {
@@ -7,6 +8,7 @@ const HomePage = () => {
     <main className="min-h-screen bg-background">
       <Hero />
       <InnovationSection/>
+      <WhyChooseOskaz/>
     </main>
   );
 }
