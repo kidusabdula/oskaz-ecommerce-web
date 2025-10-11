@@ -10,8 +10,8 @@ import {
   ChevronDown,
   X,
 } from "lucide-react";
-import { ThemeDropdown } from "./theme-dropdown";
-import { LanguageDropdown } from "./language-dropdown";
+import { ThemeDropdown } from "./utilities/theme-dropdown";
+import { LanguageDropdown } from "./utilities/language-dropdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -84,7 +84,7 @@ const Navbar = () => {
         <div className="flex items-center space-x-2">
           <LanguageDropdown />
           <div className="h-4 w-px bg-border mx-2" />
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="h-8 px-2 text-xs">
                 {currency.toUpperCase()}{" "}
@@ -99,7 +99,7 @@ const Navbar = () => {
                 ETB
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
         </div>
 
         <div className="text-muted-foreground hidden sm:block">
@@ -107,18 +107,18 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4 text-sm">
-          <Link
+          {/* <Link
             href="/flash-sale"
             className="hover:text-primary transition-colors"
           >
             Flash Sale
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
             href="/track-order"
             className="hover:text-primary transition-colors"
           >
             Track Order
-          </Link>
+          </Link> */}
           <Link href="/about" className="hover:text-primary transition-colors">
             About
           </Link>
@@ -161,10 +161,10 @@ const Navbar = () => {
         {/* Center: Nav Links */}
         <div className="hidden lg:flex items-center space-x-6">
           <Link
-            href="/home"
+            href="/products"
             className="text-muted-foreground hover:text-foreground text-sm font-medium transition-all duration-300 hover:scale-105"
           >
-            Best Sellers
+            Products
           </Link>
 
           {/* SERVICES */}

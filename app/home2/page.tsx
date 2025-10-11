@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useLanguage } from "@/components/language-provider";
+import { useLanguage } from "@/components/utilities/language-provider";
 import { useTranslations } from "@/lib/translations";
 
 export default function Home() {

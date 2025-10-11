@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+// import { Separator } from "@/components/ui/separator";
 import { 
   Facebook, 
   Twitter, 
@@ -20,7 +20,6 @@ import {
   ArrowUp,
   Package,
   Shield,
-  Globe,
   Users
 } from "lucide-react";
 import { useTheme } from "next-themes";
