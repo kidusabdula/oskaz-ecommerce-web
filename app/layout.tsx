@@ -6,6 +6,8 @@ import { LanguageProvider } from "@/components/language-provider";
 import ClientOnly from "@/components/client-only";
 import Navbar from "@/components/Navbar";
 import FlashlightEffect from "@/components/FlashlightEffect";
+import Footer from "@/components/Footer";
+import MarketingBar from "@/components/MarketingBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -42,6 +44,8 @@ export default function RootLayout({
               <div className="pt-20">
                 {children}
               </div>
+              <Footer />
+              <MarketingBar />
             </LanguageProvider>
           </ClientOnly>
         </ThemeProvider>

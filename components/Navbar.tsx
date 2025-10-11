@@ -247,7 +247,7 @@ const Navbar = () => {
               <span 
                 className="relative z-10 transition-all duration-300"
                 style={{ color: getElementTextColor('center') }}
-              >BEST SELLERS</span>
+              >PRODUCTS</span>
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
             </Link>
             
@@ -439,13 +439,7 @@ const Navbar = () => {
                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
              </Link>
              
-             <Link
-               href="/more"
-               className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
-             >
-               <span className="relative z-10 transition-all duration-300">MORE</span>
-               <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-             </Link>
+            
              
              <Link
                href="/sale"

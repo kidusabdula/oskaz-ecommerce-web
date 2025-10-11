@@ -200,7 +200,7 @@ export default function Home() {
           onMouseLeave={() => setIsHeaderHovered(false)}
         >
           <motion.h1 
-            className={`text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight transition-colors duration-500 ease-in-out ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight tracking-tight transition-colors duration-500 ease-in-out ${
               isHeaderHovered ? 'text-white drop-shadow-2xl' : 'text-black dark:text-white drop-shadow-2xl'
             }`}
             initial={{ opacity: 0, y: 30 }}
@@ -211,7 +211,7 @@ export default function Home() {
             {t.mainPage.hero.title}
           </motion.h1>
           <motion.p 
-            className={`text-xl md:text-2xl lg:text-3xl mb-8 max-w-4xl mx-auto leading-relaxed font-light transition-colors duration-500 ease-in-out ${
+            className={`text-base md:text-lg lg:text-xl mb-8 max-w-4xl mx-auto leading-relaxed font-light transition-colors duration-500 ease-in-out ${
               isHeaderHovered ? 'text-white/90 drop-shadow-lg' : 'text-black/90 dark:text-white/90 drop-shadow-lg'
             }`}
             initial={{ opacity: 0, y: 30 }}
@@ -323,39 +323,39 @@ export default function Home() {
           <div className="space-y-12">
             {/* Main Header */}
             <div className="space-y-6 motion-slide-up animate-out opacity-0 translate-y-16 scale-95 transition-all duration-[2000ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-gray-800 dark:text-white mb-6 leading-tight tracking-tight transition-all duration-[1500ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:scale-105 transform hover:text-shadow-lg">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 dark:text-white mb-4 leading-tight tracking-tight transition-all duration-[1500ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:scale-105 transform hover:text-shadow-lg">
                 Why Choose Oskaz®?
               </h2>
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-light text-gray-700 dark:text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed transition-all duration-[1200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:text-gray-800 dark:hover:text-gray-100 transform hover:scale-103 hover:tracking-wide">
+              <h3 className="text-lg font-light text-gray-700 dark:text-gray-300 mb-6 max-w-4xl mx-auto leading-relaxed transition-all duration-[1200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:text-gray-800 dark:hover:text-gray-100 transform hover:scale-103 hover:tracking-wide">
                 Custom Software Solutions Built for Your Business
               </h3>
             </div>
             
             {/* Description */}
             <div className="max-w-5xl mx-auto motion-fade-in animate-out opacity-0 translate-y-12 scale-98 transition-all duration-[2200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" style={{ animationDelay: '600ms' }}>
-              <p className="text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed mb-8 font-light transition-all duration-[1300ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:text-gray-700 dark:hover:text-gray-200 transform hover:scale-102 hover:tracking-wide">
+              <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6 font-light transition-all duration-[1300ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:text-gray-700 dark:hover:text-gray-200 transform hover:scale-102 hover:tracking-wide">
                 Beyond hardware, Oskaz delivers <span className="text-gray-800 dark:text-white font-semibold">tailored software solutions</span> that transform how your business operates. Our development team creates custom applications, integrations, and digital platforms specifically designed for your industry, workflow, and growth objectives.
               </p>
-              <div className="grid md:grid-cols-3 gap-8 mt-12">
+              <div className="grid md:grid-cols-3 gap-6 mt-8">
                 <div className="text-center space-y-4 p-6 rounded-2xl bg-white/20 dark:bg-gray-800/40 backdrop-blur-sm border border-gray-300/30 dark:border-gray-600/30 transition-all duration-700 hover:scale-110 hover:-translate-y-3 hover:bg-white/30 dark:hover:bg-gray-700/50 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-400/50 group">
                   <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg transition-all duration-700 group-hover:scale-125 group-hover:rotate-12 group-hover:shadow-xl">
-                    <span className="text-2xl filter group-hover:drop-shadow-lg">⚡</span>
+                    <span className="text-xl filter group-hover:drop-shadow-lg">⚡</span>
                   </div>
-                  <h4 className="text-lg font-semibold text-gray-800 dark:text-white transition-all duration-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:scale-105 group-hover:tracking-wide">Custom Development</h4>
+                  <h4 className="text-base font-semibold text-gray-800 dark:text-white transition-all duration-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:scale-105 group-hover:tracking-wide">Custom Development</h4>
                   <p className="text-gray-700 dark:text-gray-300 text-sm transition-all duration-500 group-hover:text-gray-800 dark:group-hover:text-gray-200 group-hover:scale-105">Bespoke software solutions tailored to your exact business requirements</p>
                 </div>
                 <div className="text-center space-y-4 p-6 rounded-2xl bg-white/20 dark:bg-gray-800/40 backdrop-blur-sm border border-gray-300/30 dark:border-gray-600/30 transition-all duration-700 hover:scale-110 hover:-translate-y-3 hover:bg-white/30 dark:hover:bg-gray-700/50 hover:shadow-2xl hover:shadow-green-500/20 hover:border-green-400/50 group">
                   <div className="w-16 h-16 mx-auto bg-gradient-to-br from-green-500 to-teal-600 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg transition-all duration-700 group-hover:scale-125 group-hover:rotate-12 group-hover:shadow-xl">
-                    <span className="text-2xl filter group-hover:drop-shadow-lg">🔗</span>
+                    <span className="text-xl filter group-hover:drop-shadow-lg">🔗</span>
                   </div>
-                  <h4 className="text-lg font-semibold text-gray-800 dark:text-white transition-all duration-500 group-hover:text-green-600 dark:group-hover:text-green-400 group-hover:scale-105 group-hover:tracking-wide">Seamless Integration</h4>
+                  <h4 className="text-base font-semibold text-gray-800 dark:text-white transition-all duration-500 group-hover:text-green-600 dark:group-hover:text-green-400 group-hover:scale-105 group-hover:tracking-wide">Seamless Integration</h4>
                   <p className="text-gray-700 dark:text-gray-300 text-sm transition-all duration-500 group-hover:text-gray-800 dark:group-hover:text-gray-200 group-hover:scale-105">Connect your existing systems with our smart technology ecosystem</p>
                 </div>
                 <div className="text-center space-y-4 p-6 rounded-2xl bg-white/20 dark:bg-gray-800/40 backdrop-blur-sm border border-gray-300/30 dark:border-gray-600/30 transition-all duration-700 hover:scale-110 hover:-translate-y-3 hover:bg-white/30 dark:hover:bg-gray-700/50 hover:shadow-2xl hover:shadow-purple-500/20 hover:border-purple-400/50 group">
                   <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg transition-all duration-700 group-hover:scale-125 group-hover:rotate-12 group-hover:shadow-xl">
-                    <span className="text-2xl filter group-hover:drop-shadow-lg">📈</span>
+                    <span className="text-xl filter group-hover:drop-shadow-lg">📈</span>
                   </div>
-                  <h4 className="text-lg font-semibold text-gray-800 dark:text-white transition-all duration-500 group-hover:text-purple-600 dark:group-hover:text-purple-400 group-hover:scale-105 group-hover:tracking-wide">Scalable Growth</h4>
+                  <h4 className="text-base font-semibold text-gray-800 dark:text-white transition-all duration-500 group-hover:text-purple-600 dark:group-hover:text-purple-400 group-hover:scale-105 group-hover:tracking-wide">Scalable Growth</h4>
                   <p className="text-gray-700 dark:text-gray-300 text-sm transition-all duration-500 group-hover:text-gray-800 dark:group-hover:text-gray-200 group-hover:scale-105">Software that evolves with your business, from startup to enterprise</p>
                 </div>
               </div>
@@ -377,7 +377,7 @@ export default function Home() {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
+              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -387,7 +387,7 @@ export default function Home() {
               {t.mainPage.categories.title}
             </motion.h2>
             <motion.p 
-              className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
+              className="text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -435,7 +435,7 @@ export default function Home() {
                   >
                     <div className="w-6 h-6 bg-white dark:bg-black rounded-lg opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </motion.div>
-                  <h3 className="text-xl font-bold text-white dark:text-white mb-3 group-hover:text-cyan-300 dark:group-hover:text-cyan-400 transition-all duration-300 group-hover:scale-105">
+                  <h3 className="text-lg font-bold text-white dark:text-white mb-3 group-hover:text-cyan-300 dark:group-hover:text-cyan-400 transition-all duration-300 group-hover:scale-105">
                     {category.shortName}
                   </h3>
                   <p className="text-sm text-gray-200 dark:text-gray-300 leading-relaxed group-hover:text-white dark:group-hover:text-gray-100 transition-all duration-300 group-hover:scale-102">
@@ -463,7 +463,7 @@ export default function Home() {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
+              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -473,7 +473,7 @@ export default function Home() {
               {t.mainPage.whyChooseUs.title}
             </motion.h2>
             <motion.p 
-              className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
+              className="text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -518,7 +518,7 @@ export default function Home() {
                 >
                   <div className="w-4 h-4 bg-[#4f4f4f] dark:bg-black rounded-lg opacity-80"></div>
                 </motion.div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 transition-colors duration-300">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 transition-colors duration-300">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -536,7 +536,7 @@ export default function Home() {
       <section className="py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-black dark:to-black scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
         <div className="max-w-4xl mx-auto text-center">
           <div className="transform hover:scale-105 motion-fade-in animate-out opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-            <blockquote className="text-lg md:text-xl font-light text-gray-800 dark:text-gray-200 mb-4 leading-relaxed hover:text-gray-900 dark:hover:text-white stagger-item animate-out opacity-0 translate-y-4 transition-all duration-800 ease-out">
+            <blockquote className="text-base md:text-lg font-light text-gray-800 dark:text-gray-200 mb-4 leading-relaxed hover:text-gray-900 dark:hover:text-white stagger-item animate-out opacity-0 translate-y-4 transition-all duration-800 ease-out">
               "{t.mainPage.ceoQuote.quote}"
             </blockquote>
             <div className="flex items-center justify-center space-x-3 hover:scale-110 stagger-item animate-out opacity-0 translate-y-4 transition-all duration-800 ease-out">
@@ -557,10 +557,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-4 transform transition-all duration-700 hover:translate-x-2">
-              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white transition-all duration-500 hover:scale-105 hover:text-blue-600 dark:hover:text-blue-400">
+              <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white transition-all duration-500 hover:scale-105 hover:text-blue-600 dark:hover:text-blue-400">
                 {t.mainPage.qualityCommitment.title}
               </h2>
-              <h3 className="text-lg font-light text-gray-700 dark:text-gray-300 transition-all duration-300 hover:text-gray-900 dark:hover:text-white">
+              <h3 className="text-base font-light text-gray-700 dark:text-gray-300 transition-all duration-300 hover:text-gray-900 dark:hover:text-white">
                 {t.mainPage.qualityCommitment.subtitle}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed transition-all duration-300 hover:text-gray-800 dark:hover:text-gray-200">
@@ -584,10 +584,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-
-
-
 
 
     </div>
