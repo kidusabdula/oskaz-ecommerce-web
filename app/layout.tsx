@@ -9,6 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { ToastProvider } from "@/components/ui/toast";
+import MarketingBar from "@/components/MarketingBar";
 //import FlashlightEffect from "@/components/FlashlightEffect";
 
 const inter = Inter({
@@ -48,6 +49,7 @@ export default function RootLayout({
               <div className="">{children}</div>
             </CartProvider>
             <Footer />
+            <MarketingBar/>
           </LanguageProvider>
           </ToastProvider>
         </ThemeProvider>
