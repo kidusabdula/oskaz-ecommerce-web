@@ -2,11 +2,12 @@
 import BlogDetails from "@/components/blog/Blog-Details";
 
 interface BlogPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function BlogPage({ params }: BlogPageProps) {
-  return <BlogDetails blogId={parseInt(params.id)} />;
+export default async function BlogPage({ params }: BlogPageProps) {
+  const { id } = await params;
+  return <BlogDetails blogId={parseInt(id)} />;
 }
