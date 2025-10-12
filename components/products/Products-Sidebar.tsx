@@ -1,4 +1,4 @@
-// components/products/products-sidebar.tsx
+// components/products/Products-Sidebar.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -13,34 +13,48 @@ import { ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
-const ProductsSidebar = () => {
+interface ProductsSidebarProps {
+  categories: Record<string, boolean>;
+  setCategories: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
+  priceRange: [number, number];
+  setPriceRange: React.Dispatch<React.SetStateAction<[number, number]>>;
+  features: {
+    inStock: boolean;
+    onSale: boolean;
+    newArrivals: boolean;
+    bestSellers: boolean;
+  };
+  setFeatures: React.Dispatch<React.SetStateAction<{
+    inStock: boolean;
+    onSale: boolean;
+    newArrivals: boolean;
+    bestSellers: boolean;
+  }>>;
+  brands: Record<string, boolean>;
+  setBrands: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
+  ratings: Record<string, boolean>;
+  setRatings: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
+  onApplyFilters: () => void;
+  onClearAllFilters: () => void;
+  onCategoryChange: (category: string) => void;
+}
+
+const ProductsSidebar: React.FC<ProductsSidebarProps> = ({
+  categories,
+  setCategories,
+  priceRange,
+  setPriceRange,
+  features,
+  setFeatures,
+  brands,
+  setBrands,
+  ratings,
+  setRatings,
+  onApplyFilters,
+  onClearAllFilters,
+  onCategoryChange,
+}) => {
   const [mounted, setMounted] = useState(false);
-  const [priceRange, setPriceRange] = useState([0, 5000]);
-  const [categories, setCategories] = useState({
-    kiosk: false,
-    power: false,
-    display: false,
-    custom: false
-  });
-  const [features, setFeatures] = useState({
-    inStock: true,
-    onSale: false,
-    newArrivals: false,
-    bestSellers: false
-  });
-  const [brands, setBrands] = useState({
-    oskaz: false,
-    techpro: false,
-    innovex: false,
-    digimax: false
-  });
-  const [ratings, setRatings] = useState({
-    five: false,
-    four: false,
-    three: false,
-    two: false,
-    one: false
-  });
   const [expandedSections, setExpandedSections] = useState({
     categories: true,
     price: true,
@@ -55,6 +69,31 @@ const ProductsSidebar = () => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/items/categories');
+        const data = await response.json();
+        
+        if (data && data.data && data.data.categories && Array.isArray(data.data.categories)) {
+          const initialCategories: Record<string, boolean> = {};
+          data.data.categories.forEach((cat: { name: string }) => {
+            initialCategories[cat.name] = false;
+          });
+          setCategories(initialCategories);
+        } else {
+          console.error('Invalid response format:', data);
+          setCategories({});
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setCategories({});
+      }
+    };
+
+    fetchCategories();
+  }, [setCategories]);
+
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -62,61 +101,25 @@ const ProductsSidebar = () => {
     }));
   };
 
-  const handleCategoryChange = (category: keyof typeof categories) => {
-    setCategories(prev => ({
-      ...prev,
-      [category]: !prev[category]
-    }));
-  };
-
   const handleFeatureChange = (feature: keyof typeof features) => {
-    setFeatures(prev => ({
+    setFeatures((prev: { inStock: boolean; onSale: boolean; newArrivals: boolean; bestSellers: boolean; }) => ({
       ...prev,
       [feature]: !prev[feature]
     }));
   };
 
-  const handleBrandChange = (brand: keyof typeof brands) => {
-    setBrands(prev => ({
+  const handleBrandChange = (brand: string) => {
+    setBrands((prev: Record<string, boolean>) => ({
       ...prev,
       [brand]: !prev[brand]
     }));
   };
 
-  const handleRatingChange = (rating: keyof typeof ratings) => {
-    setRatings(prev => ({
+  const handleRatingChange = (rating: string) => {
+    setRatings((prev: Record<string, boolean>) => ({
       ...prev,
       [rating]: !prev[rating]
     }));
-  };
-
-  const clearAllFilters = () => {
-    setPriceRange([0, 5000]);
-    setCategories({
-      kiosk: false,
-      power: false,
-      display: false,
-      custom: false
-    });
-    setFeatures({
-      inStock: true,
-      onSale: false,
-      newArrivals: false,
-      bestSellers: false
-    });
-    setBrands({
-      oskaz: false,
-      techpro: false,
-      innovex: false,
-      digimax: false
-    });
-    setRatings({
-      five: false,
-      four: false,
-      three: false,
-      two: false,
-      one: false
-    });
   };
 
   if (!mounted) return null;
@@ -132,7 +135,7 @@ const ProductsSidebar = () => {
           <SlidersHorizontal className="h-5 w-5 mr-2" />
           Filters
         </h2>
-        <Button variant="ghost" size="sm" onClick={clearAllFilters}>
+        <Button variant="ghost" size="sm" onClick={onClearAllFilters}>
           Clear all
         </Button>
       </div>
@@ -149,50 +152,28 @@ const ProductsSidebar = () => {
         </CollapsibleTrigger>
         <CollapsibleContent className="space-y-3 mt-3">
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="kiosk"
-                checked={categories.kiosk}
-                onCheckedChange={() => handleCategoryChange("kiosk")}
-              />
-              <Label htmlFor="kiosk" className="text-sm font-normal cursor-pointer">
-                Kiosk Systems
-              </Label>
-              <Badge variant="secondary" className="ml-auto text-xs">12</Badge>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="power"
-                checked={categories.power}
-                onCheckedChange={() => handleCategoryChange("power")}
-              />
-              <Label htmlFor="power" className="text-sm font-normal cursor-pointer">
-                Power Solutions
-              </Label>
-              <Badge variant="secondary" className="ml-auto text-xs">8</Badge>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="display"
-                checked={categories.display}
-                onCheckedChange={() => handleCategoryChange("display")}
-              />
-              <Label htmlFor="display" className="text-sm font-normal cursor-pointer">
-                Digital Displays
-              </Label>
-              <Badge variant="secondary" className="ml-auto text-xs">6</Badge>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="custom"
-                checked={categories.custom}
-                onCheckedChange={() => handleCategoryChange("custom")}
-              />
-              <Label htmlFor="custom" className="text-sm font-normal cursor-pointer">
-                Custom Solutions
-              </Label>
-              <Badge variant="secondary" className="ml-auto text-xs">4</Badge>
-            </div>
+            {Object.entries(categories).map(([category, isChecked]) => (
+              <div key={category} className="flex items-center space-x-2">
+                <Checkbox
+                  id={category}
+                  checked={isChecked}
+                  onCheckedChange={() => onCategoryChange(category)}
+                />
+                <Label htmlFor={category} className="text-sm font-normal cursor-pointer">
+                  {category}
+                </Label>
+                <Badge variant="secondary" className="ml-auto text-xs">
+                  {category === "Smart Boards" && "12"}
+                  {category === "Smart Kiosk" && "8"}
+                  {category === "Smart Podiums" && "1"}
+                  {category === "TV Wall" && "2"}
+                  {category === "Digital Signage" && "1"}
+                  {category === "UPS" && "1"}
+                  {category === "Computers" && "0"}
+                  {category === "Others" && "0"}
+                </Badge>
+              </div>
+            ))}
           </div>
         </CollapsibleContent>
       </Collapsible>
@@ -211,14 +192,14 @@ const ProductsSidebar = () => {
           <div className="px-2">
             <Slider
               value={priceRange}
-              onValueChange={setPriceRange}
-              max={5000}
-              step={100}
+              onValueChange={(value) => setPriceRange(value as [number, number])}
+              max={1000000}
+              step={10000}
               className="mt-6"
             />
             <div className="flex justify-between mt-2 text-sm text-muted-foreground">
-              <span>${priceRange[0]}</span>
-              <span>${priceRange[1]}</span>
+              <span>ETB {priceRange[0].toLocaleString()}</span>
+              <span>ETB {priceRange[1].toLocaleString()}</span>
             </div>
           </div>
         </CollapsibleContent>
@@ -236,46 +217,21 @@ const ProductsSidebar = () => {
         </CollapsibleTrigger>
         <CollapsibleContent className="space-y-3 mt-3">
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="inStock"
-                checked={features.inStock}
-                onCheckedChange={() => handleFeatureChange("inStock")}
-              />
-              <Label htmlFor="inStock" className="text-sm font-normal cursor-pointer">
-                In Stock
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="onSale"
-                checked={features.onSale}
-                onCheckedChange={() => handleFeatureChange("onSale")}
-              />
-              <Label htmlFor="onSale" className="text-sm font-normal cursor-pointer">
-                On Sale
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="newArrivals"
-                checked={features.newArrivals}
-                onCheckedChange={() => handleFeatureChange("newArrivals")}
-              />
-              <Label htmlFor="newArrivals" className="text-sm font-normal cursor-pointer">
-                New Arrivals
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="bestSellers"
-                checked={features.bestSellers}
-                onCheckedChange={() => handleFeatureChange("bestSellers")}
-              />
-              <Label htmlFor="bestSellers" className="text-sm font-normal cursor-pointer">
-                Best Sellers
-              </Label>
-            </div>
+            {Object.entries(features).map(([feature, isChecked]) => (
+              <div key={feature} className="flex items-center space-x-2">
+                <Checkbox
+                  id={feature}
+                  checked={isChecked}
+                  onCheckedChange={() => handleFeatureChange(feature as keyof typeof features)}
+                />
+                <Label htmlFor={feature} className="text-sm font-normal cursor-pointer">
+                  {feature === "inStock" && "In Stock"}
+                  {feature === "onSale" && "On Sale"}
+                  {feature === "newArrivals" && "New Arrivals"}
+                  {feature === "bestSellers" && "Best Sellers"}
+                </Label>
+              </div>
+            ))}
           </div>
         </CollapsibleContent>
       </Collapsible>
@@ -292,50 +248,24 @@ const ProductsSidebar = () => {
         </CollapsibleTrigger>
         <CollapsibleContent className="space-y-3 mt-3">
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="oskaz"
-                checked={brands.oskaz}
-                onCheckedChange={() => handleBrandChange("oskaz")}
-              />
-              <Label htmlFor="oskaz" className="text-sm font-normal cursor-pointer">
-                Oskaz
-              </Label>
-              <Badge variant="secondary" className="ml-auto text-xs">15</Badge>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="techpro"
-                checked={brands.techpro}
-                onCheckedChange={() => handleBrandChange("techpro")}
-              />
-              <Label htmlFor="techpro" className="text-sm font-normal cursor-pointer">
-                TechPro
-              </Label>
-              <Badge variant="secondary" className="ml-auto text-xs">8</Badge>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="innovex"
-                checked={brands.innovex}
-                onCheckedChange={() => handleBrandChange("innovex")}
-              />
-              <Label htmlFor="innovex" className="text-sm font-normal cursor-pointer">
-                Innovex
-              </Label>
-              <Badge variant="secondary" className="ml-auto text-xs">5</Badge>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="digimax"
-                checked={brands.digimax}
-                onCheckedChange={() => handleBrandChange("digimax")}
-              />
-              <Label htmlFor="digimax" className="text-sm font-normal cursor-pointer">
-                DigiMax
-              </Label>
-              <Badge variant="secondary" className="ml-auto text-xs">2</Badge>
-            </div>
+            {Object.entries(brands).map(([brand, isChecked]) => (
+              <div key={brand} className="flex items-center space-x-2">
+                <Checkbox
+                  id={brand}
+                  checked={isChecked}
+                  onCheckedChange={() => handleBrandChange(brand)}
+                />
+                <Label htmlFor={brand} className="text-sm font-normal cursor-pointer">
+                  {brand}
+                </Label>
+                <Badge variant="secondary" className="ml-auto text-xs">
+                  {brand === "Oskaz" && "15"}
+                  {brand === "TechPro" && "8"}
+                  {brand === "Innovex" && "5"}
+                  {brand === "DigiMax" && "2"}
+                </Badge>
+              </div>
+            ))}
           </div>
         </CollapsibleContent>
       </Collapsible>
@@ -352,71 +282,31 @@ const ProductsSidebar = () => {
         </CollapsibleTrigger>
         <CollapsibleContent className="space-y-3 mt-3">
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="five"
-                checked={ratings.five}
-                onCheckedChange={() => handleRatingChange("five")}
-              />
-              <Label htmlFor="five" className="text-sm font-normal cursor-pointer flex items-center">
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <span className="ml-2">5 Stars</span>
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="four"
-                checked={ratings.four}
-                onCheckedChange={() => handleRatingChange("four")}
-              />
-              <Label htmlFor="four" className="text-sm font-normal cursor-pointer flex items-center">
-                <div className="flex items-center">
-                  {[...Array(4)].map((_, i) => (
-                    <svg key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                  <svg className="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                </div>
-                <span className="ml-2">4 Stars & Up</span>
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="three"
-                checked={ratings.three}
-                onCheckedChange={() => handleRatingChange("three")}
-              />
-              <Label htmlFor="three" className="text-sm font-normal cursor-pointer flex items-center">
-                <div className="flex items-center">
-                  {[...Array(3)].map((_, i) => (
-                    <svg key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                  {[...Array(2)].map((_, i) => (
-                    <svg key={i} className="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <span className="ml-2">3 Stars & Up</span>
-              </Label>
-            </div>
+            {Object.entries(ratings).map(([rating, isChecked]) => (
+              <div key={rating} className="flex items-center space-x-2">
+                <Checkbox
+                  id={rating}
+                  checked={isChecked}
+                  onCheckedChange={() => handleRatingChange(rating)}
+                />
+                <Label htmlFor={rating} className="text-sm font-normal cursor-pointer flex items-center">
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span className="ml-2">5 Stars</span>
+                </Label>
+              </div>
+            ))}
           </div>
         </CollapsibleContent>
       </Collapsible>
       
       {/* Apply Filters Button */}
-      <Button className="w-full mt-4">
+      <Button className="w-full mt-4" onClick={onApplyFilters}>
         Apply Filters
       </Button>
     </div>

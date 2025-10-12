@@ -1,169 +1,223 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { ArrowRight, Play, Sparkles } from "lucide-react";
+import { ArrowRight, Play, Sparkles, Shield, Zap, Globe, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Hero = () => {
   const [mounted, setMounted] = useState(false);
   const [isInView, setIsInView] = useState(false);
+  const [particles, setParticles] = useState<{ width: number; height: number; top: number; left: number; delay: number; duration: number }[]>([]);
+  const [orbs, setOrbs] = useState<{ top: string; left: string; height: string; width: string; colorClass: string }[]>([]);
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
   const sectionRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
 
-    const timer = setTimeout(() => {
-      setIsInView(true);
-    }, 100);
+    // Generate random floating particles
+    const newParticles = [...Array(20)].map(() => ({
+      width: Math.random() * 20 + 5,
+      height: Math.random() * 20 + 5,
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      delay: Math.random() * 5,
+      duration: Math.random() * 10 + 10
+    }));
+    setParticles(newParticles);
 
+    // Generate gradient orbs positions
+    const newOrbs = [
+      {
+        top: "-40px",
+        left: "auto",
+        height: "20rem",
+        width: "20rem",
+        colorClass: isDarkMode ? "bg-primary" : "bg-blue-400"
+      },
+      {
+        top: "auto",
+        left: "-40px",
+        height: "24rem",
+        width: "24rem",
+        colorClass: isDarkMode ? "bg-purple-500" : "bg-purple-400"
+      }
+    ];
+    setOrbs(newOrbs);
+
+    const timer = setTimeout(() => setIsInView(true), 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [isDarkMode]);
 
-  if (!mounted) return null;
+  if (!mounted) return null; // Prevent SSR/client mismatch
 
-  const categories = [
-    { name: "Kiosk Systems", icon: "🖥️" },
-    { name: "Power Solutions", icon: "⚡" },
-    { name: "Digital Displays", icon: "📺" },
-    { name: "Interactive Tools", icon: "🛠️" },
+  const handleClickViewProducts = () => router.push("/products");
+  const handleClickAbout = () => router.push("/about");
+
+  const features = [
+    { icon: Shield, text: "Trusted Quality", color: "text-blue-500" },
+    { icon: Zap, text: "Fast Delivery", color: "text-amber-500" },
+    { icon: Globe, text: "Global Sourcing", color: "text-emerald-500" },
+    { icon: TrendingUp, text: "Growth Focused", color: "text-purple-500" },
   ];
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       className={cn(
-        "relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24 transition-colors duration-500",
-        isDarkMode ? "bg-background" : "bg-gradient-to-br from-slate-50 to-blue-50/30"
+        "relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32 transition-colors duration-500",
+        isDarkMode ? "bg-background" : "bg-gradient-to-br from-slate-50 via-blue-50/40 to-purple-50/30"
       )}
     >
-      {/* Background Elements */}
+      {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className={cn(
-          "absolute -top-40 -right-40 h-80 w-80 rounded-full opacity-20 blur-3xl",
-          isDarkMode ? "bg-primary" : "bg-blue-400"
-        )}></div>
-        <div className={cn(
-          "absolute top-1/2 -left-40 h-96 w-96 rounded-full opacity-20 blur-3xl",
-          isDarkMode ? "bg-purple-500" : "bg-purple-400"
-        )}></div>
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-5 dark:opacity-10"></div>
+        {/* Floating Particles */}
+        <div className="absolute inset-0 opacity-30">
+          {particles.map((p, i) => (
+            <div
+              key={i}
+              className={cn("absolute rounded-full animate-float", isDarkMode ? "bg-primary/20" : "bg-primary/10")}
+              style={{
+                width: `${p.width}px`,
+                height: `${p.height}px`,
+                top: `${p.top}%`,
+                left: `${p.left}%`,
+                animationDelay: `${p.delay}s`,
+                animationDuration: `${p.duration}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Gradient Orbs */}
+        {orbs.map((orb, index) => (
+          <div
+            key={index}
+            className={cn(
+              "absolute rounded-full opacity-30 blur-3xl animate-pulse",
+              orb.colorClass
+            )}
+            style={{
+              top: orb.top,
+              left: orb.left,
+              height: orb.height,
+              width: orb.width,
+            }}
+          />
+        ))}
+
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]"></div>
       </div>
-      
+
+      {/* Hero Content */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          {/* Left Content */}
-          <div className={cn(
-            "space-y-6 motion-fade-in",
-            isInView && "animate-in"
-          )}>
-            <div className="flex items-center space-x-2">
-              <Badge variant="outline" className="px-3 py-1 text-xs font-medium rounded-full">
-                <Sparkles className="w-3 h-3 mr-1 text-primary" />
-                Premium Import Solutions
-              </Badge>
-            </div>
-            
-            <div className="space-y-2">
-              <h1 className="text-hero font-bold tracking-tight">
-                Oskaz Import <span className="text-primary">®</span>
-              </h1>
-              <h2 className="text-3xl md:text-4xl font-semibold text-muted-foreground">
-                Empower Your Organization with Cutting Edge Imports and Reliable Solutions
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Badge */}
+          <div className={cn("flex justify-center mb-8 motion-fade-in", isInView && "animate-in")}>
+            <Badge variant="secondary" className="px-4 py-2 text-sm font-medium rounded-full border backdrop-blur-sm">
+              <Sparkles className="w-4 h-4 mr-2 text-primary animate-pulse" />
+              Premium Import Solutions Since 2015
+              <div className="ml-2 w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+            </Badge>
+          </div>
+
+          {/* Main Heading */}
+          <div className={cn("space-y-6 mb-8 motion-fade-in", isInView && "animate-in")}>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none">
+              Oskaz
+              <span
+                className={cn(
+                  "bg-gradient-to-r bg-clip-text text-transparent",
+                  isDarkMode ? "from-primary to-purple-400" : "from-blue-600 to-purple-600"
+                )}
+              >
+                Import
+              </span>
+              <sup className="text-2xl md:text-3xl text-primary ml-2">®</sup>
+            </h1>
+
+            <div className="space-y-4">
+              <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold leading-tight">
+                Transform Your Business with{" "}
+                <span className={cn("decoration-2 underline-offset-4", isDarkMode ? "decoration-primary" : "decoration-blue-400")}>
+                  Premium Imports
+                </span>
               </h2>
-            </div>
-            
-            <p className="text-lg text-muted-foreground max-w-lg">
-              Discover our comprehensive range of import solutions designed to elevate your business operations and drive growth in today&apos;s competitive market.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <Button size="lg" className="group rounded-full px-6">
-                Explore Products
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-              <Button variant="outline" size="lg" className="group rounded-full px-6">
-                Learn More
-                <Play className="ml-2 h-4 w-4 transition-transform group-hover:scale-110" />
-              </Button>
-            </div>
-            
-            <div className="pt-6">
-              <h3 className="text-sm font-medium text-muted-foreground mb-4">Product Categories</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {categories.map((category, index) => (
-                  <div
-                    key={index}
-                    className={cn(
-                      "flex items-center space-x-2 p-3 rounded-lg border transition-all duration-300 hover:scale-105 hover:shadow-md cursor-pointer stagger-item",
-                      isInView && "animate-in",
-                      isDarkMode 
-                        ? "bg-card/50 border-border hover:bg-card/80 hover:border-primary/30" 
-                        : "bg-white/70 border-gray-200/70 hover:bg-white hover:border-primary/20"
-                    )}
-                    style={{ transitionDelay: `${index * 100}ms` }}
-                  >
-                    <span className="text-xl">{category.icon}</span>
-                    <span className="text-sm font-medium">{category.name}</span>
-                  </div>
-                ))}
-              </div>
+
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                Cutting-edge technology solutions and reliable imports designed to{" "}
+                <span className="font-semibold text-foreground"> elevate your operations</span> and drive sustainable growth in today&apos;s dynamic market.
+              </p>
             </div>
           </div>
-          
-          {/* Right Graphic - Updated with SVG */}
-          <div className={cn(
-            "relative flex justify-center lg:justify-end motion-scale-in",
-            isInView && "animate-in"
-          )}>
-            <div className="relative w-full max-w-md">
-              {/* Main graphic container */}
-              <div className={cn(
-                "relative rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 hover:shadow-3xl hover:scale-105",
-                isDarkMode 
-                  ? "bg-card/60 border border-border/50 backdrop-blur-sm" 
-                  : "bg-white/80 border border-gray-200/50 backdrop-blur-sm"
-              )}>
-                {/* SVG Graphic */}
-                <div className="aspect-square w-full flex items-center justify-center p-4">
-                  <div className="relative w-full h-full flex items-center justify-center">
-                    <Image
-                      src="/hero.svg"
-                      alt="Import Solutions Illustration"
-                      width={500}
-                      height={400}
-                      className="w-full h-auto object-contain"
-                      priority
-                    />
-                  </div>
+
+          {/* Features Grid */}
+          <div className={cn("grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-2xl mx-auto stagger-children", isInView && "animate-in")}>
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className={cn(
+                  "flex flex-col items-center p-4 rounded-2xl border transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer",
+                  isDarkMode ? "bg-card/50 border-border hover:bg-card/80 hover:border-primary/30" : "bg-white/70 border-gray-200/70 hover:bg-white hover:border-primary/20 backdrop-blur-sm"
+                )}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className={cn("w-12 h-12 rounded-full flex items-center justify-center mb-3 transition-transform hover:scale-110", isDarkMode ? "bg-primary/10" : "bg-blue-50")}>
+                  <feature.icon className={cn("w-6 h-6", feature.color)} />
                 </div>
-                
-                {/* Floating elements */}
-                <div className="absolute -top-3 -right-3 w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg animate-pulse">
-                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                
-                <div className="absolute -bottom-3 -left-3 w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-400 flex items-center justify-center shadow-lg animate-pulse">
-                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                </div>
+                <span className="text-sm font-medium text-center">{feature.text}</span>
               </div>
-              
-              {/* Decorative background elements */}
-              <div className="absolute top-8 -left-8 w-32 h-32 rounded-full bg-gradient-to-br from-primary/10 to-transparent blur-xl -z-10"></div>
-              <div className="absolute bottom-8 -right-8 w-40 h-40 rounded-full bg-gradient-to-br from-purple-500/10 to-transparent blur-xl -z-10"></div>
+            ))}
+          </div>
+
+          {/* CTA Buttons */}
+          <div className={cn("flex flex-col sm:flex-row gap-4 justify-center mb-16 motion-fade-in", isInView && "animate-in")}>
+            <Button
+              size="lg"
+              className="group rounded-2xl px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+              onClick={handleClickViewProducts}
+            >
+              Explore Our Products
+              <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="group rounded-2xl px-8 py-6 text-lg font-semibold border-2 backdrop-blur-sm hover:scale-105 transition-all duration-300"
+              onClick={handleClickAbout}
+            >
+              <Play className="mr-3 h-5 w-5 transition-transform group-hover:scale-110" />
+              About Us
+            </Button>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="mt-16 flex justify-center">
+            <div className="flex flex-col items-center space-y-2">
+              <div className="text-xs text-muted-foreground uppercase tracking-widest font-medium">Scroll to Explore</div>
+              <div className={cn("w-6 h-10 border-2 rounded-full flex justify-center", isDarkMode ? "border-border" : "border-gray-300")}>
+                <div className={cn("w-1 h-3 rounded-full mt-2 animate-bounce", isDarkMode ? "bg-primary" : "bg-blue-500")}></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Custom animations */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        .animate-float { animation: float 20s ease-in-out infinite; }
+      `}</style>
     </section>
   );
 };

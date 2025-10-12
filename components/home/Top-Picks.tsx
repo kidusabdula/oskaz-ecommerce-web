@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 import {
   ArrowRight,
   ShoppingCart,
@@ -13,13 +14,39 @@ import {
   Shield,
   Globe,
   CheckCircle,
+  Package,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
+// Define the Product type based on your ERPNext data
+type Product = {
+  name: string;
+  item_code: string;
+  item_name: string;
+  item_group: string;
+  description: string;
+  image: string;
+  price: number;
+  currency: string;
+  stock: number;
+  warehouse: string;
+  weight_per_unit: number;
+  min_order_qty: number;
+  tags: string[];
+  modified?: string;
+  weight_uom?: string;
+  item_group_details?: {
+    parent_item_group: string;
+    is_group: number;
+  };
+};
+
 const TopPicks = () => {
   const [mounted, setMounted] = useState(false);
   const [isInView, setIsInView] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -47,67 +74,91 @@ const TopPicks = () => {
     };
   }, []);
 
-  if (!mounted) return null;
+  // Fetch products from TV Wall category
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/items?item_group=TV Wall&limit=3");
+        const data = await response.json();
 
-  const topPicks = [
-    {
-      id: 1,
-      name: "Smart Kiosk Pro",
-      category: "Kiosk Systems",
-      price: "ETB 2,499",
-      originalPrice: "ETB 2,999",
-      rating: 4.8,
-      reviews: 124,
-      badge: "Editor's Choice",
-      description:
-        'Advanced self-service kiosk with 32" touchscreen, integrated payment system, and customizable software interface. Perfect for retail, hospitality, and service industries.',
+        if (data.success) {
+          setProducts(data.data.items);
+        }
+      } catch (error) {
+        console.error("Error fetching TV Wall products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Helper function to format price
+  const formatPrice = (price: number, currency: string) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
+
+  // Helper function to get category icon
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case "Smart Boards":
+        return <Package className="h-6 w-6" />;
+      case "Smart Kiosk":
+      case "UPS":
+        return <Zap className="h-6 w-6" />;
+      case "Smart Podiums":
+        return <Shield className="h-6 w-6" />;
+      case "TV Wall":
+      case "Digital Signage":
+        return <Globe className="h-6 w-6" />;
+      default:
+        return <Package className="h-6 w-6" />;
+    }
+  };
+
+  // Helper function to get stock status
+  const getStockStatus = (stock: number) => {
+    if (stock > 10)
+      return { status: "In Stock", color: "bg-green-100 text-green-800" };
+    if (stock > 0)
+      return { status: "Low Stock", color: "bg-yellow-100 text-yellow-800" };
+    return { status: "Out of Stock", color: "bg-red-100 text-red-800" };
+  };
+
+  // Transform product data to match the expected format
+  const transformProduct = (product: Product, index: number) => {
+    const badges = ["Editor's Choice", "Best Value", "Premium Choice"];
+    const originalPrice = product.price * 1.2; // Calculate a 20% higher original price
+
+    return {
+      id: product.name,
+      name: product.item_name,
+      category: product.item_group,
+      price: formatPrice(product.price, product.currency),
+      originalPrice: formatPrice(originalPrice, product.currency),
+      rating: 4.5 + index * 0.1, // Vary ratings slightly
+      reviews: 100 + index * 30, // Vary review counts
+      badge: badges[index % badges.length],
+      description: product.description || "No description available",
       features: [
-        '32" HD Touchscreen Display',
-        "Integrated Payment Terminal",
-        "Custom Software Solutions",
-        "24/7 Remote Monitoring",
-      ],
-      icon: <Zap className="h-6 w-6" />,
-    },
-    {
-      id: 2,
-      name: "Power Station Elite",
-      category: "Power Solutions",
-      price: "ETB 1,899",
-      originalPrice: "ETB 2,299",
-      rating: 4.9,
-      reviews: 89,
-      badge: "Best Value",
-      description:
-        "High-capacity power solution with 5000W output, multiple charging ports, and intelligent power management. Ideal for businesses, events, and emergency backup.",
-      features: [
-        "5000W Power Output",
-        "Multiple USB-C & AC Ports",
-        "Smart Power Management",
-        "Solar Panel Compatible",
-      ],
-      icon: <Shield className="h-6 w-6" />,
-    },
-    {
-      id: 3,
-      name: "Digital Display Max",
-      category: "Digital Displays",
-      price: "ETB 3,299",
-      originalPrice: "ETB 3,999",
-      rating: 4.7,
-      reviews: 156,
-      badge: "Premium Choice",
-      description:
-        "Ultra-bright 4K outdoor display with weatherproof design, remote content management, and real-time analytics. Perfect for advertising and information display.",
-      features: [
-        "4K Ultra-HD Resolution",
-        "Weatherproof Design",
-        "Remote Content Management",
-        "Built-in Analytics",
-      ],
-      icon: <Globe className="h-6 w-6" />,
-    },
-  ];
+        "High-resolution display",
+        "Easy installation",
+        "Energy efficient",
+        "Remote control included",
+      ].slice(0, 3 + index), // Vary features slightly
+      icon: getCategoryIcon(product.item_group),
+      image: product.image,
+      stock: product.stock,
+      item_code: product.item_code,
+    };
+  };
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -122,6 +173,120 @@ const TopPicks = () => {
       />
     ));
   };
+
+  if (!mounted) return null;
+
+  // Show loading state while fetching products
+  if (loading) {
+    return (
+      <section
+        ref={sectionRef}
+        className={cn(
+          "relative py-20 md:py-28 overflow-hidden transition-colors duration-500",
+          isDarkMode
+            ? "bg-background"
+            : "bg-gradient-to-br from-slate-50 to-blue-50/30"
+        )}
+      >
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <Badge
+              variant="outline"
+              className="px-3 py-1 text-xs font-medium rounded-full mb-4"
+            >
+              <Star className="w-3 h-3 mr-1 text-primary" />
+              Top Picks
+            </Badge>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+              Our Top Picks For You
+            </h1>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Handpicked selection of our most popular and innovative products,
+              chosen by our experts for exceptional performance and value.
+            </p>
+          </div>
+
+          {/* Loading skeleton */}
+          <div className="space-y-16">
+            {[...Array(3)].map((_, index) => (
+              <div
+                key={index}
+                className={cn(
+                  "grid grid-cols-1 lg:grid-cols-2 gap-12 items-center",
+                  index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
+                )}
+              >
+                <div
+                  className={cn(
+                    "space-y-6",
+                    index % 2 === 1 ? "lg:col-start-2" : ""
+                  )}
+                >
+                  <div className="animate-pulse">
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
+                    <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                  </div>
+                </div>
+                <div
+                  className={cn(
+                    "relative",
+                    index % 2 === 1 ? "lg:col-start-1" : ""
+                  )}
+                >
+                  <div className="h-96 lg:h-[500px] bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // If no products found, show a message
+  if (products.length === 0) {
+    return (
+      <section
+        ref={sectionRef}
+        className={cn(
+          "relative py-20 md:py-28 overflow-hidden transition-colors duration-500",
+          isDarkMode
+            ? "bg-background"
+            : "bg-gradient-to-br from-slate-50 to-blue-50/30"
+        )}
+      >
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-3xl mx-auto">
+            <Badge
+              variant="outline"
+              className="px-3 py-1 text-xs font-medium rounded-full mb-4"
+            >
+              <Star className="w-3 h-3 mr-1 text-primary" />
+              Top Picks
+            </Badge>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+              Our Top Picks For You
+            </h1>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              We&apos;re currently updating our selection of TV Wall products.
+              Please check back soon for our latest offerings.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Transform products to match the expected format
+  const topPicks = products.map((product, index) =>
+    transformProduct(product, index)
+  );
 
   return (
     <section
@@ -194,11 +359,6 @@ const TopPicks = () => {
                   index % 2 === 1 ? "lg:col-start-2" : "",
                   isInView && "animate-fade-in"
                 )}
-                //   style={{
-                //     animationDelay: isInView ? `${index * 200}ms` : '0ms',
-                //     opacity: isInView ? 1 : 0,
-                //     transform: isInView ? 'translateX(0)' : index % 2 === 1 ? 'translateX(20px)' : 'translateX(-20px)'
-                //   }}
               >
                 {/* Badge */}
                 <div className="flex items-center space-x-2">
@@ -233,9 +393,10 @@ const TopPicks = () => {
                 </div>
 
                 {/* Description */}
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  {product.description}
-                </p>
+                <div
+                  className="text-lg text-muted-foreground leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
 
                 {/* Features */}
                 <div className="space-y-3">
@@ -243,11 +404,6 @@ const TopPicks = () => {
                     <div
                       key={featureIndex}
                       className="flex items-center space-x-3"
-                      //   style={{
-                      //     animationDelay: isInView ? `${(index * 200) + (featureIndex * 100)}ms` : '0ms',
-                      //     opacity: isInView ? 1 : 0,
-                      //     transform: isInView ? 'translateY(0)' : 'translateY(10px)'
-                      //   }}
                     >
                       <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
                       <span className="text-base">{feature}</span>
@@ -288,15 +444,27 @@ const TopPicks = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="group rounded-full px-6">
+                  {/* <Button 
+                    size="lg" 
+                    className="group rounded-full px-6"
+                    disabled={product.stock <= 0}
+                    onClick={() => {
+                      // Add to cart logic
+                      console.log(`Added ${product.name} to cart`);
+                    }}
+                  >
                     <ShoppingCart className="mr-2 h-4 w-4" />
                     Add to Cart
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
+                  </Button> */}
                   <Button
-                    variant="outline"
+                    // variant="outline"
                     size="lg"
                     className="group rounded-full px-6"
+                    onClick={() => {
+                      // Navigate to product detail page
+                      window.location.href = `/products/${product.id}`;
+                    }}
                   >
                     View Details
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -311,11 +479,6 @@ const TopPicks = () => {
                   index % 2 === 1 ? "lg:col-start-1" : "",
                   isInView && "animate-scale-in"
                 )}
-                //   style={{
-                //     animationDelay: isInView ? `${(index * 200) + 100}ms` : '0ms',
-                //     opacity: isInView ? 1 : 0,
-                //     transform: isInView ? 'scale(1)' : 'scale(0.95)'
-                //   }}
               >
                 <Card
                   className={cn(
@@ -326,23 +489,33 @@ const TopPicks = () => {
                   )}
                 >
                   <CardContent className="p-0">
-                    {/* Product Image Placeholder */}
+                    {/* Product Image */}
                     <div className="relative h-96 lg:h-[500px]">
-                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center">
-                        <div className="text-center space-y-4">
-                          <div className="mx-auto w-24 h-24 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
-                            {product.icon}
-                          </div>
-                          <div className="space-y-2">
-                            <h3 className="text-xl font-semibold">
-                              {product.name}
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              Product Image
-                            </p>
+                      {product.image ? (
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-contain"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center">
+                          <div className="text-center space-y-4">
+                            <div className="mx-auto w-24 h-24 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
+                              {product.icon}
+                            </div>
+                            <div className="space-y-2">
+                              <h3 className="text-xl font-semibold">
+                                {product.name}
+                              </h3>
+                              <p className="text-sm text-muted-foreground">
+                                Product Image
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )}
 
                       {/* Floating Badge */}
                       <div className="absolute top-4 right-4">
@@ -354,9 +527,28 @@ const TopPicks = () => {
                         </Badge>
                       </div>
 
+                      {/* Stock Status Badge */}
+                      <div className="absolute top-4 left-4">
+                        <Badge
+                          variant="secondary"
+                          className={getStockStatus(product.stock).color}
+                        >
+                          {getStockStatus(product.stock).status}
+                        </Badge>
+                      </div>
+
                       {/* Quick Actions */}
                       <div className="absolute bottom-4 right-4 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                        <Button size="sm" className="rounded-full">
+                        <Button
+                          size="sm"
+                          className="rounded-full"
+                          disabled={product.stock <= 0}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            // Add to cart logic
+                            console.log(`Added ${product.name} to cart`);
+                          }}
+                        >
                           <ShoppingCart className="h-4 w-4" />
                         </Button>
                       </div>

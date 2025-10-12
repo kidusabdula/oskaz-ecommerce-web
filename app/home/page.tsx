@@ -1,7 +1,6 @@
 import GetStarted from '@/components/home/Get-Started';
 import Hero from '@/components/home/Hero'
-import InnovationSection from '@/components/home/Innovation-Section';
-import ProductsShowcase from '@/components/home/Products-Showcase';
+import Hero2 from '@/components/home/Hero-2';
 import Testimonials from '@/components/home/Testimonials';
 import TopPicks from '@/components/home/Top-Picks';
 import WhyChooseOskaz from '@/components/home/Why-Choose-Oskaz';
@@ -11,9 +10,8 @@ const HomePage = () => {
   return (
     <main className="min-h-screen bg-background">
       <Hero />
-      <InnovationSection/>
+      <Hero2/>
       <WhyChooseOskaz/>
-      <ProductsShowcase/>
       <TopPicks/>
       <Testimonials/>
       <GetStarted/>

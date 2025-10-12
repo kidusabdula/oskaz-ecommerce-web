@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import {ClerkProvider} from '@clerk/nextjs'
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/utilities/theme-provider";
@@ -6,6 +7,8 @@ import { LanguageProvider } from "@/components/utilities/language-provider";
 //import ClientOnly from "@/components/client-only";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { CartProvider } from "@/context/CartContext";
+import { ToastProvider } from "@/components/ui/toast";
 //import FlashlightEffect from "@/components/FlashlightEffect";
 
 const inter = Inter({
@@ -26,6 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider>
+     
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased font-sans`}>
         <ThemeProvider
@@ -34,16 +39,21 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+           <ToastProvider>
           <LanguageProvider defaultLanguage="en" storageKey="oskaz-language">
             {/* <FlashlightEffect /> */}
             {/* <ClientOnly> */}
-            <Navbar />
-            {/* </ClientOnly> */}
-            <div className="pt-28">{children}</div>
+            <CartProvider>
+              <Navbar />
+              <div className="">{children}</div>
+            </CartProvider>
             <Footer />
           </LanguageProvider>
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>
+    </ClerkProvider>
+    
   );
 }

@@ -7,6 +7,7 @@ export interface FrappeError {
   httpStatusText?: string;
   exceptions?: string[];
   exception?: string;
+  exc_type?: string;
 }
 
 // Type guard for FrappeError

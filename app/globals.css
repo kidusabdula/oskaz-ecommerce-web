@@ -452,3 +452,13 @@
   opacity: 1 !important;
   transform: translateY(0) !important;
 }
+
+.mega-menu-enter {
+  transform: translateY(8px);
+  opacity: 0;
+}
+.mega-menu-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 0.3s ease;
+}

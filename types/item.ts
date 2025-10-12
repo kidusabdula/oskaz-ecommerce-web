@@ -17,6 +17,12 @@ export interface Item {
     modified_by?: string;
     docstatus?: 0 | 1 | 2;
   }
+
+  export interface ItemGroup {
+    name: string;
+    parent_item_group: string;
+    is_group: 0 | 1;
+  }
   
   export interface ItemCreateRequest {
     item_code: string;
