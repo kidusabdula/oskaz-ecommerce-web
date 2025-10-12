@@ -2,10 +2,11 @@
 import { NextRequest } from 'next/server';
 import { frappeClient } from '@/lib/frappe-client';
 import { handleApiRequest, withEndpointLogging } from '@/lib/api-template';
+import { ItemGroup } from '@/types/item';
 
 // GET - Fetch item categories (item groups) under the "Products" parent
 export async function GET(request: NextRequest) {
-  return handleApiRequest<{ categories: any[] }>(
+  return handleApiRequest<{ categories: ItemGroup[] }>(
     withEndpointLogging('/api/items/categories - GET')(async () => {
       const { searchParams } = new URL(request.url);
       const search = searchParams.get('search');
@@ -18,20 +19,19 @@ export async function GET(request: NextRequest) {
       
       // Add search filter if provided
       if (search) {
-        filters.push(['item_group_name', 'like', `%${search}%`]);
+        filters.push(['name', 'like', `%${search}%`]);
       }
 
       // Get item groups
-      const categories = await frappeClient.db.getDocList('Item Group', {
+      const categories = await frappeClient.db.getDocList<ItemGroup>('Item Group', {
         fields: [
           'name',
           'item_group_name',
           'parent_item_group',
           'is_group',
-          'image',
-        //   'description'
         ],
-        filters: filters,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        filters: filters as any,
         orderBy: { field: 'item_group_name', order: 'asc' }
       });
 

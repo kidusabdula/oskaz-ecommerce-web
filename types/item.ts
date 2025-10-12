@@ -20,8 +20,10 @@ export interface Item {
 
   export interface ItemGroup {
     name: string;
+    item_group_name?: string;
     parent_item_group: string;
     is_group: 0 | 1;
+    image?: string;
   }
   
   export interface ItemCreateRequest {
