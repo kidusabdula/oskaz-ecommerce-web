@@ -1,4 +1,6 @@
 // app/blog/page.tsx
+"use client"
+
 import { Suspense } from "react";
 import BlogHeader from "@/components/blog/Blog-Header";
 import BlogGrid from "@/components/blog/Blog-Grid";
