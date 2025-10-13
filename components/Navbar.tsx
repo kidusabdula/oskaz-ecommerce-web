@@ -76,14 +76,14 @@ const Navbar = () => {
     <>
       <div className="fixed top-0 left-0 right-0 z-[1000] px-4 py-3">
         <nav
-         suppressHydrationWarning
-          className={`h-16 w-full max-w-8xl mx-auto flex items-center justify-between px-6 shadow-sm backdrop-blur-md transition-all duration-500 rounded-2xl ${
+          suppressHydrationWarning
+          className={`h-16 w-full max-w-screen-2xl mx-auto flex items-center justify-between px-6 shadow-sm backdrop-blur-md transition-all duration-500 rounded-2xl relative overflow-hidden ${
             isDarkMode ? "dark:bg-card" : "bg-card"
           }`}
         >
           {/* Scroll Progress Overlay */}
           <div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-300/70 to-transparent pointer-events-none rounded-2xl"
+            className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-transparent via-purple-300/70 to-transparent pointer-events-none"
             style={{
               width: `${scrollProgress}%`,
               opacity: scrollProgress > 0 ? (isDarkMode ? 0.35 : 1) : 0,
@@ -138,8 +138,8 @@ const Navbar = () => {
           <div className="flex items-center space-x-4 relative z-10">
             <div className="flex-1 max-w-md hidden md:block">
               <div
-                className={`relative w-full transition-all duration-300 ${
-                  isSearchFocused ? "scale-105" : ""
+                className={`relative w-full transition-all duration-300 overflow-hidden ${
+                  isSearchFocused ? "scale-102" : ""
                 }`}
               >
                 <Input
