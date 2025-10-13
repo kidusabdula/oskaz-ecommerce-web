@@ -115,9 +115,9 @@ export default function ContactPage() {
     {
       icon: <Phone className="h-5 w-5" />,
       label: "Phone",
-      value: "+251 911 123 456",
+      value: "+251 911 204 731",
       description: "Mon-Fri from 9am to 6pm",
-      href: "tel:+251911123456"
+      href: "tel:+251911204731"
     },
     {
       icon: <Mail className="h-5 w-5" />,
@@ -156,13 +156,13 @@ export default function ContactPage() {
     {
       name: "Sales Team",
       email: "sales@oskaz.com",
-      phone: "+251 911 123 456",
+      phone: "+251 911 204 731",
       description: "For product inquiries and orders"
     },
     {
       name: "Technical Support",
       email: "support@oskaz.com",
-      phone: "+251 911 123 457",
+      phone: "+251 911 204 731",
       description: "For technical assistance and support"
     },
     {
