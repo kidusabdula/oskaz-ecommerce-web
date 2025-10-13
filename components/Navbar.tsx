@@ -74,7 +74,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-50 px-4 py-3">
+      <div className="fixed top-0 left-0 right-0 z-[1000] px-4 py-3">
         <nav
          suppressHydrationWarning
           className={`h-16 w-full max-w-8xl mx-auto flex items-center justify-between px-6 shadow-sm backdrop-blur-md transition-all duration-500 rounded-2xl ${

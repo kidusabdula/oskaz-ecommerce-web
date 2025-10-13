@@ -6,8 +6,10 @@ import { ThemeProvider } from "@/components/utilities/theme-provider";
 import { LanguageProvider } from "@/components/utilities/language-provider";
 //import ClientOnly from "@/components/client-only";
 import Navbar from "@/components/Navbar";
+import DropdownOverlay from "@/components/utilities/DropdownOverlay";
 import Footer from "@/components/Footer";
 import { CartProvider } from "@/context/CartContext";
+import { DropdownOverlayProvider } from "@/context/DropdownOverlayContext";
 import { ToastProvider } from "@/components/ui/toast";
 import MarketingBar from "@/components/MarketingBar";
 //import FlashlightEffect from "@/components/FlashlightEffect";
@@ -59,8 +61,11 @@ export default function RootLayout({
             {/* <FlashlightEffect /> */}
             {/* <ClientOnly> */}
             <CartProvider>
-              <Navbar />
-              <div className="">{children}</div>
+              <DropdownOverlayProvider>
+                <Navbar />
+                <DropdownOverlay />
+                <div className="">{children}</div>
+              </DropdownOverlayProvider>
             </CartProvider>
             <Footer />
             <MarketingBar/>

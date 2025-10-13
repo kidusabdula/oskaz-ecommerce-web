@@ -51,7 +51,7 @@ const CartDropdown: React.FC = () => {
   if (!state.isOpen) return null;
   
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="fixed inset-0 z-[1002]">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/20" onClick={() => setIsOpen(false)} />
       

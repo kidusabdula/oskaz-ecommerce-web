@@ -7,6 +7,7 @@ import { ChevronDown, Monitor, Cpu, Tv, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useDropdownOverlay } from "@/context/DropdownOverlayContext";
 
 interface Category {
   name: string;
@@ -17,8 +18,11 @@ const ProductsDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const { setVisible } = useDropdownOverlay();
 
   useEffect(() => {
+    setMounted(true);
     const fetchCategories = async () => {
       try {
         const response = await fetch('/api/items/categories');
@@ -36,6 +40,12 @@ const ProductsDropdown = () => {
 
     fetchCategories();
   }, []);
+
+  // Sync overlay visibility with dropdown open state
+  useEffect(() => {
+    setVisible(isOpen);
+    return () => setVisible(false);
+  }, [isOpen, setVisible]);
 
   // Group categories into sections for the dropdown
   const groupedCategories = React.useMemo(() => {
@@ -96,18 +106,7 @@ const ProductsDropdown = () => {
         />
       </Button>
 
-      {/* Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.35 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 bg-background/70 backdrop-blur-sm z-[45]"
-          />
-        )}
-      </AnimatePresence>
+      {/* Overlay handled globally in layout via DropdownOverlay */}
 
       {/* Mega Menu */}
       <AnimatePresence>
@@ -117,7 +116,9 @@ const ProductsDropdown = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ type: "spring", stiffness: 250, damping: 20 }}
-            className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[800px] max-w-[90vw] rounded-2xl shadow-xl border border-border bg-card z-[50] overflow-hidden"
+            className="fixed left-1/2 -translate-x-1/2 top-[6rem] w-[800px] max-w-[90vw] rounded-2xl shadow-xl border border-border bg-card z-[1001] overflow-hidden"
+            onMouseEnter={() => setIsOpen(true)}
+            onMouseLeave={() => setIsOpen(false)}
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-primary/5 to-secondary/5 p-4 border-b border-border">

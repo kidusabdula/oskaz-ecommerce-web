@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { CheckCircle, MousePointer } from "lucide-react";
 
 const REVEAL_DURATION_MS = 2800;
+const REVEAL_OUT_DURATION_MS = Math.round(REVEAL_DURATION_MS * 0.75);
 
 const Hero2 = () => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -77,7 +78,7 @@ const Hero2 = () => {
           ref={videoRef}
           style={{
             clipPath: "var(--reveal)",
-            transition: `clip-path ${REVEAL_DURATION_MS}ms ease-in-out`,
+            transition: `clip-path ${isHeaderHovered ? REVEAL_DURATION_MS : REVEAL_OUT_DURATION_MS}ms ease-in-out`,
             willChange: "clip-path",
           }}
           onCanPlayThrough={() => setCanPlay(true)}
@@ -87,12 +88,13 @@ const Hero2 = () => {
         {/* Animated Gradient Overlay */}
         <div
           className={cn(
-            "absolute inset-0 rounded-[3rem] bg-gradient-to-r from-black/70 via-black/50 to-black/70"
+            "absolute inset-0 rounded-[3rem]"
           )}
           style={{
             clipPath: "var(--reveal)",
-            transition: `clip-path ${REVEAL_DURATION_MS}ms ease-in-out`,
+            transition: `clip-path ${isHeaderHovered ? REVEAL_DURATION_MS : REVEAL_OUT_DURATION_MS}ms ease-in-out`,
             willChange: "clip-path",
+            background: "radial-gradient(circle at 50% 50%, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.6) 100%)",
           }}
         ></div>
         
@@ -230,7 +232,7 @@ const Hero2 = () => {
           )}
           style={{
             transitionTimingFunction: "cubic-bezier(0.25, 0.8, 0.25, 1)",
-            transitionDelay: isHeaderHovered ? "0ms" : `${REVEAL_DURATION_MS}ms`,
+            transitionDelay: "0ms",
             willChange: "opacity, transform",
           }}
           aria-hidden={isHeaderHovered}
@@ -250,7 +252,7 @@ const Hero2 = () => {
           )}
           style={{
             transitionTimingFunction: "cubic-bezier(0.25, 0.8, 0.25, 1)",
-            transitionDelay: isHeaderHovered ? "0ms" : `${REVEAL_DURATION_MS}ms`,
+            transitionDelay: "0ms",
             willChange: "opacity, transform",
           }}
           aria-hidden={isHeaderHovered}
