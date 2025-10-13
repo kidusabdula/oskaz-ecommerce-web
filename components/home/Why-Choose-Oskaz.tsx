@@ -84,15 +84,21 @@ const WhyChooseOskaz = () => {
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      role: "CEO, TechStart Inc.",
-      content: "Oskaz transformed our business operations with their custom software solutions. The integration was seamless and the results exceeded our expectations.",
+      name: "Mr Biruk G/Tsadik",
+      role: "Director at Mizan Tepi University",
+      content: "Oskaz Import delivered our Smart Board on time and in perfect condition. Their professional service and excellent communication made the process seamless. The quality of the board has greatly enhanced our classroom experience.",
       rating: 5
     },
     {
-      name: "Michael Chen",
-      role: "CTO, Global Logistics",
-      content: "The scalability of Oskaz's solutions has been instrumental in our growth. From a small startup to an enterprise, their software evolved with us.",
+      name: "Mr. Dereje Derara",
+      role: "Director at ECDSWC",
+      content: "Oskaz Import provided exceptional service with the delivery, installation, and after-sales support for our 100KVA Upsen UPS. Their team was professional and responsive, ensuring everything ran smoothly.",
+      rating: 5
+    },
+    {
+      name: "Dr. Feleke Z",
+      role: "GM at African Centre of Excellence",
+      content: "Oskaz Import delivered our Smart Digital Signage on time and in perfect condition. Their team's professionalism and support made installation a breeze.",
       rating: 5
     }
   ];

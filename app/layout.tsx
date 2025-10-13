@@ -33,6 +33,20 @@ export default function RootLayout({
     <ClerkProvider>
      
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <link
+              rel="preload"
+              as="video"
+              href="/oskaz-hero-background.mp4"
+              type="video/mp4"
+              fetchPriority="low"
+            />
+            <link rel="preload" as="image" href="/DesignConcept.jpg" />
+          </>
+        )}
+      </head>
       <body className={`${inter.variable} antialiased font-sans`}>
         <ThemeProvider
           attribute="class"

@@ -53,35 +53,51 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Sarah Johnson",
-      role: "CEO, TechStart Inc.",
-      content: "Oskaz transformed our business operations with their custom software solutions. The integration was seamless and the results exceeded our expectations. Our efficiency has increased by 40% since implementation.",
+      name: "Mr Biruk G/Tsadik",
+      role: "Director at Mizan Tepi University",
+      content: "Oskaz Import delivered our Smart Board on time and in perfect condition. Their professional service and excellent communication made the process seamless. The quality of the board has greatly enhanced our classroom experience. We highly recommend Oskaz Import for their reliability and commitment to customer satisfaction!",
       rating: 5,
-      avatar: "SJ"
+      avatar: "BG"
     },
     {
       id: 2,
-      name: "Michael Chen",
-      role: "CTO, Global Logistics",
-      content: "The scalability of Oskaz's solutions has been instrumental in our growth. From a small startup to an enterprise, their software evolved with us. The support team is exceptional and always responsive.",
+      name: "Mr. Dereje Derara",
+      role: "Director at ECDSWC",
+      content: "Oskaz Import provided exceptional service with the delivery, installation, and after-sales support for our 100KVA Upsen UPS. Their team was professional and responsive, ensuring everything ran smoothly. We highly recommend Oskaz Import for their reliability and commitment to customer satisfaction!",
       rating: 5,
-      avatar: "MC"
+      avatar: "DD"
     },
     {
       id: 3,
-      name: "Amina Hassan",
-      role: "Director, Ethiopian Healthcare Network",
-      content: "Oskaz's kiosk systems have revolutionized patient check-in processes at our facilities. Patients now experience shorter wait times and our staff can focus on providing quality care rather than administrative tasks.",
+      name: "Dr. Feleke Z",
+      role: "GM at African Centre of Excellence",
+      content: "Oskaz Import delivered our Smart Digital Signage on time and in perfect condition. Their team's professionalism and support made installation a breeze. The signage has transformed our communication efforts. We highly recommend Oskaz Import for their outstanding service and dedication to customer satisfaction!",
       rating: 5,
-      avatar: "AH"
+      avatar: "FZ"
     },
     {
       id: 4,
-      name: "David Williams",
-      role: "Operations Manager, Retail Chain",
-      content: "We've implemented Oskaz's digital displays across all our locations, and the impact on customer engagement has been remarkable. The remote content management feature saves us countless hours each week.",
+      name: "Eng. Negeda Kebede",
+      role: "CEO at ECW",
+      content: "Oskaz Import delivered our Smart TV Wall on time and in perfect condition. Their team's professionalism and efficient installation exceeded our expectations. The display has greatly enhanced our visual presentations. We highly recommend Oskaz Import for their exceptional service and commitment to customer satisfaction!",
       rating: 5,
-      avatar: "DW"
+      avatar: "NK"
+    },
+    {
+      id: 5,
+      name: "Mrs Inas Oumer",
+      role: "Manager at Dada Mall",
+      content: "Oskaz Import delivered our Smart Kiosk promptly and in excellent condition. Their professional service and seamless installation made all the difference. The kiosk has enhanced our customer engagement significantly. We highly recommend Oskaz Import for their reliability and commitment to outstanding service!",
+      rating: 5,
+      avatar: "IO"
+    },
+    {
+      id: 6,
+      name: "Dr. Muluken Adamasu",
+      role: "GM at Adama Textile",
+      content: "Oskaz Import delivered our Smart Podium promptly and in excellent condition. Their professional service and clear communication made the entire process smooth. The podium has significantly improved our presentations. We highly recommend Oskaz Import for their reliability and dedication to customer satisfaction!",
+      rating: 5,
+      avatar: "MA"
     }
   ];
 
