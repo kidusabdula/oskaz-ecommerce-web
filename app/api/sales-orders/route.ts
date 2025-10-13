@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
       }
 
       // 1) Try to get existing customer from our API by email
-      const base =  `${process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}`;
+      const base =  process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : "http://localhost:3000";
       const lookupRes = await fetch(`${base}/api/customers?email=${encodeURIComponent(email)}`);
       const lookupJson = await lookupRes.json().catch(() => ({}));
 
