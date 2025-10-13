@@ -85,14 +85,14 @@ const Footer = () => {
   const socialLinks = [
     { icon: <Facebook className="h-5 w-5" />, href: "#", label: "Facebook" },
     { icon: <Twitter className="h-5 w-5" />, href: "#", label: "Twitter" },
-    { icon: <Linkedin className="h-5 w-5" />, href: "#", label: "LinkedIn" },
+    { icon: <Linkedin className="h-5 w-5" />, href: "https://www.linkedin.com/in/hussen-yesuf-9a261a216/", label: "LinkedIn" },
     { icon: <Instagram className="h-5 w-5" />, href: "#", label: "Instagram" },
-    { icon: <Youtube className="h-5 w-5" />, href: "#", label: "YouTube" }
+    { icon: <Send className="h-5 w-5" />, href: "#", label: "Telegram" }
   ];
 
   const contactInfo = [
-    { icon: <Mail className="h-4 w-4" />, text: "info@oskaz.com" },
-    { icon: <Phone className="h-4 w-4" />, text: "+251 911 123 456" },
+    { icon: <Mail className="h-4 w-4" />, text: "info@oskaz.com", href: "mailto:info@oskaz.com" },
+    { icon: <Phone className="h-4 w-4" />, text: "+251 911 204 731", href: "tel:+251911204731" },
     { icon: <MapPin className="h-4 w-4" />, text: "Bole, Addis Ababa, Ethiopia" }
   ];
 
@@ -158,7 +158,13 @@ const Footer = () => {
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex items-center text-sm text-muted-foreground">
                     {info.icon}
-                    <span className="ml-2">{info.text}</span>
+                    {"href" in info && info.href ? (
+                      <a href={info.href} className="ml-2 hover:text-primary" aria-label={info.text}>
+                        {info.text}
+                      </a>
+                    ) : (
+                      <span className="ml-2">{info.text}</span>
+                    )}
                   </div>
                 ))}
               </div>
@@ -173,7 +179,7 @@ const Footer = () => {
                     asChild
                     className="hover:bg-primary/10 hover:text-primary"
                   >
-                    <a href={social.href} aria-label={social.label}>
+                    <a href={social.href} aria-label={social.label} target="_blank" rel="noopener noreferrer">
                       {social.icon}
                     </a>
                   </Button>
