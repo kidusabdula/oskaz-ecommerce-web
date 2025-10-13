@@ -1,198 +1,284 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Play, Package, Zap, Shield, Globe, Clock, Users, CheckCircle } from "lucide-react";
+// Minimal hero: removed unused UI imports
 import { cn } from "@/lib/utils";
+import { CheckCircle, MousePointer } from "lucide-react";
+
+const REVEAL_DURATION_MS = 2800;
 
 const Hero2 = () => {
-  
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [isHeaderHovered, setIsHeaderHovered] = React.useState(false);
+  const sectionRef = React.useRef<HTMLElement | null>(null);
+  const [preloadMode, setPreloadMode] = React.useState<"none" | "metadata" | "auto">("none");
+  const [canPlay, setCanPlay] = React.useState(false);
+  const [videoError, setVideoError] = React.useState(false);
+
+  // Network-aware, in-view preloading to improve reliability in production
+  React.useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    // Detect connection and user data-saver preferences
+    const conn = (navigator as any).connection;
+    const isFast = conn?.effectiveType === "4g" && !conn?.saveData;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting) {
+          // Upgrade preload when in view (metadata on slow, auto on fast)
+          setPreloadMode(isFast ? "auto" : "metadata");
+          const v = videoRef.current;
+          if (v) {
+            try {
+              v.load();
+            } catch {}
+          }
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <section
-      className="relative h-[95vh] flex items-center justify-center overflow-hidden rounded-3xl mx-10 my-16"
+      ref={sectionRef}
+      className={cn(
+        "relative h-auto md:h-[70vh] flex items-start md:items-center justify-center overflow-visible md:overflow-hidden rounded-xl sm:rounded-2xl md:rounded-3xl mx-4 sm:mx-6 md:mx-10 my-6 md:my-10 transition-colors",
+        !isHeaderHovered && "bg-white dark:bg-black"
+      )}
+      style={{
+        // Unify circle center for video and all overlays
+        ["--reveal" as any]: isHeaderHovered
+          ? "circle(140% at 50% 50%)"
+          : "circle(0% at 50% 50%)",
+      }}
     >
-      {/* Video Background with Opening Animation */}
-      <div className="absolute inset-0 z-0 overflow-hidden rounded-[3rem]">
+      {/* Video Background with Opening Animation (hidden on mobile) */}
+      <div className="absolute inset-0 z-0 overflow-hidden rounded-[2rem] md:rounded-[3rem] hidden md:block">
         <video
           autoPlay
           loop
           muted
           playsInline
+          preload={preloadMode}
+          poster="/DesignConcept.jpg"
+          crossOrigin="anonymous"
           className={cn(
             "w-full h-full object-cover rounded-[3rem] transition-all duration-1000 ease-out",
              "scale-100 opacity-100" 
           )}
+          ref={videoRef}
+          style={{
+            clipPath: "var(--reveal)",
+            transition: `clip-path ${REVEAL_DURATION_MS}ms ease-in-out`,
+            willChange: "clip-path",
+          }}
+          onCanPlayThrough={() => setCanPlay(true)}
+          onError={() => setVideoError(true)}
           src="/oskaz-hero-background.mp4"
         />
         {/* Animated Gradient Overlay */}
-        <div className={cn(
-          "absolute inset-0 rounded-[3rem] bg-gradient-to-r from-black/70 via-black/50 to-black/70 transition-all duration-1000",
-          "opacity-100"
-        )}></div>
+        <div
+          className={cn(
+            "absolute inset-0 rounded-[3rem] bg-gradient-to-r from-black/70 via-black/50 to-black/70"
+          )}
+          style={{
+            clipPath: "var(--reveal)",
+            transition: `clip-path ${REVEAL_DURATION_MS}ms ease-in-out`,
+            willChange: "clip-path",
+          }}
+        ></div>
         
-        {/* Animated Grid Pattern */}
-        <div className={cn(
-          "absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20 transition-all duration-1000",
-          "translate-y-0 opacity-20"
-        )}></div>
+        {/* Removed grid overlay */}
+
+        {/* Removed cinematic bottom gradient */}
+
+        {/* Removed cinematic right gradient */}
+
+        {/* Removed extra circular overlays to keep only central reveal */}
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 py-24 flex flex-col items-center text-center text-white">
-        {/* Badge with Animation */}
-        <Badge
-          variant="secondary"
-          className={cn(
-            "px-4 py-2 mb-6 text-sm font-medium rounded-full bg-white/20 text-white border-white/30 transition-all duration-500 transform",
-             "translate-y-0 opacity-100"
-          )}
-        >
-          <Zap className="w-4 h-4 mr-2" />
-          Innovation Spotlight
-        </Badge>
+      <div className="relative z-10 container mx-auto px-6 py-12 md:py-16 flex flex-col items-center text-center translate-y-2 md:translate-y-6">
+        {/* Removed badge for a cleaner hero */}
 
         {/* Main Heading with Staggered Animation */}
-        <div className="space-y-4">
+        <div
+          className="space-y-4"
+          onMouseEnter={() => {
+            setIsHeaderHovered(true);
+            const v = videoRef.current;
+            if (v) {
+              try {
+                v.currentTime = 0;
+                v.play();
+              } catch {}
+            }
+          }}
+          onMouseLeave={() => setIsHeaderHovered(false)}
+        >
           <h1
             className={cn(
-              "text-4xl md:text-5xl font-bold tracking-tight leading-tight max-w-3xl transition-all duration-700",
-              "translate-y-0 opacity-100"
+              "text-4xl md:text-5xl font-bold tracking-tight leading-tight max-w-2xl mx-auto text-center transition-all duration-700",
+              "translate-y-0 opacity-100",
+              isHeaderHovered ? "text-white" : "text-neutral-900 dark:text-white"
             )}
           >
-            Transform Your Business with{" "}
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Intelligent Technology
-            </span>
+            </span>{" "}
+            for Modern Business
           </h1>
 
-          <p className={cn(
-            "text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed transition-all duration-700 delay-200",
-            "translate-y-0 opacity-100"
-          )}>
-            Experience the future of business operations with our cutting-edge
-            solutions that combine AI, IoT, and seamless integration to drive
-            unprecedented efficiency and growth.
+          {/* Hover indicator (desktop only) */}
+          <div
+            className={cn(
+              "hidden md:flex items-center justify-center gap-2 mx-auto text-sm transition-all duration-500",
+              isHeaderHovered ? "opacity-0 -translate-y-1" : "opacity-100 translate-y-0"
+            )}
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-neutral-300 dark:border-neutral-700 bg-white/60 dark:bg-black/40 backdrop-blur px-3 py-1 shadow-sm hover:bg-white/80 dark:hover:bg-black/60">
+              <MousePointer className="h-4 w-4 text-primary" />
+              <span className="text-neutral-700 dark:text-neutral-300">Hover</span>
+            </span>
+          </div>
+
+          <div className="space-y-3 mt-2">
+            <div
+              className={cn(
+                "flex items-center justify-center space-x-3 transition-all duration-500 ease-in-out",
+                isHeaderHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+              )}
+              style={{ transitionDelay: isHeaderHovered ? "0ms" : "0ms" }}
+            >
+              <CheckCircle className="h-5 w-5 text-primary" />
+              <span
+                className={cn(
+                  "text-base md:text-lg",
+                  isHeaderHovered ? "text-neutral-200" : "text-neutral-700 dark:text-neutral-300"
+                )}
+              >
+                Industry-specific solutions
+              </span>
+            </div>
+            <div
+              className={cn(
+                "flex items-center justify-center space-x-3 transition-all duration-500 ease-in-out",
+                isHeaderHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+              )}
+              style={{ transitionDelay: isHeaderHovered ? "100ms" : "0ms" }}
+            >
+              <CheckCircle className="h-5 w-5 text-primary" />
+              <span
+                className={cn(
+                  "text-base md:text-lg",
+                  isHeaderHovered ? "text-neutral-200" : "text-neutral-700 dark:text-neutral-300"
+                )}
+              >
+                Dedicated support team
+              </span>
+            </div>
+            <div
+              className={cn(
+                "flex items-center justify-center space-x-3 transition-all duration-500 ease-in-out",
+                isHeaderHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+              )}
+              style={{ transitionDelay: isHeaderHovered ? "200ms" : "0ms" }}
+            >
+              <CheckCircle className="h-5 w-5 text-primary" />
+              <span
+                className={cn(
+                  "text-base md:text-lg",
+                  isHeaderHovered ? "text-neutral-200" : "text-neutral-700 dark:text-neutral-300"
+                )}
+              >
+                Continuous updates and improvements
+              </span>
+            </div>
+            <div
+              className={cn(
+                "flex items-center justify-center space-x-3 transition-all duration-500 ease-in-out",
+                isHeaderHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+              )}
+              style={{ transitionDelay: isHeaderHovered ? "300ms" : "0ms" }}
+            >
+              <CheckCircle className="h-5 w-5 text-primary" />
+              <span
+                className={cn(
+                  "text-base md:text-lg",
+                  isHeaderHovered ? "text-neutral-200" : "text-neutral-700 dark:text-neutral-300"
+                )}
+              >
+                Data security and compliance
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Non-hover marketing content: paragraphs and simple cards */}
+        <div
+          className={cn(
+            "max-w-3xl mt-1 transition-[opacity,transform] duration-600",
+            isHeaderHovered ? "opacity-0 translate-y-2" : "opacity-100 -translate-y-3"
+          )}
+          style={{
+            transitionTimingFunction: "cubic-bezier(0.25, 0.8, 0.25, 1)",
+            transitionDelay: isHeaderHovered ? "0ms" : `${REVEAL_DURATION_MS}ms`,
+            willChange: "opacity, transform",
+          }}
+          aria-hidden={isHeaderHovered}
+        >
+          <p className={cn("text-sm md:text-base", "text-neutral-700 dark:text-neutral-300")}> 
+            Build smarter operations with AI-driven automation, IoT connectivity, and seamless integrations — designed for modern teams.
+          </p>
+          <p className={cn("text-sm md:text-base mt-2", "text-neutral-600 dark:text-neutral-400")}> 
+            Scale confidently with secure infrastructure, fast onboarding, and outcomes you can measure.
           </p>
         </div>
 
-        {/* Stats Section with Icons */}
-        <div className={cn(
-          "grid grid-cols-1 sm:grid-cols-3 gap-8 mt-8 transition-all duration-700 delay-300",
-          "translate-y-0 opacity-100"
-        )}>
-          {[
-            { 
-              icon: <CheckCircle className="h-6 w-6" />, 
-              value: "99.9%", 
-              label: "Uptime Guarantee" 
-            },
-            { 
-              icon: <Users className="h-6 w-6" />, 
-              value: "100+", 
-              label: "Companies Served" 
-            },
-            { 
-              icon: <Clock className="h-6 w-6" />, 
-              value: "24/7", 
-              label: "Support Available" 
-            },
-          ].map((stat, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center text-center space-y-3 p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-500 hover:scale-105 hover:bg-white/15 hover:border-white/30 group"
-              style={{
-                transitionDelay:  `${400 + index * 100}ms`,
-              }}
-            >
-              <div className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                {stat.icon}
-              </div>
-              <div className="space-y-1">
-                <div className="text-2xl font-bold text-white group-hover:text-blue-200 transition-colors">
-                  {stat.value}
-                </div>
-                <div className="text-white/80 text-sm font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            </div>
-          ))}
+        <div
+          className={cn(
+            "grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2 transition-[opacity,transform] duration-600",
+            isHeaderHovered ? "opacity-0 translate-y-2" : "opacity-100 -translate-y-3"
+          )}
+          style={{
+            transitionTimingFunction: "cubic-bezier(0.25, 0.8, 0.25, 1)",
+            transitionDelay: isHeaderHovered ? "0ms" : `${REVEAL_DURATION_MS}ms`,
+            willChange: "opacity, transform",
+          }}
+          aria-hidden={isHeaderHovered}
+        >
+          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 shadow-sm">
+            <h3 className="text-sm font-semibold text-neutral-900 dark:text-white">AI Automation</h3>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">Streamline workflows and reduce manual tasks.</p>
+          </div>
+          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 shadow-sm">
+            <h3 className="text-sm font-semibold text-neutral-900 dark:text-white">IoT Connectivity</h3>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">Connect devices and gain real-time insights.</p>
+          </div>
+          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 shadow-sm">
+            <h3 className="text-sm font-semibold text-neutral-900 dark:text-white">Secure by Design</h3>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">Enterprise-grade security and compliance built-in.</p>
+          </div>
         </div>
 
-        {/* Key Features with Enhanced Animation */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12">
-          {[
-            { icon: <Package className="h-6 w-6" />, text: "Smart Kiosks" },
-            { icon: <Shield className="h-6 w-6" />, text: "Secure Systems" },
-            { icon: <Globe className="h-6 w-6" />, text: "Global Integration" },
-            { icon: <Zap className="h-6 w-6" />, text: "Lightning Fast" },
-          ].map((feature, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center text-center space-y-3 transition-all duration-500 group"
-              style={{
-                animationDelay: `${600 + index * 100}ms`,
-                opacity: 1,
-                transform: "translateY(0) scale(1)",
-              }}
-            >
-              <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300 border border-white/30 group-hover:border-white/50">
-                {feature.icon}
-              </div>
-              <span className="text-white/90 text-sm font-medium group-hover:text-white transition-colors">
-                {feature.text}
-              </span>
-            </div>
-          ))}
-        </div>
+        {/* Removed stats section */}
 
-        {/* CTA Buttons with Enhanced Animation */}
-        <div className={cn(
-          "flex flex-col sm:flex-row gap-4 mt-12 transition-all duration-700 delay-500",
-          "translate-y-0 opacity-100"
-        )}>
-          <Button
-            size="lg"
-            className="group bg-white text-black hover:bg-gray-100 rounded-full px-8 py-3 text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-          >
-            Explore Solutions
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="group border-white text-black hover:bg-white hover:text-black rounded-full px-8 py-3 text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-          >
-            <Play className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
-            Watch Demo
-          </Button>
-        </div>
+        {/* Removed feature icons */}
 
-        {/* Floating Elements Animation */}
-        <div className="absolute -bottom-8 left-10 opacity-20">
-          <div className={cn(
-            "w-20 h-20 rounded-full bg-blue-500 blur-xl transition-all duration-1000 delay-700",
-            "opacity-30 scale-100"
-          )}></div>
-        </div>
-        <div className="absolute -top-8 right-10 opacity-20">
-          <div className={cn(
-            "w-24 h-24 rounded-full bg-purple-500 blur-xl transition-all duration-1000 delay-900",
-            "opacity-30 scale-100"
-          )}></div>
-        </div>
+        {/* Removed CTA buttons */}
+
+        {/* Removed decorative floating elements */}
       </div>
 
-      {/* Scroll Indicator */}
-      <div className={cn(
-        "absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-1000 delay-1000",
-        "opacity-100 translate-y-0"
-      )}>
-        <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-bounce"></div>
-        </div>
-      </div>
+      {/* Removed scroll indicator for minimal layout */}
     </section>
   );
 };
