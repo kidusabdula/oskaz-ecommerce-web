@@ -2,9 +2,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Webhook } from "svix";
 import { headers } from "next/headers";
+import { getBaseUrl } from '@/lib/utils';
 
 const webhookSecret = process.env.CLERK_WEBHOOK_SECRET!;
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+const baseUrl =  getBaseUrl();
 
 export async function POST(req: NextRequest) {
   console.log("🔔 Clerk webhook received");

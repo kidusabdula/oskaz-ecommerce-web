@@ -38,3 +38,24 @@ export const useScrollAnimation = () => {
     };
   }, []);
 };
+
+// lib/utils.ts or lib/urls.ts
+export function getBaseUrl() {
+  // Use the environment variable first
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    return process.env.NEXT_PUBLIC_APP_URL;
+  }
+  
+  // Fallback for Vercel deployments
+  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  }
+  
+  // Fallback for local development
+  return "http://localhost:3000";
+}
+
+export function getApiUrl(path: string = '') {
+  const baseUrl = getBaseUrl();
+  return `${baseUrl}${path}`;
+}
