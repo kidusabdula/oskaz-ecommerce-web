@@ -455,28 +455,12 @@
   transform: translateY(0) !important;
 }
 
-/* 1-second rotation every 3 minutes for brand text */
-@keyframes modernRotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  0.56% {
-    transform: rotate(360deg);
-  }
-  0.56% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
+.mega-menu-enter {
+  transform: translateY(8px);
+  opacity: 0;
 }
-
-.animate-modern-rotate {
-  animation: modernRotate 180s ease-in-out infinite;
-  transform-origin: center;
-}
-
-/* Ensure hover effects work smoothly with rotation */
-.animate-modern-rotate:hover {
-  animation-play-state: running;
+.mega-menu-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 0.3s ease;
 }

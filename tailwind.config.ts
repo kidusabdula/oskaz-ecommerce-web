@@ -1,3 +1,4 @@
+// tailwind.config.js
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -23,12 +24,50 @@ const config: Config = {
           "sans-serif",
         ],
       },
+      fontSize: {
+        'hero': ['3.5rem', { lineHeight: '1.1', fontWeight: '700' }],
+        'display': ['2.5rem', { lineHeight: '1.2', fontWeight: '700' }],
+      },
       fontWeight: {
         light: "300",
         normal: "400",
         medium: "500",
         semibold: "600",
         bold: "700",
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'fade-in-up': 'fadeInUp 0.8s ease-out',
+        'scale-in': 'scaleIn 0.5s ease-out',
+        'slide-in-bottom': 'slideInFromBottom 0.8s ease-out',
+        'slide-in-left': 'slideInFromLeft 0.8s ease-out',
+        'slide-in-right': 'slideInFromRight 0.8s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(30px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.9)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        slideInFromBottom: {
+          '0%': { opacity: '0', transform: 'translateY(50px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideInFromLeft: {
+          '0%': { opacity: '0', transform: 'translateX(-30px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        slideInFromRight: {
+          '0%': { opacity: '0', transform: 'translateX(30px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
       },
       colors: {
         background: "oklch(var(--background))",

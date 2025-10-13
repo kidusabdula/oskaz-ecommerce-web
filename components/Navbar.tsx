@@ -1,554 +1,370 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { Menu, X, Search, ShoppingBag, Bell, User } from "lucide-react";
+import {
+  Menu,
+  Search as SearchIcon,
+  ShoppingBag,
+  ChevronDown,
+  X,
+  Package,
+} from "lucide-react";
+import { ThemeDropdown } from "./utilities/theme-dropdown";
+import { LanguageDropdown } from "./utilities/language-dropdown";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useTheme } from "next-themes";
-import { motion, AnimatePresence } from "framer-motion";
-import { ThemeDropdown } from "./theme-dropdown";
-import { LanguageToggle } from "./language-toggle";
+import ProductsDropdown from "./Products-Dropdown";
+import CartDropdown from "./cart/Cart-Dropdown";
+import { useCart } from "@/context/CartContext";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
   const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const { state, setIsOpen } = useCart();
 
   useEffect(() => {
-    let ticking = false;
-    
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrollTop = window.scrollY;
-          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const progress = Math.min(scrollTop / docHeight, 1);
-          setScrollProgress(progress);
-          ticking = false;
-        });
-        ticking = true;
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/items/categories");
+        const data = await response.json();
+        if (data.success && data.data.categories) {
+          setCategories(
+            data.data.categories.map((cat: { name: string }) => cat.name)
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
       }
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    fetchCategories();
   }, []);
 
-  // Helper function to calculate text color based on element position and fill progress
-  const getElementTextColor = (elementPosition: 'left' | 'center' | 'right') => {
-    // The fill overlay expands from left to right with width = scrollProgress * 100%
-    const fillWidthPercentage = scrollProgress * 100;
-    
-    // Define the start positions of elements (as percentages of navbar width)
-    // These represent where each element group begins
-    const elementStartPositions = {
-      left: 0,     // Logo starts immediately (0% from left)
-      center: 35,  // Navigation links start around 35% from left
-      right: 75    // Right-side buttons start around 75% from left
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPosition = window.scrollY;
+      setScrollProgress((scrollPosition / totalHeight) * 100);
     };
-    
-    const elementStartPos = elementStartPositions[elementPosition];
-    
-    // Element changes color when the fill overlay reaches its start position
-    const isElementTouched = fillWidthPercentage >= elementStartPos;
-    
-    if (isElementTouched && scrollProgress > 0.01) {
-      // Only change text color in dark mode when fill overlay touches
-      // In light mode, keep the default text color
-      if (theme === 'dark') {
-        return 'rgb(255, 255, 255)'; // White text for dark mode
-      }
-      // For light mode, return undefined to use default color
-    }
-    
-    return undefined; // Use default color
-  };
-
-  // Enhanced hover handling with better timing
-  const handleMouseEnter = (item: string) => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-    setHoveredItem(item);
-  };
-
-  const handleMouseLeave = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    hoverTimeoutRef.current = setTimeout(() => {
-      setHoveredItem(null);
-    }, 300); // Increased delay for better stability
-  };
-
-  // Dropdown content for each navigation item
-  const dropdownContent = {
-    services: {
-      title: "Our Services",
-      items: [
-        {
-          title: "Import Services",
-          description: "Global sourcing and import solutions",
-          image: "/placeholder-import.jpg",
-          categories: ["Air Freight", "Sea Freight", "Express Delivery", "Customs Clearance"]
-        },
-        {
-          title: "Export Services", 
-          description: "International export and logistics",
-          image: "/placeholder-export.jpg",
-          categories: ["Documentation", "Packaging", "Shipping", "Insurance"]
-        },
-        {
-          title: "Logistics Solutions",
-          description: "End-to-end supply chain management",
-          image: "/placeholder-logistics.jpg", 
-          categories: ["Warehousing", "Distribution", "Tracking", "Consulting"]
-        },
-        {
-          title: "Trade Consulting",
-          description: "Expert guidance for international trade",
-          image: "/placeholder-consulting.jpg",
-          categories: ["Market Analysis", "Compliance", "Risk Assessment", "Strategy"]
-        }
-      ]
-    },
-    solutions: {
-      title: "Trade Solutions",
-      items: [
-        {
-          title: "Supply Chain",
-          description: "Optimize your global supply chain",
-          image: "/placeholder-supply.jpg",
-          categories: ["Planning", "Optimization", "Visibility", "Analytics"]
-        },
-        {
-          title: "Compliance",
-          description: "Navigate international regulations",
-          image: "/placeholder-compliance.jpg",
-          categories: ["Documentation", "Certifications", "Audits", "Training"]
-        },
-        {
-          title: "Technology",
-          description: "Digital trade solutions",
-          image: "/placeholder-tech.jpg",
-          categories: ["Tracking Systems", "API Integration", "Automation", "Reporting"]
-        }
-      ]
-    },
-    industries: {
-      title: "Industries We Serve",
-      items: [
-        {
-          title: "Manufacturing",
-          description: "Industrial equipment and machinery",
-          image: "/placeholder-manufacturing.jpg",
-          categories: ["Heavy Machinery", "Components", "Raw Materials", "Tools"]
-        },
-        {
-          title: "Electronics",
-          description: "Consumer and industrial electronics",
-          image: "/placeholder-electronics.jpg",
-          categories: ["Consumer Goods", "Components", "Semiconductors", "Accessories"]
-        },
-        {
-          title: "Textiles",
-          description: "Fashion and textile imports",
-          image: "/placeholder-textiles.jpg",
-          categories: ["Apparel", "Fabrics", "Accessories", "Home Textiles"]
-        }
-      ]
-    }
-  };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
-      {/* Enhanced Background Overlay with subtle blur and dark overlay */}
-      <AnimatePresence>
-        {hoveredItem && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm z-[9990]" 
-          />
-        )}
-      </AnimatePresence>
-      
-      {/* Enhanced Gradient overlay at the top - Dark mode only */}
-      <div className="fixed top-0 left-0 right-0 h-32 z-[9991] pointer-events-none">
-        {/* Dark mode - enhanced blur effect */}
-        <div className="hidden dark:block h-full bg-black/10"></div>
-      </div>
-      
-      <nav className="fixed top-4 left-4 right-4 z-[9992] bg-gradient-to-b from-white/99 via-white/97 to-white/94 dark:bg-gradient-to-b dark:from-black/97 dark:via-black/99 dark:to-gray-900/97 rounded-2xl border border-gray-200/70 dark:border-gray-800/70 transition-all duration-700 ease-out shadow-[0_12px_40px_rgba(0,0,0,0.15),0_4px_12px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.3),inset_0_-1px_0_rgba(0,0,0,0.08)] dark:shadow-[0_24px_48px_rgba(0,0,0,0.95),0_12px_20px_rgba(0,0,0,0.8),inset_0_2px_0_rgba(255,255,255,0.1),inset_0_-2px_0_rgba(0,0,0,0.4),inset_0_0_0_1px_rgba(255,255,255,0.08)] overflow-visible">
-        {/* Enhanced Fill overlays with smoother animations */}
-        {theme === 'dark' && (
-          <div 
-            className="absolute inset-0 rounded-2xl transition-all duration-500 ease-out"
+      <div className="fixed top-0 left-0 right-0 z-50 px-4 py-3">
+        <nav
+         suppressHydrationWarning
+          className={`h-16 w-full max-w-8xl mx-auto flex items-center justify-between px-6 shadow-sm backdrop-blur-md transition-all duration-500 rounded-2xl ${
+            isDarkMode ? "dark:bg-card" : "bg-card"
+          }`}
+        >
+          {/* Scroll Progress Overlay */}
+          <div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-300/70 to-transparent pointer-events-none rounded-2xl"
             style={{
-              background: `linear-gradient(90deg, rgba(79, 79, 79, 0.8) 0%, rgba(79, 79, 79, 0.7) 70%, rgba(79, 79, 79, 0.5) 100%)`,
-              width: `${scrollProgress * 100}%`,
-              transformOrigin: 'left center',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.2)'
+              width: `${scrollProgress}%`,
+              opacity: scrollProgress > 0 ? 1 : 0,
             }}
           />
-        )}
-        {theme === 'light' && (
-          <div 
-            className="absolute inset-0 rounded-2xl transition-all duration-500 ease-out"
-            style={{
-              background: `linear-gradient(90deg, rgba(79, 79, 79, 0.7) 0%, rgba(79, 79, 79, 0.6) 70%, rgba(79, 79, 79, 0.4) 100%)`,
-              width: `${scrollProgress * 100}%`,
-              transformOrigin: 'left center',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1)'
-            }}
-          />
-        )}
-        
-      <div className="relative max-w-7xl mx-auto pl-6 pr-6 z-10">
-        <div className="flex items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 mr-8">
+
+          {/* LEFT: LOGO */}
+          <div className="flex-shrink-0 relative z-10">
             <Link href="/" className="flex items-center group">
-              <div 
-                className="text-3xl font-semibold text-gray-900 dark:text-white tracking-wide flex items-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:text-blue-600 dark:group-hover:text-blue-400 animate-modern-rotate"
-                style={{ color: getElementTextColor('left') }}
-              >
-                <span 
-                  className="text-5xl font-black mr-1 leading-none transform transition-all duration-700 ease-out group-hover:rotate-12 group-hover:scale-125"
-                  style={{ color: getElementTextColor('left') }}
-                >ኦ</span>
-                <span 
-                  className="font-bold tracking-wider transform transition-all duration-500 ease-out group-hover:tracking-widest"
-                  style={{ color: getElementTextColor('left') }}
-                >SKAZ</span>
-                <span 
-                  className="text-sm font-normal ml-1 transform transition-all duration-500 ease-out"
-                  style={{ color: getElementTextColor('left') }}
-                >®</span>
+              <div className="text-3xl font-semibold text-foreground tracking-wide flex items-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:text-primary">
+                <span className="text-5xl font-black mr-1 leading-none transform transition-all duration-700 ease-out group-hover:rotate-12 group-hover:scale-125">
+                  ኦ
+                </span>
+                <span className="font-bold tracking-wider transition-all duration-500 ease-out group-hover:tracking-widest">
+                  SKAZ
+                </span>
+                <span className="text-sm ml-1">®</span>
               </div>
             </Link>
           </div>
 
-          {/* Navigation Links */}
-          <div className="hidden lg:flex items-center flex-1 justify-evenly px-4">
+          {/* CENTER: MAIN MENU */}
+          <div className="hidden lg:flex items-center justify-center gap-10 relative z-10">
             <Link
-              href="/home"
-              className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
+              href="/"
+              className="px-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-105"
             >
-              <span 
-                className="relative z-10 transition-all duration-300"
-                style={{ color: getElementTextColor('center') }}
-              >PRODUCTS</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
+              Home
             </Link>
-            
-            {/* Services Dropdown */}
-            <div 
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('services')}
-              onMouseLeave={handleMouseLeave}
+            <ProductsDropdown />
+            <Link
+              href="/about"
+              className="px-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-105"
             >
-              <Link
-                href="/services"
-                className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
+              About
+            </Link>
+            <Link
+              href="/blog"
+              className="px-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-105"
+            >
+              Blog
+            </Link>
+            <Link
+              href="/contact"
+              className="px-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-105"
+            >
+              Contact Us
+            </Link>
+          </div>
+
+          {/* RIGHT: SEARCH BAR & UTILITIES */}
+          <div className="flex items-center space-x-4 relative z-10">
+            <div className="flex-1 max-w-md hidden md:block">
+              <div
+                className={`relative w-full transition-all duration-300 ${
+                  isSearchFocused ? "scale-105" : ""
+                }`}
               >
-                <span 
-                  className="relative z-10 transition-all duration-300"
-                  style={{ color: getElementTextColor('center') }}
-                >SERVICES</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-blue-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-              </Link>
-              
-              <AnimatePresence>
-                {hoveredItem === 'services' && (
-                  <>
-                    {/* Invisible bridge area */}
-                    <div 
-                      className="fixed top-20 left-1/2 -translate-x-1/2 w-[1000px] h-6 z-[9998]"
-                      onMouseEnter={() => handleMouseEnter('services')}
-                      onMouseLeave={handleMouseLeave}
-                    />
-                    <motion.div 
-                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="fixed top-[6.5rem] left-1/2 -translate-x-1/2 w-[1000px] bg-white/99 dark:bg-black/99 rounded-2xl shadow-2xl dark:shadow-black/80 border border-gray-200/60 dark:border-gray-700/60 p-8 z-[9999]"
-                      onMouseEnter={() => handleMouseEnter('services')}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                  <div className="grid grid-cols-4 gap-6">
-                    {dropdownContent.services.items.map((item, index) => (
-                      <div key={index} className="group cursor-pointer transform transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-2">
-                        <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:scale-105 overflow-hidden relative">
-                          <div className="w-20 h-20 bg-blue-500 rounded-lg flex items-center justify-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:bg-blue-600">
-                            <span className="text-white text-sm font-bold transition-all duration-300 group-hover:scale-110">{item.title.split(' ')[0]}</span>
-                          </div>
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        </div>
-                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all duration-500 ease-out group-hover:scale-105">{item.title}</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-all duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-300">{item.description}</p>
-                        <div className="space-y-1">
-                          {item.categories.map((category, idx) => (
-                            <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 cursor-pointer hover:scale-105 hover:translate-x-1">{category}</div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-                  </>
+                <Input
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setIsSearchFocused(false)}
+                  className={`h-11 pr-10 rounded-full border-none shadow-sm ${
+                    isDarkMode ? "bg-muted/60" : "bg-muted"
+                  } focus-visible:ring-primary/40 focus-visible:ring-2 transition-all`}
+                />
+                {searchQuery && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-10 top-1/2 -translate-y-1/2 h-6 w-6"
+                    onClick={() => setSearchQuery("")}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
                 )}
-              </AnimatePresence>
+                <SearchIcon
+                  className={`absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 ${
+                    isSearchFocused ? "text-primary" : "text-muted-foreground"
+                  }`}
+                />
+              </div>
             </div>
 
-            {/* Solutions Dropdown */}
-            <div 
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('solutions')}
-              onMouseLeave={handleMouseLeave}
-            >
-              <Link
-                href="/solutions"
-                className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
-              >
-                <span 
-                  className="relative z-10 transition-all duration-300"
-                  style={{ color: getElementTextColor('center') }}
-                >SOLUTIONS</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
+            {/* Desktop Utilities */}
+            <div className="hidden lg:flex items-center space-x-3">
+              <SignedIn>
+                <UserButton afterSignOutUrl="/" />
+              </SignedIn>
+              <SignedOut>
+                <div className="flex items-center space-x-2">
+                  <SignInButton mode="modal">
+                    <Button variant="ghost" size="sm" className="text-sm">
+                      Login
+                    </Button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <Button size="sm" className="text-sm">
+                      Sign Up
+                    </Button>
+                  </SignUpButton>
+                </div>
+              </SignedOut>
+
+              {/* Orders Button */}
+              <Link href="/user-orders">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 relative hover:bg-muted transition-all duration-300 hover:scale-110 text-blue-600 dark:text-blue-400"
+                >
+                  <Package className="h-5 w-5" />
+                </Button>
               </Link>
-              
-              <AnimatePresence>
-                {hoveredItem === 'solutions' && (
-                  <>
-                    {/* Invisible bridge area */}
-                    <div 
-                      className="fixed top-20 left-1/2 -translate-x-1/2 w-[800px] h-6 z-[9998]"
-                      onMouseEnter={() => handleMouseEnter('solutions')}
-                      onMouseLeave={handleMouseLeave}
-                    />
-                    <motion.div 
-                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="fixed top-[6.5rem] left-1/2 -translate-x-1/2 w-[800px] bg-white/99 dark:bg-black/99 rounded-2xl shadow-2xl dark:shadow-black/80 border border-gray-200/60 dark:border-gray-700/60 p-8 z-[9999]"
-                      onMouseEnter={() => handleMouseEnter('solutions')}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                   <div className="grid grid-cols-3 gap-6">
-                     {dropdownContent.solutions.items.map((item, index) => (
-                       <div key={index} className="group cursor-pointer transform transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-2">
-                          <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:scale-105 overflow-hidden relative">
-                           <div className="w-20 h-20 bg-green-500 rounded-lg flex items-center justify-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:bg-green-600">
-                             <span className="text-white text-sm font-bold transition-all duration-300 group-hover:scale-110">{item.title.split(' ')[0]}</span>
-                           </div>
-                           <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                         </div>
-                         <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-all duration-500 ease-out group-hover:scale-105">{item.title}</h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-all duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-300">{item.description}</p>
-                         <div className="space-y-1">
-                           {item.categories.map((category, idx) => (
-                             <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-all duration-300 cursor-pointer hover:scale-105 hover:translate-x-1">{category}</div>
-                           ))}
-                         </div>
-                       </div>
-                     ))}
-                   </div>
-                 </motion.div>
-                   </>
-                 )}
-               </AnimatePresence>
-             </div>
 
-             {/* Industries Dropdown */}
-             <div 
-               className="relative"
-               onMouseEnter={() => handleMouseEnter('industries')}
-               onMouseLeave={handleMouseLeave}
-             >
-               <Link
-                 href="/industries"
-                 className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
-               >
-                 <span 
-                    className="relative z-10 transition-all duration-300"
-                    style={{ color: getElementTextColor('center') }}
-                  >INDUSTRIES</span>
-                 <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-               </Link>
-               
-               <AnimatePresence>
-                 {hoveredItem === 'industries' && (
-                   <>
-                     {/* Invisible bridge area */}
-                     <div 
-                       className="fixed top-20 left-1/2 -translate-x-1/2 w-[800px] h-6 z-[9998]"
-                       onMouseEnter={() => handleMouseEnter('industries')}
-                       onMouseLeave={handleMouseLeave}
-                     />
-                     <motion.div 
-                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                       transition={{ duration: 0.2, ease: "easeOut" }}
-                       className="fixed top-[6.5rem] left-1/2 -translate-x-1/2 w-[800px] bg-white/99 dark:bg-black/99 rounded-2xl shadow-2xl dark:shadow-black/80 border border-gray-200/60 dark:border-gray-700/60 p-8 z-[9999]"
-                       onMouseEnter={() => handleMouseEnter('industries')}
-                       onMouseLeave={handleMouseLeave}
-                     >
-                    <div className="grid grid-cols-3 gap-6">
-                      {dropdownContent.industries.items.map((item, index) => (
-                        <div key={index} className="group cursor-pointer transform transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-2">
-                           <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl h-40 mb-4 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-gray-700/50 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:scale-105 overflow-hidden relative">
-                            <div className="w-20 h-20 bg-purple-500 rounded-lg flex items-center justify-center transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:bg-purple-600">
-                              <span className="text-white text-sm font-bold transition-all duration-300 group-hover:scale-110">{item.title.split(' ')[0]}</span>
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                          </div>
-                          <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-all duration-500 ease-out group-hover:scale-105">{item.title}</h3>
-                           <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-all duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-300">{item.description}</p>
-                          <div className="space-y-1">
-                            {item.categories.map((category, idx) => (
-                              <div key={idx} className="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-300 cursor-pointer hover:scale-105 hover:translate-x-1">{category}</div>
-                            ))}
-                          </div>
-                        </div>
+              {/* Cart Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 relative hover:bg-muted transition-all duration-300 hover:scale-110"
+                onClick={() => setIsOpen(true)}
+              >
+                <ShoppingBag className="h-4 w-4" />
+                {state.totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive rounded-full text-xs text-destructive-foreground flex items-center justify-center">
+                    {state.totalItems > 9 ? "9+" : state.totalItems}
+                  </span>
+                )}
+              </Button>
+
+              <ThemeDropdown />
+              <LanguageDropdown />
+            </div>
+
+            {/* MOBILE MENU */}
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden h-8 w-8 hover:bg-muted transition-all duration-500 hover:scale-110"
+                >
+                  <Menu className="h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+
+              <SheetContent
+                side="right"
+                className={`${isDarkMode ? "dark:bg-sidebar" : "bg-card"}`}
+              >
+                <div className="flex flex-col space-y-4 mt-8">
+                  <Link
+                    href="/"
+                    className="text-muted-foreground hover:text-foreground text-base font-medium transition-all duration-300 py-2 px-3 rounded-lg"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Home
+                  </Link>
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-between text-muted-foreground hover:text-foreground text-base font-medium"
+                      >
+                        Products <ChevronDown className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-52">
+                      {categories.map((category, i) => (
+                        <DropdownMenuItem key={i} asChild>
+                          <Link
+                            href={`/products?category=${encodeURIComponent(
+                              category
+                            )}`}
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {category}
+                          </Link>
+                        </DropdownMenuItem>
                       ))}
-                    </div>
-                  </motion.div>
-                    </>
-                  )}
-                </AnimatePresence>
-             </div>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
 
-             <Link
-               href="/about"
-               className="relative text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm font-medium hover:font-semibold transition-all duration-500 ease-out tracking-wide hover:scale-110 hover:tracking-wider group overflow-hidden"
-             >
-               <span className="relative z-10 transition-all duration-300">ABOUT</span>
-               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-             </Link>
-             
-            
-             
-             <Link
-               href="/sale"
-               className="relative text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-semibold hover:font-bold transition-all duration-500 ease-out tracking-wide hover:scale-125 hover:tracking-wider bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 group overflow-hidden hover:shadow-lg hover:-translate-y-0.5"
-             >
-               <span className="relative z-10 transition-all duration-300">SALE</span>
-               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left rounded-lg"></div>
-             </Link>
-           </div>
+                  <Link
+                    href="/about"
+                    className="text-muted-foreground hover:text-foreground text-base font-medium py-2 px-3 rounded-lg"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    About
+                  </Link>
 
-           {/* Right side icons */}
-           <div className="flex items-center space-x-4 flex-shrink-0 ml-auto">
-             <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg">
-               <Bell className="h-5 w-5" />
-             </button>
-             
-             <button className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg">
-               <User className="h-5 w-5" />
-             </button>
-             
-             <button 
-               className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg"
-               style={{ color: getElementTextColor('right') }}
-             >
-               <Search className="h-5 w-5" />
-             </button>
-             
-             <Link 
-               href="/inquiry" 
-               className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 ease-out hover:scale-125 hover:rotate-12 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg relative"
-               style={{ color: getElementTextColor('right') }}
-             >
-               <ShoppingBag className="h-5 w-5" />
-             </Link>
+                  <Link
+                    href="/blog"
+                    className="text-muted-foreground hover:text-foreground text-base font-medium py-2 px-3 rounded-lg"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Blog
+                  </Link>
 
-             {/* Theme & Language Controls - Hidden on mobile */}
-             <div className="hidden md:flex items-center space-x-2">
-               <LanguageToggle />
-               <ThemeDropdown />
-             </div>
+                  <Link
+                    href="/contact"
+                    className="text-muted-foreground hover:text-foreground text-base font-medium py-2 px-3 rounded-lg"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Contact Us
+                  </Link>
 
-             {/* Mobile menu button */}
-             <button
-               onClick={toggleMenu}
-               className="lg:hidden text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-500 ease-out hover:scale-125 hover:rotate-180 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg"
-               style={{ color: getElementTextColor('right') }}
-               aria-label="Toggle menu"
-             >
-               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-             </button>
-           </div>
-         </div>
-       </div>
+                  {/* Orders Mobile */}
+                  <Link
+                    href="/user-orders"
+                    className="text-blue-600 dark:text-blue-400 flex items-center gap-2 py-2 px-3 text-base font-medium hover:text-blue-700 dark:hover:text-blue-300 rounded-lg"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Package className="h-5 w-5" /> My Orders
+                  </Link>
 
-       {/* Mobile menu */}
-          {isMenuOpen && (
-            <div className="lg:hidden bg-white/95 dark:bg-black/95 border-t border-gray-200/50 dark:border-gray-700/50 rounded-b-2xl mx-4 shadow-xl dark:shadow-2xl dark:shadow-black/50 dark:ring-1 dark:ring-gray-600/20 transition-all duration-500 ease-out animate-in slide-in-from-top-4 fade-in-0">
-              <div className="px-4 pt-4 pb-6 space-y-4">
-             <Link
-               href="/home"
-               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
-               onClick={() => setIsMenuOpen(false)}
-             >
-               Best Sellers
-             </Link>
-             <Link
-               href="/services"
-               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
-               onClick={() => setIsMenuOpen(false)}
-             >
-               Services
-             </Link>
-             <Link
-               href="/solutions"
-               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
-               onClick={() => setIsMenuOpen(false)}
-             >
-               Solutions
-             </Link>
-             <Link
-               href="/industries"
-               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
-               onClick={() => setIsMenuOpen(false)}
-             >
-               Industries
-             </Link>
-             <Link
-               href="/about"
-               className="block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-base font-medium transition-all duration-300 ease-out py-2 hover:scale-105 hover:translate-x-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 px-3 rounded-lg"
-               onClick={() => setIsMenuOpen(false)}
-             >
-               About
-             </Link>
-             
-             {/* Theme & Language controls in mobile menu */}
-             <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
-               <div className="flex items-center space-x-2">
-                 <span className="text-sm text-gray-600 dark:text-gray-400">Language:</span>
-                 <LanguageToggle />
-               </div>
-               <div className="flex items-center space-x-2">
-                 <span className="text-sm text-gray-600 dark:text-gray-400">Theme:</span>
-                 <ThemeDropdown />
-               </div>
-             </div>
-           </div>
-         </div>
-       )}
-     </nav>
+                  {/* Mobile Search */}
+                  <div className="relative mt-4">
+                    <Input
+                      placeholder="Search Product"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pr-10"
+                    />
+                    {searchQuery && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-10 top-1/2 -translate-y-1/2 h-6 w-6"
+                        onClick={() => setSearchQuery("")}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    )}
+                    <SearchIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  </div>
+
+                  {/* Mobile utilities */}
+                  <div className="flex items-center justify-between pt-4 border-t border-border">
+                    <SignedIn>
+                      <div className="flex items-center space-x-2">
+                        <UserButton afterSignOutUrl="/" />
+                        <span className="text-sm">Account</span>
+                      </div>
+                    </SignedIn>
+                    <SignedOut>
+                      <div className="flex items-center space-x-2">
+                        <SignInButton mode="modal">
+                          <Button variant="ghost" size="sm">
+                            Login
+                          </Button>
+                        </SignInButton>
+                        <SignUpButton mode="modal">
+                          <Button size="sm">Sign Up</Button>
+                        </SignUpButton>
+                      </div>
+                    </SignedOut>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 relative hover:bg-muted transition-all duration-300 hover:scale-110"
+                    >
+                      <ShoppingBag className="h-4 w-4" />
+                      <span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive rounded-full text-xs text-destructive-foreground flex items-center justify-center">
+                        {state.totalItems > 9 ? "9+" : state.totalItems}
+                      </span>
+                    </Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </nav>
+      </div>
+
+      {/* CartDropdown component */}
+      <CartDropdown />
     </>
   );
 };

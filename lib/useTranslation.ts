@@ -1,6 +1,6 @@
 "use client"
 
-import { useLanguage } from "@/components/language-provider"
+import { useLanguage } from "@/components/utilities/language-provider"
 import { translations } from "./translations"
 
 export function useTranslation() {
