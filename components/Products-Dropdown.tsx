@@ -1,7 +1,7 @@
 // components/Products-Dropdown.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Monitor, Cpu, Tv, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -86,11 +86,45 @@ const ProductsDropdown = () => {
     ];
   }, [categories]);
 
+  // Expert-level hover intent: precise open/close thresholds
+  const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const clearOpenTimer = () => {
+    if (openTimerRef.current) {
+      clearTimeout(openTimerRef.current);
+      openTimerRef.current = null;
+    }
+  };
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const scheduleOpen = (delay = 60) => {
+    clearOpenTimer();
+    openTimerRef.current = setTimeout(() => setIsOpen(true), delay);
+  };
+  const scheduleClose = (delay = 120) => {
+    clearCloseTimer();
+    closeTimerRef.current = setTimeout(() => setIsOpen(false), delay);
+  };
+
+  useEffect(() => {
+    return () => {
+      clearOpenTimer();
+      clearCloseTimer();
+    };
+  }, []);
+
   return (
     <div
       className="relative"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
+      onMouseEnter={() => scheduleOpen(60)}
+      onMouseLeave={() => scheduleClose(120)}
     >
       {/* Trigger */}
       <Button
@@ -117,8 +151,12 @@ const ProductsDropdown = () => {
             exit={{ opacity: 0, y: 8 }}
             transition={{ type: "spring", stiffness: 250, damping: 20 }}
             className="fixed left-1/2 -translate-x-1/2 top-[6rem] w-[800px] max-w-[90vw] rounded-2xl shadow-xl border border-border bg-card z-[1001] overflow-hidden"
-            onMouseEnter={() => setIsOpen(true)}
-            onMouseLeave={() => setIsOpen(false)}
+            onMouseEnter={() => {
+              clearCloseTimer();
+              setIsOpen(true);
+            }}
+            onMouseLeave={() => scheduleClose(140)}
+            ref={menuRef}
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-primary/5 to-secondary/5 p-4 border-b border-border">
