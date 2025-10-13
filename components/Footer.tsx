@@ -48,7 +48,7 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Contact</h3>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
               <li><Link href="mailto:info@oskaz.com" className="hover:text-gray-900 dark:hover:text-white" aria-label="Email info@oskaz.com">info@oskaz.com</Link></li>
-              <li><Link href="tel:+251900000000" className="hover:text-gray-900 dark:hover:text-white" aria-label="Phone +251 900 000 000">+251 900 000 000</Link></li>
+              <li><Link href="+251 911204731" className="hover:text-gray-900 dark:hover:text-white" aria-label="Phone +251 911204731">+251 911 204 731</Link></li>
               <li><Link href="#inquiry" className="hover:text-gray-900 dark:hover:text-white">Inquiry</Link></li>
             </ul>
             <div className="mt-4 flex items-center gap-3">
