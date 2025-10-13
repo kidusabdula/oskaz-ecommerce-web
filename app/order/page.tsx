@@ -64,7 +64,7 @@ export default function OrderPage() {
         addToast({
           title: "Order Placed Successfully!",
           description: `Your order #${data.data.salesOrder.name} has been confirmed.`,
-          action: { label: "View Details", onClick: () => router.push(`/order-success?orderId=${data.data.salesOrder.name}`) },
+          action: { label: "View Details", onClick: () => router.push(`/order/order-success?orderId=${data.data.salesOrder.name}`) },
         });
         clearCart();
         router.push(`/order/order-success?orderId=${data.data.salesOrder.name}`);
