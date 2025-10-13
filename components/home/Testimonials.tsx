@@ -163,94 +163,7 @@ const Testimonials = () => {
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        {/* Section Header */}
-        <div className={cn(
-          "text-center max-w-3xl mx-auto mb-16",
-          isInView && "animate-fade-in"
-        )}>
-          <Badge variant="outline" className="px-3 py-1 text-xs font-medium rounded-full mb-4">
-            <Quote className="w-3 h-3 mr-1 text-primary" />
-            Testimonials
-          </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
-            What Our Clients Say
-          </h1>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Don&apos;t just take our word for it. Hear from our satisfied clients who have transformed their businesses with Oskaz solutions.
-          </p>
-        </div>
-
-        {/* Testimonials Carousel */}
-        <div className={cn(
-          "max-w-4xl mx-auto mb-20",
-          isInView && "animate-fade-in-up"
-        )}>
-          <Card className={cn(
-            "p-8 md:p-12 border shadow-xl",
-            isDarkMode 
-              ? "bg-card/50 border-border" 
-              : "bg-white/70 border-gray-200/70"
-          )}>
-            <CardContent className="p-0">
-              <div className="flex flex-col md:flex-row gap-8">
-                {/* Testimonial Content */}
-                <div className="flex-1">
-                  <div className="flex items-center mb-4">
-                    {renderStars(testimonials[currentTestimonial].rating)}
-                  </div>
-                  <blockquote className="text-lg md:text-xl text-muted-foreground mb-6 italic">
-                    &quot;{testimonials[currentTestimonial].content}&quot;
-                  </blockquote>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                      <span className="text-primary font-semibold">
-                        {testimonials[currentTestimonial].avatar}
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">{testimonials[currentTestimonial].name}</h4>
-                      <p className="text-sm text-muted-foreground">{testimonials[currentTestimonial].role}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Navigation Controls */}
-                <div className="flex items-center justify-center md:justify-end space-x-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={prevTestimonial}
-                    className="rounded-full"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  <div className="flex space-x-1">
-                    {testimonials.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentTestimonial(index)}
-                        className={cn(
-                          "w-2 h-2 rounded-full transition-all",
-                          index === currentTestimonial
-                            ? "bg-primary w-8"
-                            : "bg-muted-foreground/30"
-                        )}
-                      />
-                    ))}
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={nextTestimonial}
-                    className="rounded-full"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Testimonials section removed per request */}
 
         {/* CEO Message */}
         <div className={cn(
@@ -270,7 +183,7 @@ const Testimonials = () => {
                 </div>
                 <div className="flex-1 text-center md:text-left">
                   <blockquote className="text-lg md:text-xl mb-6 italic">
-                    &quot;At Oskaz Import, we&apos;re not just selling technology – we&apos;re empowering businesses to transform their operations and achieve unprecedented efficiency.&quot;
+                    &quot;At Oskaz Import, we&apos;re not just selling technology we&apos;re empowering businesses to transform their operations and achieve unprecedented efficiency.&quot;
                   </blockquote>
                   <div>
                     <h4 className="font-semibold text-lg">Mr. Hussen Yesuf</h4>
