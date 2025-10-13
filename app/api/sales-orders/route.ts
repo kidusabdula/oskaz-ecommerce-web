@@ -2,7 +2,7 @@
 import { NextRequest } from "next/server";
 import { frappeClient } from "@/lib/frappe-client";
 import { handleApiRequest, withEndpointLogging } from "@/lib/api-template";
-import { getBaseUrl } from '@/lib/utils';
+import { getServerBaseUrl } from "@/lib/server-urls";
 /**
  * GET - fetch sales orders for a customer by email
  * Example: GET /api/sales-orders?email=user@example.com
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
       }
 
       // 1) Try to get existing customer from our API by email
-      const base =  getBaseUrl();
+      const base =  getServerBaseUrl();
       const lookupRes = await fetch(`${base}/api/customers?email=${encodeURIComponent(email)}`);
       const lookupJson = await lookupRes.json().catch(() => ({}));
 
