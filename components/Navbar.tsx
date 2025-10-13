@@ -86,7 +86,7 @@ const Navbar = () => {
             className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-300/70 to-transparent pointer-events-none rounded-2xl"
             style={{
               width: `${scrollProgress}%`,
-              opacity: scrollProgress > 0 ? 1 : 0,
+              opacity: scrollProgress > 0 ? (isDarkMode ? 0.35 : 1) : 0,
             }}
           />
 
