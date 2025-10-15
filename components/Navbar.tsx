@@ -245,30 +245,14 @@ const Navbar = () => {
                     Home
                   </Link>
 
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className="w-full justify-between text-muted-foreground hover:text-foreground text-base font-medium"
-                      >
-                        Products <ChevronDown className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-52">
-                      {categories.map((category, i) => (
-                        <DropdownMenuItem key={i} asChild>
-                          <Link
-                            href={`/products?category=${encodeURIComponent(
-                              category
-                            )}`}
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            {category}
-                          </Link>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  {/* Products dropdown removed for mobile sidebar per design preference */}
+                  <Link
+                    href="/products"
+                    className="text-muted-foreground hover:text-foreground text-base font-medium py-2 px-3 rounded-lg"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Products
+                  </Link>
 
                   <Link
                     href="/about"
@@ -344,17 +328,22 @@ const Navbar = () => {
                         </SignUpButton>
                       </div>
                     </SignedOut>
+                    <div className="flex items-center space-x-2">
+                      {/* Theme toggle - same design as desktop */}
+                      <ThemeDropdown className="h-8 w-8" />
 
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 relative hover:bg-muted transition-all duration-300 hover:scale-110"
-                    >
-                      <ShoppingBag className="h-4 w-4" />
-                      <span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive rounded-full text-xs text-destructive-foreground flex items-center justify-center">
-                        {state.totalItems > 9 ? "9+" : state.totalItems}
-                      </span>
-                    </Button>
+                      {/* Cart Button */}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 relative hover:bg-muted transition-all duration-300 hover:scale-110"
+                      >
+                        <ShoppingBag className="h-4 w-4" />
+                        <span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive rounded-full text-xs text-destructive-foreground flex items-center justify-center">
+                          {state.totalItems > 9 ? "9+" : state.totalItems}
+                        </span>
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </SheetContent>

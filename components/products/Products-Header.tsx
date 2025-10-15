@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Grid, List, ShoppingBag } from "lucide-react";
+import { Search, Grid, List, ShoppingBag, SlidersHorizontal } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -17,6 +17,8 @@ interface ProductsHeaderProps {
   filteredProductsCount: number;
   sortBy: string;
   setSortBy: (sortBy: string) => void;
+  onToggleFilters?: () => void;
+  filtersOpen?: boolean;
 }
 
 const ProductsHeader: React.FC<ProductsHeaderProps> = ({
@@ -27,6 +29,8 @@ const ProductsHeader: React.FC<ProductsHeaderProps> = ({
   filteredProductsCount,
   sortBy,
   setSortBy,
+  onToggleFilters,
+  filtersOpen,
 }) => {
   const [mounted, setMounted] = useState(false);
   const { theme } = useTheme();
@@ -38,7 +42,7 @@ const ProductsHeader: React.FC<ProductsHeaderProps> = ({
   return (
     <header
       className={cn(
-        "w-full bg-background/95 backdrop-blur-md top-0 z-40 border-none h-[16vh]",
+        "w-full bg-background/95 backdrop-blur-md top-0 z-40 border-none min-h-[16vh] sm:h-[16vh] mb-4 sm:mb-0",
         "transition-all duration-300"
       )}
     >
@@ -80,7 +84,7 @@ const ProductsHeader: React.FC<ProductsHeaderProps> = ({
             </Badge>
           </div>
 
-          {/* Right: Search and View Controls */}
+          {/* Right: Search, Sort, Filters (mobile), View Toggle (desktop) */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 lg:gap-4 flex-1 lg:justify-end">
             
             {/* Search Bar */}
@@ -118,24 +122,74 @@ const ProductsHeader: React.FC<ProductsHeaderProps> = ({
               </div>
             </div>
 
-            {/* Sort By Dropdown */}
-            <div className="flex-shrink-0">
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-[180px] h-10 rounded-lg">
-                  <SelectValue placeholder="Sort By" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="featured">Featured</SelectItem>
-                  <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                  <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                  <SelectItem value="newest">Newest Arrivals</SelectItem>
-                  <SelectItem value="rating">Average Rating</SelectItem>
-                </SelectContent>
-              </Select>
+            {/* Mobile row: Sort (Featured) + Filters side-by-side */}
+            <div className="flex w-full items-center gap-3 sm:hidden">
+              <div className="flex-1 sm:flex-none sm:w-auto">
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-full sm:w-[180px] h-10 rounded-lg">
+                    <SelectValue placeholder="Sort By" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="featured">Featured</SelectItem>
+                    <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                    <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                    <SelectItem value="newest">Newest Arrivals</SelectItem>
+                    <SelectItem value="rating">Average Rating</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {onToggleFilters && (
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "sm:hidden h-10 rounded-xl px-4 flex-1",
+                    isDarkMode ? "border-slate-700 bg-slate-800/60" : "border-gray-200 bg-white/70"
+                  )}
+                  onClick={onToggleFilters}
+                >
+                  <span className="flex items-center gap-2 font-medium justify-center">
+                    <SlidersHorizontal className="h-5 w-5" />
+                    Filters
+                  </span>
+                </Button>
+              )}
+            </div>
+
+            {/* Tablet: Sort + Filters (desktop hides Filters) */}
+            <div className="hidden sm:flex items-center gap-3 flex-shrink-0 sm:w-auto">
+              <div className="w-[180px]">
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-full h-10 rounded-lg">
+                    <SelectValue placeholder="Sort By" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="featured">Featured</SelectItem>
+                    <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                    <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                    <SelectItem value="newest">Newest Arrivals</SelectItem>
+                    <SelectItem value="rating">Average Rating</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {onToggleFilters && (
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "lg:hidden h-10 rounded-xl px-4",
+                    isDarkMode ? "border-slate-700 bg-slate-800/60" : "border-gray-200 bg-white/70"
+                  )}
+                  onClick={onToggleFilters}
+                >
+                  <span className={cn("flex items-center gap-2 font-medium", filtersOpen ? "text-primary" : "")}>
+                    <SlidersHorizontal className="h-5 w-5" />
+                    Filters
+                  </span>
+                </Button>
+              )}
             </div>
 
             {/* View Mode Toggle and Desktop Product Count */}
-            <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="hidden sm:flex items-center gap-3 flex-shrink-0 sm:w-auto mt-2 sm:mt-0">
               {/* Desktop Product Count */}
               {/* <Badge 
                 variant="secondary" 
@@ -147,7 +201,7 @@ const ProductsHeader: React.FC<ProductsHeaderProps> = ({
               {/* View Mode Toggle */}
               <div
                 className={cn(
-                  "flex items-center p-1 rounded-lg border shadow-sm",
+                  "flex items-center p-1 rounded-lg border shadow-sm w-full sm:w-auto",
                   isDarkMode ? "border-slate-700 bg-slate-800/50" : "border-gray-200 bg-white"
                 )}
               >
@@ -156,7 +210,7 @@ const ProductsHeader: React.FC<ProductsHeaderProps> = ({
                   size="sm"
                   onClick={() => setViewMode("grid")}
                   className={cn(
-                    "h-8 rounded-md gap-1.5 px-2.5",
+                    "h-8 rounded-md gap-1.5 px-2.5 flex-1 sm:flex-none",
                     viewMode === "grid"
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground hover:bg-transparent"
@@ -170,7 +224,7 @@ const ProductsHeader: React.FC<ProductsHeaderProps> = ({
                   size="sm"
                   onClick={() => setViewMode("list")}
                   className={cn(
-                    "h-8 rounded-md gap-1.5 px-2.5",
+                    "h-8 rounded-md gap-1.5 px-2.5 flex-1 sm:flex-none",
                     viewMode === "list"
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground hover:bg-transparent"

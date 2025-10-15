@@ -1,7 +1,7 @@
-// components/Cart-Dropdown.tsx
 "use client";
 
 import React, { useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -50,8 +50,8 @@ const CartDropdown: React.FC = () => {
   
   if (!state.isOpen) return null;
   
-  return (
-    <div className="fixed inset-0 z-[1002]">
+  const overlay = (
+    <div className="fixed inset-0 z-[1200]">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/20" onClick={() => setIsOpen(false)} />
       
@@ -158,6 +158,8 @@ const CartDropdown: React.FC = () => {
       </div>
     </div>
   );
+  
+  return typeof document !== 'undefined' ? createPortal(overlay, document.body) : null;
 };
 
 export default CartDropdown;

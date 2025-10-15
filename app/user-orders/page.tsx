@@ -142,7 +142,7 @@ export default function OrdersPage() {
     )}>
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
@@ -162,7 +162,7 @@ export default function OrdersPage() {
             onClick={handleRefresh}
             disabled={refreshing}
             variant="outline"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 w-full sm:w-auto"
           >
             <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
             Refresh
@@ -219,11 +219,11 @@ export default function OrdersPage() {
                   isDarkMode ? "bg-card border-border" : "bg-white border-gray-200"
                 )}
               >
-                <CardHeader className={cn(
+              <CardHeader className={cn(
                   "border-b",
                   isDarkMode ? "border-border" : "border-gray-200"
                 )}>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                     <div>
                       <CardTitle className="flex items-center gap-3 text-xl">
                         <FileText className="h-5 w-5" />
@@ -242,7 +242,7 @@ export default function OrdersPage() {
                         )}
                       </CardDescription>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left md:text-right">
                       <Badge className={cn("text-sm font-semibold", getStatusColor(order.status))}>
                         {order.status || "Processing"}
                       </Badge>
@@ -297,7 +297,7 @@ export default function OrdersPage() {
                     </div>
                   </div>
                   <Separator className="my-4" />
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center items-start gap-3">
                     <span className="text-sm text-muted-foreground">
                       Customer: {order.customer_name}
                     </span>

@@ -26,7 +26,7 @@ export function ThemeDropdown({ className }: { className?: string }) {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="center" side="bottom" sideOffset={4} className="min-w-[120px]">
+      <DropdownMenuContent align="center" side="bottom" sideOffset={4} className="min-w-[120px] z-[1100]">
         <DropdownMenuItem onClick={() => setTheme("light")}>
           <Sun className="mr-2 h-4 w-4" />
           <span>Light</span>

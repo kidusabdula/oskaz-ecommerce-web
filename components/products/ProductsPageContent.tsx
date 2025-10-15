@@ -6,6 +6,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import ProductsHeader from "@/components/products/Products-Header";
 import ProductsSidebar from "@/components/products/Products-Sidebar";
 import ProductsGrid, { type Product } from "@/components/products/Products-Grid";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
+import { SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
 
 export function ProductsPageContent() {
   const router = useRouter();
@@ -92,8 +95,20 @@ export function ProductsPageContent() {
     router.push(`/products/${product.name}`);
   };
 
+  // Mobile-only collapsible filters
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background pt-24">
+    <div className="min-h-screen bg-background pt-28 sm:pt-24">
       <ProductsHeader
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -102,28 +117,58 @@ export function ProductsPageContent() {
         filteredProductsCount={0}
         sortBy={sortBy}
         setSortBy={setSortBy}
+        filtersOpen={mobileFiltersOpen}
+        onToggleFilters={() => setMobileFiltersOpen((v) => !v)}
       />
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="w-full lg:w-64 flex-shrink-0">
-            <ProductsSidebar
-              categories={categories}
-              setCategories={setCategories}
-              priceRange={priceRange}
-              setPriceRange={setPriceRange}
-              features={features}
-              setFeatures={setFeatures}
-              brands={brands}
-              setBrands={setBrands}
-              ratings={ratings}
-              setRatings={setRatings}
-              onApplyFilters={handleApplyFilters}
-              onClearAllFilters={handleClearAllFilters}
-              onCategoryChange={handleCategoryChange}
-            />
+        {/* Mobile: Collapsible Filters (triggered from header) */}
+        {!isDesktop && (
+          <div className="lg:hidden mt-2 mb-6">
+            <Collapsible open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
+              <CollapsibleContent className="mt-4">
+                <ProductsSidebar
+                  categories={categories}
+                  setCategories={setCategories}
+                  priceRange={priceRange}
+                  setPriceRange={setPriceRange}
+                  features={features}
+                  setFeatures={setFeatures}
+                  brands={brands}
+                  setBrands={setBrands}
+                  ratings={ratings}
+                  setRatings={setRatings}
+                  onApplyFilters={handleApplyFilters}
+                  onClearAllFilters={handleClearAllFilters}
+                  onCategoryChange={handleCategoryChange}
+                />
+              </CollapsibleContent>
+            </Collapsible>
           </div>
+        )}
 
-          <div className="flex-1">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Desktop: Static Sidebar */}
+          {isDesktop && (
+            <div className="w-full lg:w-64 flex-shrink-0">
+              <ProductsSidebar
+                categories={categories}
+                setCategories={setCategories}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                features={features}
+                setFeatures={setFeatures}
+                brands={brands}
+                setBrands={setBrands}
+                ratings={ratings}
+                setRatings={setRatings}
+                onApplyFilters={handleApplyFilters}
+                onClearAllFilters={handleClearAllFilters}
+                onCategoryChange={handleCategoryChange}
+              />
+            </div>
+          )}
+
+          <div className="flex-1 mt-4 sm:mt-0">
             <ProductsGrid
               viewMode={viewMode}
               sortBy={sortBy}
