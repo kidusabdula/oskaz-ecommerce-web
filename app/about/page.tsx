@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +15,6 @@ import {
   Heart, 
   Code, 
   X, 
-  FileText,
   MapPin,
   Copy,
   ArrowRight,
@@ -25,7 +25,14 @@ import { cn } from "@/lib/utils";
 
 export default function AboutPage() {
   const [mounted, setMounted] = useState(false);
-  const [selectedCertificate, setSelectedCertificate] = useState<any>(null);
+  type Certificate = {
+    id: number;
+    title: string;
+    organization: string;
+    image: string;
+    description: string;
+  };
+  const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
   const [copiedAddress, setCopiedAddress] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const { theme } = useTheme();
@@ -592,7 +599,7 @@ export default function AboutPage() {
               Client Testimonials
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Hear what our valued clients say about their experience with Oskaz Import's professional services and solutions.
+              Hear what our valued clients say about their experience with Oskaz Import&apos;s professional services and solutions.
             </p>
           </div>
           
@@ -630,7 +637,7 @@ export default function AboutPage() {
                     </div>
                   </div>
                   <p className="text-muted-foreground italic leading-relaxed">
-                    "{testimonial.testimonial}"
+                    &ldquo;{testimonial.testimonial}&rdquo;
                   </p>
                 </CardContent>
               </Card>
@@ -685,15 +692,12 @@ export default function AboutPage() {
                     <CardContent className="p-4 flex flex-col h-full">
                       <div className="relative h-48 mb-4 overflow-hidden rounded-lg bg-muted/30 flex items-center justify-center">
                         {/* Display actual certificate image */}
-                        <img 
-                          src={certificate.image} 
+                        <Image 
+                          src={`/${certificate.image}`}
                           alt={certificate.title}
-                          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
-                          onError={(e) => {
-                            // Fallback if image doesn't exist
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                          }}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-contain transition-transform duration-500 group-hover:scale-110"
                         />
                         {/* Fallback if image doesn't load */}
                         <div className="absolute inset-0 flex items-center justify-center">
@@ -860,14 +864,12 @@ export default function AboutPage() {
             </Button>
             <div className="relative w-full h-full p-8">
               <div className="w-full h-full bg-muted/30 rounded-lg flex items-center justify-center">
-                <img 
-                  src={selectedCertificate.image} 
+                <Image 
+                  src={`/${selectedCertificate.image}`}
                   alt={selectedCertificate.title}
+                  width={1200}
+                  height={800}
                   className="max-w-full max-h-full object-contain"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
                 />
                 {/* Fallback if image doesn't load */}
                 <div className="absolute inset-0 flex items-center justify-center flex-col space-y-4">
