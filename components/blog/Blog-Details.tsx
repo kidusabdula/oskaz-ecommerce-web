@@ -223,21 +223,21 @@ const BlogDetails = ({ blogId }: BlogDetailsProps) => {
   };
 
   return (
-    <div ref={sectionRef} className="min-h-screen pt-18">
+    <div ref={sectionRef} className="min-h-screen pt-20 md:pt-18">
       {/* Blog Header */}
       <div className={cn(
         "border-b py-6",
         isDarkMode ? "bg-card border-border" : "bg-white border-gray-200"
       )}>
         <div className="container mx-auto px-4">
-          <Link href="/blog" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-4">
+          <Link href="/blog" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-2 md:mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
           
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4">
             <div>
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-2 md:mb-3">
                 <Badge className={getCategoryColor(post.category)}>
                   {post.category}
                 </Badge>
@@ -250,12 +250,12 @@ const BlogDetails = ({ blogId }: BlogDetailsProps) => {
                   {post.hits} views
                 </div>
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+              <h1 className="text-2xl font-bold tracking-tight md:text-4xl">
                 {post.title}
               </h1>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-4">
               <div className="flex items-center text-sm text-muted-foreground">
                 <User className="w-3 h-3 mr-1" />
                 {post.author}
@@ -271,7 +271,7 @@ const BlogDetails = ({ blogId }: BlogDetailsProps) => {
 
       {/* Blog Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
             <div className={cn(
@@ -279,7 +279,7 @@ const BlogDetails = ({ blogId }: BlogDetailsProps) => {
               isDarkMode && "prose-invert"
             )}>
               {/* Blog Image */}
-              <div className="relative h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
+              <div className="relative h-48 sm:h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center">
                   <div className="text-center space-y-2">
                     <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
@@ -303,7 +303,7 @@ const BlogDetails = ({ blogId }: BlogDetailsProps) => {
             {/* Share Section */}
             <div className="mt-12 pt-8 border-t">
               <h3 className="text-xl font-bold mb-4">Share this article</h3>
-              <div className="flex space-x-4">
+              <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
                   size="sm"
@@ -352,9 +352,9 @@ const BlogDetails = ({ blogId }: BlogDetailsProps) => {
               isDarkMode ? "bg-card border-border" : "bg-white border-gray-200"
             )}>
               <CardHeader>
-                <CardTitle className="text-lg">About the Author</CardTitle>
+                <CardTitle className="text-base sm:text-lg">About the Author</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 p-4 sm:p-6">
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
                     <User className="w-8 h-8 text-white" />
@@ -375,9 +375,9 @@ const BlogDetails = ({ blogId }: BlogDetailsProps) => {
               isDarkMode ? "bg-card border-border" : "bg-white border-gray-200"
             )}>
               <CardHeader>
-                <CardTitle className="text-lg">Related Posts</CardTitle>
+                <CardTitle className="text-base sm:text-lg">Related Posts</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 p-4 sm:p-6">
                 {relatedPosts.map((relatedPost, index) => (
                   <div key={index} className="pb-4 border-b last:border-0 last:pb-0">
                     <Link href={`/blog/${Number(Object.keys(blogPost).find(key => blogPost[Number(key) as keyof typeof blogPost] === relatedPost))}`} className="block group">
