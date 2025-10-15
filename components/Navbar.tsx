@@ -6,7 +6,6 @@ import {
   Menu,
   Search as SearchIcon,
   ShoppingBag,
-  ChevronDown,
   X,
   Package,
 } from "lucide-react";
@@ -14,12 +13,6 @@ import { ThemeDropdown } from "./utilities/theme-dropdown";
 import { LanguageDropdown } from "./utilities/language-dropdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useTheme } from "next-themes";
 import ProductsDropdown from "./Products-Dropdown";
@@ -38,28 +31,11 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [categories, setCategories] = useState<string[]>([]);
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
 
   const { state, setIsOpen } = useCart();
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch("/api/items/categories");
-        const data = await response.json();
-        if (data.success && data.data.categories) {
-          setCategories(
-            data.data.categories.map((cat: { name: string }) => cat.name)
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-    fetchCategories();
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

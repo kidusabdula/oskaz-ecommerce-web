@@ -13,8 +13,9 @@ const Hero2 = () => {
   const [isHeaderHovered, setIsHeaderHovered] = React.useState(false);
   const sectionRef = React.useRef<HTMLElement | null>(null);
   const [preloadMode, setPreloadMode] = React.useState<"none" | "metadata" | "auto">("none");
-  const [canPlay, setCanPlay] = React.useState(false);
-  const [videoError, setVideoError] = React.useState(false);
+  
+  type NavigatorConnection = { effectiveType?: string; saveData?: boolean };
+  type NavigatorWithConnection = Navigator & { connection?: NavigatorConnection };
 
   // Network-aware, in-view preloading to improve reliability in production
   React.useEffect(() => {
@@ -22,7 +23,7 @@ const Hero2 = () => {
     if (!el) return;
 
     // Detect connection and user data-saver preferences
-    const conn = (navigator as any).connection;
+    const conn = (navigator as NavigatorWithConnection).connection;
     const isFast = conn?.effectiveType === "4g" && !conn?.saveData;
 
     const observer = new IntersectionObserver(
@@ -56,7 +57,7 @@ const Hero2 = () => {
       )}
       style={{
         // Unify circle center for video and all overlays
-        ["--reveal" as any]: isHeaderHovered
+        ["--reveal" as string]: isHeaderHovered
           ? "circle(140% at 50% 50%)"
           : "circle(0% at 50% 50%)",
       }}
@@ -81,8 +82,7 @@ const Hero2 = () => {
             transition: `clip-path ${isHeaderHovered ? REVEAL_DURATION_MS : REVEAL_OUT_DURATION_MS}ms ease-in-out`,
             willChange: "clip-path",
           }}
-          onCanPlayThrough={() => setCanPlay(true)}
-          onError={() => setVideoError(true)}
+          
           src="/oskaz-hero-background.mp4"
         />
         {/* Animated Gradient Overlay */}
