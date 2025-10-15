@@ -168,7 +168,7 @@ const InnovationSection = () => {
                   playsInline
                   preload={preloadMode}
                   className="absolute inset-0 w-full h-full object-fill"
-                  poster="/video-poster.jpg"
+                  poster="/hero-mp4-fallover.png"
                   aria-label="Background animation video"
                   controlsList="nodownload noplaybackrate nofullscreen"
                   disablePictureInPicture

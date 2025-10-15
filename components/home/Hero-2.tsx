@@ -75,7 +75,7 @@ const Hero2 = () => {
           muted
           playsInline
           preload={preloadMode}
-          poster="/DesignConcept.jpg"
+          poster="/hero-mp4-fallover.png"
           crossOrigin="anonymous"
           aria-label="Background reveal video"
           controlsList="nodownload noplaybackrate nofullscreen"
