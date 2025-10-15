@@ -40,10 +40,16 @@
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9.17.0",
     "eslint-config-next": "15.1.3",
     "tailwindcss": "^4.0.0",
     "tw-animate-css": "^1.2.8",
     "typescript": "^5.7.2"
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "safari >= 13",
+    "ios_saf >= 13"
+  ]
 }

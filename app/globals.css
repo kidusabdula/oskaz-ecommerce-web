@@ -269,6 +269,83 @@
 .dark .bg-modern-overlay {
   background: oklch(0.09 0.02 240 / 90%);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Safari fallbacks for environments without OKLCH support */
+@supports not (color: oklch(50% 0.1 180)) {
+  :root {
+    --radius: 0.625rem;
+    /* Light theme fallbacks */
+    --background: #ffffff;
+    --foreground: #242424;
+    --card: #ffffff;
+    --card-foreground: #242424;
+    --popover: #ffffff;
+    --popover-foreground: #242424;
+    --primary: #111827;
+    --primary-foreground: #f9fafb;
+    --secondary: #f3f4f6;
+    --secondary-foreground: #111827;
+    --muted: #f3f4f6;
+    --muted-foreground: #6b7280;
+    --accent: #f3f4f6;
+    --accent-foreground: #111827;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #e5e7eb;
+    --input: #e5e7eb;
+    --ring: #d1d5db;
+    --chart-1: #3b82f6;
+    --chart-2: #10b981;
+    --chart-3: #f59e0b;
+    --chart-4: #8b5cf6;
+    --chart-5: #ec4899;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #1f2937;
+    --sidebar-primary: #111827;
+    --sidebar-primary-foreground: #f9fafb;
+    --sidebar-accent: #f3f4f6;
+    --sidebar-accent-foreground: #111827;
+    --sidebar-border: #e5e7eb;
+    --sidebar-ring: #d1d5db;
+  }
+
+  .dark {
+    /* Dark theme fallbacks */
+    --background: #000000;
+    --foreground: #f8f6f3;
+    --card: #0a0a0a;
+    --card-foreground: #f8f6f3;
+    --popover: #050505;
+    --popover-foreground: #f8f6f3;
+    --primary: #2dd4bf;
+    --primary-foreground: #0f172a;
+    --secondary: #252a3a;
+    --secondary-foreground: #f8f6f3;
+    --muted: #2a2f42;
+    --muted-foreground: #b8c1d4;
+    --accent: #8b5cf6;
+    --accent-foreground: #f8f6f3;
+    --destructive: #ef4444;
+    --destructive-foreground: #f8f6f3;
+    --border: #2a2f42;
+    --input: #1f2433;
+    --ring: #2dd4bf;
+    --chart-1: #2dd4bf;
+    --chart-2: #8b5cf6;
+    --chart-3: #22c55e;
+    --chart-4: #f97316;
+    --chart-5: #ec4899;
+    --sidebar: #0e1320;
+    --sidebar-foreground: #f8f6f3;
+    --sidebar-primary: #2dd4bf;
+    --sidebar-primary-foreground: #0f172a;
+    --sidebar-accent: #252a3a;
+    --sidebar-accent-foreground: #f8f6f3;
+    --sidebar-border: #2a2f42;
+    --sidebar-ring: #2dd4bf;
+  }
 }
 
 .dark .focus-modern:focus {
