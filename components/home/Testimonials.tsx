@@ -2,17 +2,14 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, Quote, ChevronLeft, ChevronRight, Building, GraduationCap, Heart, Building2 } from "lucide-react";
+import { Building, GraduationCap, Heart, Building2 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
 const Testimonials = () => {
   const [mounted, setMounted] = useState(false);
   const [isInView, setIsInView] = useState(false);
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -29,77 +26,22 @@ const Testimonials = () => {
       { threshold: 0.1 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const current = sectionRef.current;
+
+    if (current) {
+      observer.observe(current);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (current) {
+        observer.unobserve(current);
       }
     };
   }, []);
 
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
   if (!mounted) return null;
 
-  const testimonials = [
-    {
-      id: 1,
-      name: "Mr Biruk G/Tsadik",
-      role: "Director at Mizan Tepi University",
-      content: "Oskaz Import delivered our Smart Board on time and in perfect condition. Their professional service and excellent communication made the process seamless. The quality of the board has greatly enhanced our classroom experience. We highly recommend Oskaz Import for their reliability and commitment to customer satisfaction!",
-      rating: 5,
-      avatar: "BG"
-    },
-    {
-      id: 2,
-      name: "Mr. Dereje Derara",
-      role: "Director at ECDSWC",
-      content: "Oskaz Import provided exceptional service with the delivery, installation, and after-sales support for our 100KVA Upsen UPS. Their team was professional and responsive, ensuring everything ran smoothly. We highly recommend Oskaz Import for their reliability and commitment to customer satisfaction!",
-      rating: 5,
-      avatar: "DD"
-    },
-    {
-      id: 3,
-      name: "Dr. Feleke Z",
-      role: "GM at African Centre of Excellence",
-      content: "Oskaz Import delivered our Smart Digital Signage on time and in perfect condition. Their team's professionalism and support made installation a breeze. The signage has transformed our communication efforts. We highly recommend Oskaz Import for their outstanding service and dedication to customer satisfaction!",
-      rating: 5,
-      avatar: "FZ"
-    },
-    {
-      id: 4,
-      name: "Eng. Negeda Kebede",
-      role: "CEO at ECW",
-      content: "Oskaz Import delivered our Smart TV Wall on time and in perfect condition. Their team's professionalism and efficient installation exceeded our expectations. The display has greatly enhanced our visual presentations. We highly recommend Oskaz Import for their exceptional service and commitment to customer satisfaction!",
-      rating: 5,
-      avatar: "NK"
-    },
-    {
-      id: 5,
-      name: "Mrs Inas Oumer",
-      role: "Manager at Dada Mall",
-      content: "Oskaz Import delivered our Smart Kiosk promptly and in excellent condition. Their professional service and seamless installation made all the difference. The kiosk has enhanced our customer engagement significantly. We highly recommend Oskaz Import for their reliability and commitment to outstanding service!",
-      rating: 5,
-      avatar: "IO"
-    },
-    {
-      id: 6,
-      name: "Dr. Muluken Adamasu",
-      role: "GM at Adama Textile",
-      content: "Oskaz Import delivered our Smart Podium promptly and in excellent condition. Their professional service and clear communication made the entire process smooth. The podium has significantly improved our presentations. We highly recommend Oskaz Import for their reliability and dedication to customer satisfaction!",
-      rating: 5,
-      avatar: "MA"
-    }
-  ];
+  // Testimonials content removed in UI; keeping industries showcase only
 
   const industries = [
     {
@@ -124,19 +66,7 @@ const Testimonials = () => {
     }
   ];
 
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        className={cn(
-          "h-4 w-4",
-          i < Math.floor(rating) 
-            ? "fill-yellow-400 text-yellow-400" 
-            : "text-gray-300 dark:text-gray-600"
-        )}
-      />
-    ));
-  };
+  // rating visuals removed from this section per design; helper not used
 
   return (
     <section 

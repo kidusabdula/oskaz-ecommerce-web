@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, ShoppingCart, Star, Package, Zap, Shield, Globe } from "lucide-react";
+import { ShoppingCart, Star, Package, Zap, Shield, Globe, ArrowRight } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
@@ -29,13 +29,14 @@ const ProductsShowcase = () => {
       { threshold: 0.1 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const current = sectionRef.current;
+    if (current) {
+      observer.observe(current);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (current) {
+        observer.unobserve(current);
       }
     };
   }, []);

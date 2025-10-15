@@ -32,12 +32,15 @@ const InnovationSection = () => {
   useEffect(() => {
     setMounted(true);
 
+    const currentSectionRef = sectionRef.current;
+    const currentVideoRef = videoRef.current;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
-          if (videoRef.current && !isPlaying) {
-            videoRef.current.play().catch(() => {});
+          if (currentVideoRef && !isPlaying) {
+            currentVideoRef.play().catch(() => {});
             setIsPlaying(true);
           }
         }
@@ -45,9 +48,9 @@ const InnovationSection = () => {
       { threshold: 0.1 }
     );
 
-    if (sectionRef.current) observer.observe(sectionRef.current);
+    if (currentSectionRef) observer.observe(currentSectionRef);
     return () => {
-      if (sectionRef.current) observer.unobserve(sectionRef.current);
+      if (currentSectionRef) observer.unobserve(currentSectionRef);
     };
   }, [isPlaying]);
 
