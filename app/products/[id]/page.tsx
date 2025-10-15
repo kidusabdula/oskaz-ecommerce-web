@@ -319,7 +319,7 @@ const handleBuyNow = (product: Product) => {
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
               size="lg"
-              className="flex-1"
+              className="flex-1 p-2"
               disabled={product.stock <= 0}
               onClick={() => handleAddToCart(product!)}
             >
@@ -329,7 +329,7 @@ const handleBuyNow = (product: Product) => {
             <Button
               size="lg"
               variant="outline"
-              className="flex-1"
+              className="flex-4 p-2"
               disabled={product.stock <= 0}
               onClick={() => handleBuyNow(product!)}
             >

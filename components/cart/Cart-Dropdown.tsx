@@ -59,7 +59,7 @@ const CartDropdown: React.FC = () => {
       <div
         ref={dropdownRef}
         className={cn(
-          "absolute right-4 top-16 w-96 max-w-[90vw] rounded-lg shadow-lg border",
+          "absolute right-4 top-20 w-96 max-w-[90vw] rounded-lg shadow-lg border",
           isDarkMode ? "bg-card border-border" : "bg-white border-gray-200"
         )}
       >

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Grid, List, ShoppingBag, SlidersHorizontal } from "lucide-react";
@@ -26,7 +26,7 @@ const ProductsHeader: React.FC<ProductsHeaderProps> = ({
   setSearchQuery,
   viewMode,
   setViewMode,
-  filteredProductsCount,
+  // filteredProductsCount,
   sortBy,
   setSortBy,
   onToggleFilters,
@@ -76,12 +76,12 @@ const ProductsHeader: React.FC<ProductsHeaderProps> = ({
             </div>
 
             {/* Mobile Product Count Badge */}
-            <Badge 
+            {/* <Badge 
               variant="secondary" 
               className="px-3 py-1 font-medium lg:hidden flex-shrink-0"
             >
               {filteredProductsCount}
-            </Badge>
+            </Badge> */}
           </div>
 
           {/* Right: Search, Sort, Filters (mobile), View Toggle (desktop) */}

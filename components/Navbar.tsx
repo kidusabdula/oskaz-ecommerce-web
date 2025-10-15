@@ -24,6 +24,7 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
+  useUser,
 } from "@clerk/nextjs";
 
 const Navbar = () => {
@@ -35,6 +36,7 @@ const Navbar = () => {
   const isDarkMode = theme === "dark";
 
   const { state, setIsOpen } = useCart();
+  const { user } = useUser();
 
 
   useEffect(() => {
@@ -149,7 +151,14 @@ const Navbar = () => {
             {/* Desktop Utilities */}
             <div className="hidden lg:flex items-center space-x-3">
               <SignedIn>
-                <UserButton afterSignOutUrl="/" />
+                <div className="flex items-center gap-2">
+                  {user?.firstName && (
+                    <span className="text-sm text-muted-foreground">
+                      Hello, {user.firstName}
+                    </span>
+                  )}
+                  <UserButton afterSignOutUrl="/" />
+                </div>
               </SignedIn>
               <SignedOut>
                 <div className="flex items-center space-x-2">
@@ -182,7 +191,10 @@ const Navbar = () => {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 relative hover:bg-muted transition-all duration-300 hover:scale-110"
-                onClick={() => setIsOpen(true)}
+                onClick={() => {
+                  setIsMenuOpen(false); // Close mobile menu
+                  setIsOpen(true);
+                }}
               >
                 <ShoppingBag className="h-4 w-4" />
                 {state.totalItems > 0 && (
@@ -197,12 +209,21 @@ const Navbar = () => {
             </div>
 
             {/* MOBILE MENU */}
-            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+            <Sheet open={isMenuOpen} onOpenChange={(open) => {
+              setIsMenuOpen(open);
+              if (open) {
+                setIsOpen(false); // Close cart when mobile menu opens
+              }
+            }}>
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
                   className="lg:hidden h-8 w-8 hover:bg-muted transition-all duration-500 hover:scale-110"
+                  onClick={() => {
+                    setIsMenuOpen(false); // Close sidebar
+                    setIsOpen(true);      // Open CartDropdown
+                  }}
                 >
                   <Menu className="h-4 w-4" />
                 </Button>
@@ -264,12 +285,15 @@ const Navbar = () => {
                   </Link>
 
                   {/* Mobile Search */}
-                  <div className="relative mt-4">
+                  <div className="relative mt-4 p-4">
                     <Input
                       placeholder="Search Product"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pr-10"
+                      tabIndex={-1}
+                      onFocus={() => setIsSearchFocused(true)}
+                      onBlur={() => setIsSearchFocused(false)}
                     />
                     {searchQuery && (
                       <Button
@@ -281,19 +305,24 @@ const Navbar = () => {
                         <X className="h-3 w-3" />
                       </Button>
                     )}
-                    <SearchIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <SearchIcon className="absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   </div>
 
                   {/* Mobile utilities */}
                   <div className="flex items-center justify-between pt-4 border-t border-border">
                     <SignedIn>
-                      <div className="flex items-center space-x-2">
-                        <UserButton afterSignOutUrl="/" />
-                        <span className="text-sm">Account</span>
+                      <div className="flex items-center p-5">
+                      <UserButton afterSignOutUrl="/" />
+                        {user?.firstName && (
+                          <span className="text-sm text-muted-foreground mx-2">
+                            Hello, {user.firstName}
+                          </span>
+                        )}
+                        
                       </div>
                     </SignedIn>
                     <SignedOut>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center p-3">
                         <SignInButton mode="modal">
                           <Button variant="ghost" size="sm">
                             Login
@@ -304,7 +333,7 @@ const Navbar = () => {
                         </SignUpButton>
                       </div>
                     </SignedOut>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center p-5">
                       {/* Theme toggle - same design as desktop */}
                       <ThemeDropdown className="h-8 w-8" />
 
@@ -313,6 +342,10 @@ const Navbar = () => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 relative hover:bg-muted transition-all duration-300 hover:scale-110"
+                        onClick={() => {
+                          setIsMenuOpen(false); // Close sidebar
+                          setIsOpen(true);      // Open CartDropdown
+                        }}
                       >
                         <ShoppingBag className="h-4 w-4" />
                         <span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive rounded-full text-xs text-destructive-foreground flex items-center justify-center">
