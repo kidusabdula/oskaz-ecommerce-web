@@ -24,10 +24,16 @@ const InnovationSection = () => {
   const [mounted, setMounted] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [preloadMode, setPreloadMode] = useState<"none" | "metadata" | "auto">("none");
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+  const [hasVideoError, setHasVideoError] = useState(false);
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  type NavigatorConnection = { effectiveType?: string; saveData?: boolean };
+  type NavigatorWithConnection = Navigator & { connection?: NavigatorConnection };
 
   useEffect(() => {
     setMounted(true);
@@ -35,13 +41,25 @@ const InnovationSection = () => {
     const currentSectionRef = sectionRef.current;
     const currentVideoRef = videoRef.current;
 
+    const conn = (navigator as NavigatorWithConnection).connection;
+    const isFast = conn?.effectiveType === "4g" && !conn?.saveData;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
-          if (currentVideoRef && !isPlaying) {
-            currentVideoRef.play().catch(() => {});
-            setIsPlaying(true);
+          setPreloadMode(isFast ? "auto" : "metadata");
+          if (!videoSrc) {
+            setVideoSrc("/oskaz-hero-background.mp4");
+          }
+          if (currentVideoRef) {
+            try {
+              currentVideoRef.load();
+            } catch {}
+            if (!isPlaying) {
+              currentVideoRef.play().catch(() => {});
+              setIsPlaying(true);
+            }
           }
         }
       },
@@ -52,7 +70,8 @@ const InnovationSection = () => {
     return () => {
       if (currentSectionRef) observer.unobserve(currentSectionRef);
     };
-  }, [isPlaying]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPlaying, videoSrc]);
 
   // const handlePlayVideo = () => {
   //   if (videoRef.current) {
@@ -147,9 +166,24 @@ const InnovationSection = () => {
                   loop
                   muted
                   playsInline
+                  preload={preloadMode}
                   className="absolute inset-0 w-full h-full object-fill"
-                  poster="/video-poster.jpg" // Optional: add a poster frame
-                  src="/oskaz-hero-background.mp4"
+                  poster="/video-poster.jpg"
+                  aria-label="Background animation video"
+                  controlsList="nodownload noplaybackrate nofullscreen"
+                  disablePictureInPicture
+                  crossOrigin="anonymous"
+                  src={videoSrc ?? undefined}
+                  onError={() => setHasVideoError(true)}
+                  onAbort={() => setHasVideoError(true)}
+                  onStalled={() => setHasVideoError(true)}
+                  onLoadedData={() => setHasVideoError(false)}
+                  onCanPlay={() => {
+                    setHasVideoError(false);
+                    try {
+                      videoRef.current?.play();
+                    } catch {}
+                  }}
                 />
                 
                 {/* Fallback background in case video doesn't load */}

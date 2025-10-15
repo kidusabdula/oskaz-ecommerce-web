@@ -13,6 +13,8 @@ const Hero2 = () => {
   const [isHeaderHovered, setIsHeaderHovered] = React.useState(false);
   const sectionRef = React.useRef<HTMLElement | null>(null);
   const [preloadMode, setPreloadMode] = React.useState<"none" | "metadata" | "auto">("none");
+  const [sourceUrl, setSourceUrl] = React.useState<string | null>(null);
+  const [hasVideoError, setHasVideoError] = React.useState(false);
   
   type NavigatorConnection = { effectiveType?: string; saveData?: boolean };
   type NavigatorWithConnection = Navigator & { connection?: NavigatorConnection };
@@ -32,6 +34,9 @@ const Hero2 = () => {
         if (entry?.isIntersecting) {
           // Upgrade preload when in view (metadata on slow, auto on fast)
           setPreloadMode(isFast ? "auto" : "metadata");
+          if (!sourceUrl) {
+            setSourceUrl("/oskaz-hero-background.mp4");
+          }
           const v = videoRef.current;
           if (v) {
             try {
@@ -72,6 +77,9 @@ const Hero2 = () => {
           preload={preloadMode}
           poster="/DesignConcept.jpg"
           crossOrigin="anonymous"
+          aria-label="Background reveal video"
+          controlsList="nodownload noplaybackrate nofullscreen"
+          disablePictureInPicture
           className={cn(
             "w-full h-full object-cover rounded-[3rem] transition-all duration-1000 ease-out",
              "scale-100 opacity-100" 
@@ -82,8 +90,17 @@ const Hero2 = () => {
             transition: `clip-path ${isHeaderHovered ? REVEAL_DURATION_MS : REVEAL_OUT_DURATION_MS}ms ease-in-out`,
             willChange: "clip-path",
           }}
-          
-          src="/oskaz-hero-background.mp4"
+          src={sourceUrl ?? undefined}
+          onError={() => setHasVideoError(true)}
+          onAbort={() => setHasVideoError(true)}
+          onStalled={() => setHasVideoError(true)}
+          onLoadedData={() => setHasVideoError(false)}
+          onCanPlay={() => {
+            setHasVideoError(false);
+            try {
+              videoRef.current?.play();
+            } catch {}
+          }}
         />
         {/* Animated Gradient Overlay */}
         <div
