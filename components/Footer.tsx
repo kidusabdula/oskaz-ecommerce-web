@@ -12,7 +12,6 @@ import {
   Twitter, 
   Linkedin, 
   Instagram, 
-  Youtube, 
   Mail, 
   Phone, 
   MapPin, 
