@@ -130,7 +130,7 @@ export default function ContactPage() {
     {
       icon: <MapPin className="h-5 w-5" />,
       label: "Office",
-      value: "Bahar Building, 4th Floor",
+      value: "Bahar Building",
       description: "Bole, Addis Ababa, Ethiopia",
       href: "#"
     }
@@ -444,13 +444,13 @@ export default function ContactPage() {
                         <MapPin className="w-4 h-4 text-primary" />
                         <div>
                           <p className="text-sm text-muted-foreground">Address</p>
-                          <p className="font-medium">Bahar Building 4th Floor</p>
+                          <p className="font-medium">Bahar Building</p>
                         </div>
                       </div>
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => copyToClipboard('Bahar Building 4th Floor', 'address')}
+                        onClick={() => copyToClipboard('Bahar Building', 'address')}
                         className="flex items-center"
                       >
                         {copiedAddress ? (

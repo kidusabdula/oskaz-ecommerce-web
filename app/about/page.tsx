@@ -417,12 +417,12 @@ export default function AboutPage() {
                     <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50 transition-all duration-300 hover:bg-muted/70 hover:scale-[1.02]">
                       <div>
                         <p className="text-sm text-muted-foreground">Address</p>
-                        <p className="font-medium">Bahar Building 4th Floor</p>
+                        <p className="font-medium">Bahar Building</p>
                       </div>
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => copyToClipboard('Bahar Building 4th Floor', 'address')}
+                        onClick={() => copyToClipboard('Bahar Building', 'address')}
                         className="flex items-center transition-all duration-300 hover:scale-105 hover:bg-purple-500/10"
                       >
                         {copiedAddress ? (
