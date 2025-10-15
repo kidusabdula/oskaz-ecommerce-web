@@ -6,9 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import ProductsHeader from "@/components/products/Products-Header";
 import ProductsSidebar from "@/components/products/Products-Sidebar";
 import ProductsGrid, { type Product } from "@/components/products/Products-Grid";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Button } from "@/components/ui/button";
-import { SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 
 export function ProductsPageContent() {
   const router = useRouter();
